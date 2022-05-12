@@ -1,0 +1,19 @@
+import Subcollection from "../Subcollection";
+
+export default class extends Subcollection{
+    static orderByParam = 'receipts'
+    static fields = {
+        'date': Date,
+        'total_amount': Number,
+        'tax': Number,
+        'discount': Number,
+        'payment_method': String,
+        'purchaser_name': String,
+        'purchaser_address': Object,
+        'items': Array,
+        'transaction_id': String,
+    }
+
+    constructor(path){
+    }
+}
