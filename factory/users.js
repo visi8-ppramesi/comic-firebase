@@ -24,11 +24,17 @@ module.exports = class UserFactory extends Factory{
 
     static async createDoc(){
         const data = await this.createData()
+        let userUid
         const settedDoc = await createUserWithEmailAndPassword(auth, data['email'], data['password']).then((newUser) => {
+            userUid = newUser.user.uid
             const newUserDocRef = doc(this.db, this.collectionName, newUser.user.uid)
             let validatedUserData = Object.assign({}, data)
             delete validatedUserData['password']
             return setDoc(newUserDocRef, validatedUserData)
+        }).then(() => {
+            console.log(userUid)
+            const userRoleRef = doc(this.db, 'user_roles', userUid)
+            return setDoc(userRoleRef, {roles: [ 'user' ]})
         })
 
         return await settedDoc

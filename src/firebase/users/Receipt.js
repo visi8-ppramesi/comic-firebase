@@ -1,7 +1,7 @@
 import Subcollection from "../Subcollection";
 
 export default class extends Subcollection{
-    static orderByParam = 'receipts'
+    static collection = 'receipts'
     static fields = {
         'date': Date,
         'total_amount': Number,

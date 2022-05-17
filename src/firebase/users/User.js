@@ -1,5 +1,5 @@
-import Collection from "../Collection"
-import Subcollection from "../Subcollection"
+import Collection from "../Collection.js"
+import Subcollection from "../Subcollection.js"
 import firebase from '../firebase.js';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where } from "firebase/firestore";  
@@ -12,12 +12,12 @@ export default class extends Collection{
     static fields = {
         'email': String,
         'name': String,
-        'purchased_comics': Subcollection,
-        'read_history': Subcollection,
+        'purchased_comics': Subcollection.resolve('./PurchasedComic.js'),
+        'read_history': Subcollection.resolve('./ReadHistory.js'),
         'favorites': Array,
         'bookmarks': Array,
         'tokens': Number,
-        'receipts': Subcollection,
+        'receipts': Subcollection.resolve('./Receipt.js'),
         'comics_subscriptions': Array,
         'email_verified_at': Date,
         'profile_image_url': String,

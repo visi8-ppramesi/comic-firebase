@@ -16,7 +16,7 @@ const main = async () => {
     await CategoryFactory.createDocs(10)
 
     console.log('users')
-    await UserFactory.createDocs(5)
+    await UserFactory.createDocs(10)
 
     console.log('authors')
     await AuthorFactory.createDocs(6)

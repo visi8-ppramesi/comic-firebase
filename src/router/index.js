@@ -1,100 +1,100 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-const authorRoutes = [
-    {
-        path: "/author/:id",
-        name: "Author",
-        component: () => import("@/pages/Author.vue"),
-        meta: {
-            showNav: true
-        }
-    },
-    {
-        path: "/authors",
-        name: "Authors",
-        component: () => import("@/pages/Authors.vue"),
-        meta: {
-            showNav: true
-        }
-    }
-]
+// const authorRoutes = [
+//     {
+//         path: "/author/:id",
+//         name: "Author",
+//         component: () => import("@/pages/Author.vue"),
+//         meta: {
+//             showNav: true
+//         }
+//     },
+//     {
+//         path: "/authors",
+//         name: "Authors",
+//         component: () => import("@/pages/Authors.vue"),
+//         meta: {
+//             showNav: true
+//         }
+//     }
+// ]
 
-const authRoutes = [
-    {
-        path: "/login",
-        name: "Login",
-        component: () => import("@/pages/Login.vue"),
-        meta: {
-            showNav: false,
-            requiresLoggedOut: true
-        }
-    },
-    {
-        path: "/logout",
-        name: "Logout",
-        component: () => import("@/pages/Logout.vue"),
-        meta: {
-            showNav: false,
-            requiresAuth: true
-        }
-    },
-    {
-        path: "/register",
-        name: "Register",
-        component: () => import("@/pages/Register.vue"),
-        meta: {
-            showNav: false,
-            requiresLoggedOut: true
-        }
-    },
-]
+// const authRoutes = [
+//     {
+//         path: "/login",
+//         name: "Login",
+//         component: () => import("@/pages/Login.vue"),
+//         meta: {
+//             showNav: false,
+//             requiresLoggedOut: true
+//         }
+//     },
+//     {
+//         path: "/logout",
+//         name: "Logout",
+//         component: () => import("@/pages/Logout.vue"),
+//         meta: {
+//             showNav: false,
+//             requiresAuth: true
+//         }
+//     },
+//     {
+//         path: "/register",
+//         name: "Register",
+//         component: () => import("@/pages/Register.vue"),
+//         meta: {
+//             showNav: false,
+//             requiresLoggedOut: true
+//         }
+//     },
+// ]
 
-const mineRoutes = [
-    {
-        path: "/my-account",
-        name: "MyAccount",
-        component: () => import("@/pages/MyAccount.vue"),
-        meta: {
-            showNav: true,
-            requiresAuth: true
-        }
-    },
-    {
-        path: "/my-comics",
-        name: "MyComics",
-        component: () => import("@/pages/MyComics.vue"),
-        meta: {
-            showNav: true,
-            requiresAuth: true
-        }
-    },
-    {
-        path: "/my-profile",
-        name: "MyProfile",
-        component: () => import("@/pages/MyProfile.vue"),
-        meta: {
-            showNav: true,
-            requiresAuth: true
-        }
-    },
-    {
-        path: "/my-transactions",
-        name: "MyTransactions",
-        component: () => import("@/pages/MyTransactions.vue"),
-        meta: {
-            showNav: true,
-            requiresAuth: true
-        }
-    },
-    {
-        path: "/user/:id",
-        name: "User",
-        component: () => import("@/pages/User.vue"),
-        meta: {
-            showNav: true
-        }
-    },
-]
+// const mineRoutes = [
+//     {
+//         path: "/my-account",
+//         name: "MyAccount",
+//         component: () => import("@/pages/MyAccount.vue"),
+//         meta: {
+//             showNav: true,
+//             requiresAuth: true
+//         }
+//     },
+//     {
+//         path: "/my-comics",
+//         name: "MyComics",
+//         component: () => import("@/pages/MyComics.vue"),
+//         meta: {
+//             showNav: true,
+//             requiresAuth: true
+//         }
+//     },
+//     {
+//         path: "/my-profile",
+//         name: "MyProfile",
+//         component: () => import("@/pages/MyProfile.vue"),
+//         meta: {
+//             showNav: true,
+//             requiresAuth: true
+//         }
+//     },
+//     {
+//         path: "/my-transactions",
+//         name: "MyTransactions",
+//         component: () => import("@/pages/MyTransactions.vue"),
+//         meta: {
+//             showNav: true,
+//             requiresAuth: true
+//         }
+//     },
+//     {
+//         path: "/user/:id",
+//         name: "User",
+//         component: () => import("@/pages/User.vue"),
+//         meta: {
+//             showNav: true
+//         }
+//     },
+// ]
 
 const infoRoutes = [
     {
@@ -121,7 +121,6 @@ const infoRoutes = [
             showNav: true
         }
     },
-
 ]
 
 const comicsRoutes = [
@@ -152,11 +151,11 @@ export const routes = [
             showNav: true
         }
     },
-    ...authorRoutes,
-    ...authRoutes,
+    // ...authorRoutes,
+    // ...authRoutes,
     ...infoRoutes,
     ...comicsRoutes,
-    ...mineRoutes
+    // ...mineRoutes
 ];
 
 const router = createRouter({

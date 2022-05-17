@@ -1,14 +1,14 @@
-import firebase from '../firebase.js'
+import firebase from './firebase.js'
 import Subcollection from './Subcollection.js';
 import { 
     doc, 
     query, 
-    startAfter, 
+    // startAfter, 
     collection, 
     getDocs, 
     getDoc,
-    orderBy,
-    limit
+    // orderBy,
+    // limit
 } from "firebase/firestore";  
 import utils from './utils/index.js'
 
@@ -32,11 +32,16 @@ export default class{
 
     static async getDocument(id){
         const eventRef = doc(firebase.db, this.collection, id)
-        const doc = await getDoc(eventRef)
-        const instance = new this()
-        instance.setData(doc.id, doc.data(), doc)
-
-        return instance
+        try{
+            const doc = await getDoc(eventRef)
+            const instance = new this()
+            instance.setData(doc.id, doc.data(), doc)
+    
+            return instance
+        }catch(err){
+            utils.handleError(err)
+            throw err
+        }
     }
 
     static async getDocuments(queries = []){
@@ -48,12 +53,17 @@ export default class{
             q = eventRef
         }
         
-        const snap = await getDocs(q)
-        return utils.parseDocs(snap.docs).map((datum, idx) => {
-            const instance = new this()
-            instance.setData(datum.id, datum, snap.docs[idx])
-            return instance
-        })
+        try{
+            const snap = await getDocs(q)
+            return utils.parseDocs(snap.docs).map((datum, idx) => {
+                const instance = new this()
+                instance.setData(datum.id, datum, snap.docs[idx])
+                return instance
+            })
+        }catch(err){
+            utils.handleError(err)
+            throw err
+        }
     }
 
     static async getDocumentsWithStorageResource(queries = [], storageFields = []){
@@ -64,8 +74,13 @@ export default class{
         }else{
             q = eventRef
         }
-        
-        const snap = await getDocs(q)
+        let snap
+        try {
+            snap = await getDocs(q)
+        } catch (err) {
+            utils.handleError(err)
+            throw err
+        }
         const docs = Object.values(snap.docs)
         const events = []
         for(let i = 0; i < docs.length; i++){
@@ -75,11 +90,16 @@ export default class{
                 resources.push(utils.getDataUrlFromStorage(data[storageFields[j]]))
             }
 
-            await Promise.all(resources).then((resource) => {
-                for(let k = 0; k < res.length; k++){
-                    data[storageFields[k]] = resource[k]
-                }
-            })
+            try {
+                await Promise.all(resources).then((resource) => {
+                    for(let k = 0; k < resource.length; k++){
+                        data[storageFields[k]] = resource[k]
+                    }
+                })
+            } catch (err) {
+                utils.handleError(err)
+                throw err
+            }
             data.doc = docs[i]
             data.id = docs[i].id
             events.push(data)
@@ -96,7 +116,13 @@ export default class{
             q = eventRef
         }
         
-        const snap = await getDocs(q)
+        let snap
+        try {
+            snap = await getDocs(q)
+        } catch (err) {
+            utils.handleError(err)
+            throw err
+        }
         const docs = Object.values(snap.docs)
         for(let i = 0; i < docs.length; i++){
             const data = docs[i].data()
@@ -118,5 +144,18 @@ export default class{
 
             yield instance
         }
+    }
+
+    static resolve(collectionPath){
+        const path = collectionPath.split('/')
+        const fname = path[path.length - 1].split('.')
+        const fun = new Function([], 'return import("' + collectionPath + '")')
+        fname.pop()
+        Object.defineProperty(fun, "name", { value: fname.join('') });
+        return fun
+        // return {
+        //     name: fname.join(''),
+        //     type: 'collection',
+        // }
     }
 }

@@ -32,15 +32,16 @@ const getDataUrlFromStorage = async (gsPath) => {
     })
 }
 
-const getProtectedDataUrlFromStorage = async (gspath) => {
+const getProtectedDataUrlFromStorage = async (gsPath) => {
     const blob = await getBlob(gsPath)
+    const identifier = (Math.random() + 1).toString(36).substring(2)
     images[identifier] = URL.createObjectURL(blob)
-    return images[identifier]
+    return { image: images[identifier], identifier }
 }
 
-const revokeDataUrl = (url) => {
+const revokeDataUrl = (url, identifier) => {
     setTimeout(() => {
-        delete images[Object.keys(images).find(key => images[key] === url)]
+        delete images[identifier]
         URL.revokeObjectURL(url)
     }, 0)
 }
@@ -98,4 +99,8 @@ const parseDocs = (docs, extraFields = []) => {
 //     })
 // }
 
-export default { getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs, getProtectedDataUrlFromStorage, revokeDataUrl }
+const handleError = function(err){
+    return err
+}
+
+export default { handleError, getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs, getProtectedDataUrlFromStorage, revokeDataUrl }

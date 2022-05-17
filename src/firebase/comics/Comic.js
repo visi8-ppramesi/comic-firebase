@@ -1,5 +1,5 @@
-import firebase from '../firebase.js'
-import settings from '../firebaseSettings.js'
+// import firebase from '../firebase.js'
+// import settings from '../firebaseSettings.js'
 import Collection from '../Collection.js'
 import Subcollection from '../Subcollection.js'
 import Chapter from './Chapter.js'
@@ -13,12 +13,12 @@ export default class extends Collection{
         'view_count': Number,
         'favorite_count': Number,
         'release_date': Date,
-        'authors': [ Author ],
+        'authors': [ Collection.resolve('../Author.js') ],
         'authors_data':	Array,
         // 'authors_split': Subcollection,
-        'comments':	Subcollection,
+        'comments':	Subcollection.resolve('./Comment.js'),
         'description': String,
-        'chapters':	Subcollection,
+        'chapters':	Subcollection.resolve('./Chapter.js'),
         'tags':	Array,
         'categories': Array,
         'cover_image_url': String,

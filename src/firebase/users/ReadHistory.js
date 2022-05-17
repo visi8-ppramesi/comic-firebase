@@ -1,12 +1,12 @@
 import Subcollection from "../Subcollection";
-import Comic from "../comics/Comic";
-import Chapter from "../comics/Chapter";
+// import Comic from "../comics/Comic";
+// import Chapter from "../comics/Chapter";
 
 export default class extends Subcollection{
-    static orderByParam = 'read_history'
+    static collection = 'read_history'
     static fields = {
-        'comic': Comic,
-        'chapters': [ Chapter ]
+        'comic': Subcollection.resolve('../comics/Comic.js'),
+        'chapters': [ Subcollection.resolve('../comics/Chapter.js'), ]
     }
 
     constructor(path){

@@ -1,17 +1,17 @@
-import firebase from '../firebase.js'
-import settings from '../firebaseSettings.js'
+// import firebase from '../firebase.js'
+// import settings from '../firebaseSettings.js'
 import Subcollection from '../Subcollection.js'
 import Page from './Page.js'
 
 export default class extends Subcollection{
-    static orderByParam = 'chapter_number'
+    static collection = 'chapter_number'
     static fields = {
         'chapter_number': Number,
         'release_date': Date,
         'view_count': Number,
         'price': Number,
         'ar_price': Number,
-        'pages': Subcollection,
+        'pages': Subcollection.resolve('./Page.js'),
     }
 
     async getPages(queries = []){

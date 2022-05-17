@@ -71,12 +71,12 @@
             >
               <img
                 class="block lg:hidden h-16 w-auto"
-                :src="visi8Icon.default"
+                :src="visi8Icon"
                 alt="Workflow"
               />
               <img
                 class="hidden lg:block h-8 w-auto"
-                :src="visi8Icon.default"
+                :src="visi8Icon"
                 alt="Workflow"
               />
             </div>
@@ -401,8 +401,7 @@ export default {
   components: {
 
   },
-  created(){
-    // this.isLoggedIn //later add store
+  mounted(){
   },
   data() {
       return {
@@ -416,7 +415,7 @@ export default {
               twitter: require('./assets/icons/twitter.png'),
               visi8: require('./assets/visi8_logo.png')
           },
-          visi8Icon: require('./assets/visi8_logo.png'),
+          visi8Icon: require('./assets/visi8_logo.png'),//require('./assets/visi8_logo.png'),
           socials: [],
       }
   },
@@ -430,11 +429,20 @@ export default {
     }
   },
   methods: {
+    test(){
+      this.$toast.open({
+        message: "Test message from Vue",
+        type: "success",
+        duration: 5000,
+        dismissible: true
+      })
+      // this.$toast.open('dfaskljadskljdhasfkljdhasfkljahsdfkljhasdfkljh')
+    },
     visit(route){
       this.$router.push(route)
     },
     post(route){
-
+      console.log(route)
     }
   }
 };

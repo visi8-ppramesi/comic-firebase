@@ -1,10 +1,14 @@
-import { routes } from "@/router/index.js"
+import router from "@/router/index.js"
 
-const routeObj = routes.reduce((acc, v) => {
-    acc[v.name] = v.path
-    return acc
-}, {})
+// const routeObj = routes.reduce((acc, v) => {
+//     acc[v.name] = v.path
+//     return acc
+// }, {})
 
-export default function(name, params = {}){
-    return {name , params}
+export default function(name, params = {}, type = "object"){
+    if(type == 'object'){
+        return {name, params}
+    }else if(type == 'string'){
+        return router.resolve({name, params}).href
+    }
 }

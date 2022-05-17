@@ -1,10 +1,10 @@
 import Collection from "../Collection";
-import User from "../users/User";
+// import User from "../users/User";
 
 export default class extends Collection{
-    static orderByParam = 'comments'
+    static collection = 'comments'
     static fields = {
-        'user': User,
+        'user': Collection.resolve('../users/User.js'),
         'message': String,
         'flag': Number,
         'date': Date

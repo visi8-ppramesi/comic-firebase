@@ -1,13 +1,13 @@
-import firebase from '../firebase.js'
+import firebase from './firebase.js'
 import { 
-    doc, 
+    // doc, 
     query, 
-    startAfter, 
+    // startAfter, 
     collection, 
     getDocs, 
     getDoc,
-    orderBy,
-    limit
+    // orderBy,
+    // limit
 } from "firebase/firestore";
 import utils from './utils/index.js'
 
@@ -79,7 +79,7 @@ export default class{
             }
 
             await Promise.all(resources).then((resource) => {
-                for(let k = 0; k < res.length; k++){
+                for(let k = 0; k < resource.length; k++){
                     data[storageFields[k]] = resource[k]
                 }
             })
@@ -121,5 +121,21 @@ export default class{
 
             yield instance
         }
+    }
+
+    static resolve(collectionPath){
+        const path = collectionPath.split('/')
+        const fname = path[path.length - 1].split('.')
+        const fun = new Function([], 'return import("' + collectionPath + '")')
+        fname.pop()
+        Object.defineProperty(fun, "name", { value: fname.join('') });
+        return fun
+        // const path = collectionPath.split('/')
+        // const fname = path[path.length - 1].split('.')
+        // fname.pop()
+        // return {
+        //     name: fname.join(''),
+        //     type: 'subcollection',
+        // }
     }
 }
