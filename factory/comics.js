@@ -30,6 +30,7 @@ module.exports = class ComicFactory extends Factory{
             'view_count': 0,
             'favorite_count': 0,
             'release_date': new Date(),
+            'last_update': new Date(),
             'description': faker.lorem.paragraph(5),
             'tags': [ await TagFactory.getRandomValue('name'), await TagFactory.getRandomValue('name'), await TagFactory.getRandomValue('name') ],
             'categories': [ await CategoryFactory.getRandomValue('name'), await CategoryFactory.getRandomValue('name') ],

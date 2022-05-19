@@ -1,33 +1,30 @@
 <template>
     <div class="scrolling-wrapper">
-        <div v-for="(item, idx) in items.items" class="w-12 card scroller-container mr-1 bg-gradient-to-t from-indigo-900 to-indigo-400" :key="'item-' + idx">
-            <!-- <div>
-                <router-link :to="item.url">
-                    <img :src="item[config.image]" class="image">
-                </router-link>
-            </div> -->
-
-            <Link :href="item.url">
+        <div v-for="(item, idx) in items" class="w-12 card scroller-container mr-1 bg-gradient-to-t from-indigo-900 to-indigo-400" :key="'item-' + idx">
+            <router-link :to="routeResolver(config.linkName, {id: item.id})">
                 <div class="text-sm p-2 image scroller-block text-white flex flex-col justify-end" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + item[config.image] + ');'">
                     {{item[config.title]}}
                 </div>
-            </Link>
+            </router-link>
         </div>
-        <div v-if="items.nextPageUrl" class="bg-green-500 w-20 px-5 flex justify-center items-center rounded-lg text-center" @click="loadMore">load more</div>
+        <!-- <div v-if="items.nextPageUrl" class="bg-green-500 w-20 px-5 flex justify-center items-center rounded-lg text-center" @click="loadMore">load more</div> -->
     </div>
 </template>
 
 <script>
 export default {
     name: 'horizontal-slider',
+    inject: [
+        'routeResolver'
+    ],
     props: {
         items: {
-            type: Object,
+            type: Array,
             default: () => []
         },
         config: {
             type: Object,
-            default: () => {}
+            default: () => {return {}}
         },
         objectCategory: {
             type: String,
@@ -39,6 +36,9 @@ export default {
         }
     },
     methods:{
+        test(){
+            console.log(this.items)
+        },
         loadMore(){
             this.$emit('nextPage', this.objectCategory)
         }

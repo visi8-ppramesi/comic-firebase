@@ -1,5 +1,5 @@
 <template>
-  <div class="text-gray-50 bg-gray-800 mt-0 h-auto w-full z-20 top-0 font-sans">
+  <div class="text-gray-50 bg-gray-800 mt-0 h-auto w-full z-20 top-0 font-mono">
     <nav class="bg-gray-800" v-show="showNav">
       <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
@@ -139,10 +139,26 @@
                 >
                   <span class="sr-only">Open user menu</span>
                   <img
+                    v-if="profile_image_url"
                     class="h-8 w-8 rounded-full"
-                    :src="$page.props.user.profile_photo_url"
+                    :src="profile_image_url"
                     alt=""
                   />
+                  <svg
+                    v-else
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="{2}"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
                 </button>
               </div>
               <div
@@ -291,7 +307,7 @@
         id="mobile-menu"
         v-if="mobileMenuOpen"
       >
-        <div class="px-2 pt-2 pb-3 space-y-1">
+        <div v-if="isLoggedIn" class="px-2 pt-2 pb-3 space-y-1">
           <router-link
             :to="routeResolver('Dashboard')"
             class="
@@ -337,6 +353,21 @@
             aria-current="page"
             >My Transactions</router-link
           >
+          <router-link
+            :to="routeResolver('Logout')"
+            class="
+              bg-gray-900
+              text-white
+              block
+              px-3
+              py-2
+              rounded-md
+              text-base
+              font-medium
+            "
+            aria-current="page"
+            >Logout</router-link
+          >
           <!-- <router-link
             :to="routeResolver('web.purchasetokens')"
             class="
@@ -352,6 +383,53 @@
             aria-current="page"
             >Purchase Tokens</router-link
           > -->
+        </div>
+        <div v-else class="px-2 pt-2 pb-3 space-y-1">
+          <router-link
+            :to="routeResolver('Dashboard')"
+            class="
+              bg-gray-900
+              text-white
+              block
+              px-3
+              py-2
+              rounded-md
+              text-base
+              font-medium
+            "
+            aria-current="page"
+            >Dashboard</router-link
+          >
+          <router-link
+            :to="routeResolver('Login')"
+            class="
+              bg-gray-900
+              text-white
+              block
+              px-3
+              py-2
+              rounded-md
+              text-base
+              font-medium
+            "
+            aria-current="page"
+            >Login</router-link
+          >
+          <router-link
+            :to="routeResolver('Register')"
+            class="
+              bg-gray-900
+              text-white
+              block
+              px-3
+              py-2
+              rounded-md
+              text-base
+              font-medium
+            "
+            aria-current="page"
+            >Register</router-link
+          >
         </div>
       </div>
     </nav>
@@ -374,15 +452,15 @@
       </div>
     </div>
     <div v-show="showNav" class="w-100 bg-gray-800 divide-y text-center h-full">
-      <div class="h-12 py-2">
+      <div class="h-12 py-2 flex justify-center content-center items-center">
         <router-link :to="routeResolver('AboutUs')">About Us</router-link>
       </div>
-      <div class="h-12 py-2">My Account</div>
-      <div class="h-12 py-2">
+      <div class="h-12 py-2 flex justify-center content-center items-center">My Account</div>
+      <div class="h-12 py-2 flex justify-center content-center items-center">
         <router-link :to="routeResolver('PrivacyPolicy')">Privacy Policy</router-link>
       </div>
-      <div class="h-12 py-2">FAQ</div>
-      <div class="py-2">
+      <div class="h-12 py-2 flex justify-center content-center items-center">FAQ</div>
+      <div class="py-2 flex justify-center content-center items-center">
         Follow Us On
         <div class="flex w-full flex flex-row items-center justify-center mt-2">
           <a v-for="(soc, idx) in socials" :key="'soc-' + idx" :to="soc.link">
@@ -395,14 +473,28 @@
 </template>
 
 <script>
-
+import { useAuthStore } from './store/auth.js'
 export default {
   name: "App",
   components: {
 
   },
   mounted(){
+    this.emitter.on('navigate', () => {
+      this.mobileMenuOpen = false
+      this.profileMenuOpen = false
+    })
   },
+  setup(){
+    const authStore = useAuthStore()
+    authStore.authAction()
+    return {
+      authStore
+    }
+  },
+  // created(){
+  //   useAuthStore().authAction()
+  // },
   data() {
       return {
           cartCount: 0,
@@ -429,7 +521,11 @@ export default {
     }
   },
   methods: {
+    goToSearch(){
+      console.log('asdfadsf')
+    },
     test(){
+      console.log(this.authStore)
       this.$toast.open({
         message: "Test message from Vue",
         type: "success",

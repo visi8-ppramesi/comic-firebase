@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import User from "@/firebase/users/User";
-import router from "@/router";
 
 const authErrorHandler = () => {}
 
@@ -9,20 +8,25 @@ export const useAuthStore = defineStore('auth', {
         uid: localStorage.getItem('uid'),
         user: null,
         error: null,
-        status: {loggingIn: false}
+        status: {loggingIn: false},
+        profile_image_url: null
     }),
 
     getters: {},
 
     actions: {
-        async login(email, password, errorFunc = () => {}){
+        async login(email, password, successFunc = () => {}, errorFunc = () => {}){
             this.status.loggingIn = true
-            return User.login(email, password).then((cred) => {
-                this.user = cred.user
-                this.uid = cred.user.uid
-                localStorage.setItem('uid', cred.user.uid)
-                router.push('/')
+            return User.login(email, password).then((user) => {
+                this.uid = user.id
+                user.getProfileImage().then((imageUrl) => {
+                    console.log('profile')
+                    this.profile_image_url = imageUrl
+                })
+                this.user = user.toJSON()
+                localStorage.setItem('uid', user.uid)
                 this.status.loggingIn = false
+                successFunc()
             })
             .catch((error) => {
                 authErrorHandler(error)
@@ -31,11 +35,11 @@ export const useAuthStore = defineStore('auth', {
                 errorFunc(error)
             })
         },
-        async logout(errorFunc = () => {}){
+        async logout(successFunc = () => {}, errorFunc = () => {}){
             return User.logout().then(() => {
                 this.$reset()
                 localStorage.removeItem('uid')
-                router.push('/')
+                successFunc()
             })
             .catch((error) => {
                 authErrorHandler(error)
@@ -43,15 +47,17 @@ export const useAuthStore = defineStore('auth', {
                 errorFunc(error)
             })
         },
-        async register(email, password, data, errorFunc = () => {}){
+        async register(email, password, data, successFunc = () => {}, errorFunc = () => {}){
             this.status.loggingIn = true
-            // eslint-disable-next-line no-unused-vars
-            return User.register(email, password, data).then(({profile, cred}) => {
-                this.user = cred.user
-                this.uid = cred.user.uid
-                localStorage.setItem('uid', cred.user.uid)
+            return User.register(email, password, data).then((user) => {
+                this.uid = user.id
+                user.getProfileImage().then((imageUrl) => {
+                    this.profile_image_url = imageUrl
+                })
+                this.user = user.toJSON()
+                localStorage.setItem('uid', user.uid)
                 this.status.loggingIn = false
-                router.push('/')
+                successFunc()
             })
             .catch((error) => {
                 authErrorHandler(error)

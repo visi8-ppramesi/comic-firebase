@@ -1,24 +1,11 @@
 <template>
-    <div></div>
     <vueper-slides slide-image-inside class="w-full">
-        <vueper-slide v-for="(banner, idx) in banners" :key="idx" :title="banner.title" :image="banner.image" :link="routeResolver(banner.route.name, banner.route.params, 'string')">
+        <vueper-slide v-for="(banner, idx) in banners" :key="idx" :title="banner.title" :image="banner.banner_image_url" :link="routeResolver(banner.target_type, {id: banner.target}, {}, 'string')">
             <template #content>
-                <img :src="banner.image" alt="">
+                <img :src="banner.banner_image_url" alt="">
             </template>
         </vueper-slide>
     </vueper-slides>
-    <!-- <div class="p-7">
-        <carousel :items-to-show="1">
-            <slide class="h-full w-full" v-for="(banner, idx) in banners" :key="idx">
-                <img :src="banner.image">
-            </slide>
-
-            <template #addons>
-                <navigation />
-                <pagination />
-            </template>
-        </carousel>
-    </div> -->
 </template>
 
 <script>
@@ -38,8 +25,6 @@ export default {
         // Navigation
     },
     created(){
-        console.log('bannners')
-        console.log(this.banners)
     },
     inject: [
         'routeResolver'
@@ -48,24 +33,7 @@ export default {
         banners: {
             type: Array,
             default: () => {
-                return [
-                    {
-                        title: 'testing',
-                        route: {
-                            name: 'Comic',
-                            params: {id: 1}
-                        },
-                        image: '/storage/media/banners/test.jpg'
-                    },
-                    {
-                        title: 'testing',
-                        route: {
-                            name: 'Comic',
-                            params: {id: 1}
-                        },
-                        image: '/storage/media/banners/test.jpg'
-                    }
-                ]
+                return []
             }
         }
     },

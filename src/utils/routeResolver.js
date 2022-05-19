@@ -5,10 +5,10 @@ import router from "@/router/index.js"
 //     return acc
 // }, {})
 
-export default function(name, params = {}, type = "object"){
+export default function(name, params = {}, query = {}, type = "object"){
     if(type == 'object'){
         return {name, params}
     }else if(type == 'string'){
-        return router.resolve({name, params}).href
+        return router.resolve({name, params, query}).href
     }
 }

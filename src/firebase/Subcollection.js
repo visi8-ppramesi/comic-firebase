@@ -28,6 +28,10 @@ export default class{
             this.doc = doc
         }
     }
+    
+    toJSON(){
+        return {...this}
+    }
 
     static async getDocument(path, id){
         const eventRef = doc(firebase.db, ...path, id)

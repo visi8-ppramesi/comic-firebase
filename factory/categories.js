@@ -6,7 +6,7 @@ module.exports = class CategoryFactory extends Factory{
 
     static async createData(){
         return {
-            'name': faker.music.genre(),
+            'name': _.toLower(faker.music.genre()),
         }
     }
 }

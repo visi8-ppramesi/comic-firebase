@@ -17,9 +17,9 @@
                         </div>
                         <div class="flex w-8">
                             <div class="w-10"></div>
-                            <img class="ml-3" :src="facebookIcon.default" />
-                            <img class="ml-5" :src="instagramIcon.default" />
-                            <img class="ml-5" :src="twitterIcon.default" />
+                            <img class="ml-3" :src="facebookIcon" />
+                            <img class="ml-5" :src="instagramIcon" />
+                            <img class="ml-5" :src="twitterIcon" />
                         </div>
                     </div>
                 </div>
@@ -43,20 +43,18 @@
 </template>
 
 <script>
-    import HorizontalSlider from '../Components/HorizontalSlider.vue'
-    import AppLayout from '@/Layouts/AppLayout.vue'
+    import HorizontalSlider from '../components/HorizontalSlider.vue'
     export default {
         name: 'author',
         components: {
             HorizontalSlider,
-            AppLayout
         },
         props: ['author'],
         data() {
             return {
-                facebookIcon: require('../../icons/facebook.png'),
-                instagramIcon: require('../../icons/instagram.png'),
-                twitterIcon: require('../../icons/twitter.png'),
+                facebookIcon: require('../assets/icons/facebook.png'),
+                instagramIcon: require('../assets/icons/instagram.png'),
+                twitterIcon: require('../assets/icons/twitter.png'),
                 // author: [],
                 shownTags: [
                     'asdf',
@@ -78,53 +76,57 @@
             }
         },
         created() {
-            this.shownTags.forEach((elem) => {
-                this.comics[elem] = {}
-                this.comics[elem].comics = []
-                this.getComics(route('api.comics.list', { ...this.query, where_tag: elem }), elem)
-            })
-            this.getComics(route('api.comics.list', this.query), 'all')
+            // this.shownTags.forEach((elem) => {
+            //     this.comics[elem] = {}
+            //     this.comics[elem].comics = []
+            //     this.getComics(route('api.comics.list', { ...this.query, where_tag: elem }), elem)
+            // })
+            // this.getComics(route('api.comics.list', this.query), 'all')
             // axios.get(route('api.author.show', { author: this.$route.params.authorId }))
             //     .then((response) => {
             //         this.authors = response.data
             //     })
         },
         methods: {
+            // eslint-disable-next-line no-unused-vars
             processToHorizontalSlider(comicObjects) {
-                let retVal = []
-                comicObjects.forEach(element => {
-                    retVal.push({
-                        url: '/comic/' + element.id,
-                        cover_url: element.cover_url,
-                        title: element.title
-                    })
-                });
-                return retVal
+                // let retVal = []
+                // comicObjects.forEach(element => {
+                //     retVal.push({
+                //         url: '/comic/' + element.id,
+                //         cover_url: element.cover_url,
+                //         title: element.title
+                //     })
+                // });
+                // return retVal
             },
+            // eslint-disable-next-line no-unused-vars
             getComics(url, category) {
-                axios.get(url)
-                    .then((response) => {
-                        if (!this.comics[category]) {
-                            this.comics[category] = {}
-                            this.comics[category].comics = response.data.data
-                        } else {
-                            this.comics[category].comics = this.comics[category].comics.concat(response.data.data)
-                        }
-                        this.comics[category].paginationData = response.data
-                        this.comics[category].prevDisabled = this.comics[category].paginationData.prev_page_url === null
-                        this.comics[category].nextDisabled = this.comics[category].paginationData.next_page_url === null
-                        this.comics[category].prevPageUrl = this.comics[category].paginationData.prev_page_url
-                        this.comics[category].nextPageUrl = this.comics[category].paginationData.next_page_url
-                    })
-                    .catch((error) => {
-                        //do error catching later
-                    })
+                // axios.get(url)
+                //     .then((response) => {
+                //         if (!this.comics[category]) {
+                //             this.comics[category] = {}
+                //             this.comics[category].comics = response.data.data
+                //         } else {
+                //             this.comics[category].comics = this.comics[category].comics.concat(response.data.data)
+                //         }
+                //         this.comics[category].paginationData = response.data
+                //         this.comics[category].prevDisabled = this.comics[category].paginationData.prev_page_url === null
+                //         this.comics[category].nextDisabled = this.comics[category].paginationData.next_page_url === null
+                //         this.comics[category].prevPageUrl = this.comics[category].paginationData.prev_page_url
+                //         this.comics[category].nextPageUrl = this.comics[category].paginationData.next_page_url
+                //     })
+                //     .catch((error) => {
+                //         //do error catching later
+                //     })
             },
+            // eslint-disable-next-line no-unused-vars
             nextPage(category) {
-                if (!this.comics[category].nextDisabled) {
-                    this.getComics(this.comics[category].nextPageUrl, category)
-                }
+                // if (!this.comics[category].nextDisabled) {
+                //     this.getComics(this.comics[category].nextPageUrl, category)
+                // }
             },
+            // eslint-disable-next-line no-unused-vars
             prevPage(category) {
             }
         }

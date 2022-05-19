@@ -1,16 +1,27 @@
 import firebase from '../firebase.js'
 // import { collection, orderBy, startAt, endAt, query, getDocs } from 'firebase/firestore'
-import { getBlob as getStorageBlob, ref } from 'firebase/storage'
+import { getDownloadURL, getBlob as getStorageBlob, ref } from 'firebase/storage'
 // import geofire from 'geofire-common'
 
 let images = {}
+let cache = {}
 
 const getBlob = async (gsPath) => {
     return await getStorageBlob(ref(firebase.storage, gsPath))
 }
 
+const getResourceUrlFromStorage = async (gsPath) => {
+    return await getDownloadURL(gsPath)
+}
+
 const getDataUrlFromStorage = async (gsPath) => {
-    const blob = await getBlob(gsPath)
+    let blob
+    if(gsPath in cache){
+        blob = cache[gsPath]
+    }else{
+        blob = await getBlob(gsPath)
+        cache[gsPath] = blob
+    }
     // return URL.createObjectURL(blob)
     // var img = document.createElement('img');
     // let url = URL.createObjectURL(blob)
@@ -103,4 +114,4 @@ const handleError = function(err){
     return err
 }
 
-export default { handleError, getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs, getProtectedDataUrlFromStorage, revokeDataUrl }
+export default { getResourceUrlFromStorage, handleError, getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs, getProtectedDataUrlFromStorage, revokeDataUrl }

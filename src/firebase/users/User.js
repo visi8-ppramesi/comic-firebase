@@ -1,8 +1,9 @@
 import Collection from "../Collection.js"
 import Subcollection from "../Subcollection.js"
 import firebase from '../firebase.js';
+import utils from "../utils/index.js";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where } from "firebase/firestore";  
+import { getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where } from "firebase/firestore";  
 
 const validateUserProfileData = (v) => v
 
@@ -23,6 +24,15 @@ export default class extends Collection{
         'profile_image_url': String,
     }
 
+    async getProfileImage(){
+        if(this.profile_image_url){
+            this.profile_image_url = await utils.getResourceUrlFromStorage(this.profile_image_url)
+            return this.profile_image_url
+        }else{
+            return null
+        }
+    }
+
     static getCurrentUser(){
         return firebase.auth.currentUser
     }
@@ -34,8 +44,7 @@ export default class extends Collection{
     static async login(email, password){
         const data = await signInWithEmailAndPassword(firebase.auth, email, password).then(async (cred) => {
             const newUserDocRef = doc(firebase.db, 'users', cred.user.uid)
-            console.log([newUserDocRef, validatedUserData, cred.user.uid])
-            const newProfile = await getDoc(newUserDocRef, validatedUserData)
+            const newProfile = await getDoc(newUserDocRef)
             return {profile: newProfile.data(), cred: cred, id: cred.user.uid, doc: newUserDocRef}
         })
 

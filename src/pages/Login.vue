@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-cover bg-no-repeat bg-center" :style="'background-image: linear-gradient(rgba(23,167,105,0.3) 50%, rgb(49 46 129)), url(' + karaBackground.default +');'">
+    <div class="bg-cover bg-no-repeat bg-center" :style="'background-image: linear-gradient(rgba(23,167,105,0.3) 50%, rgb(49 46 129)), url(' + karaBackground +');'">
         <div class="flex items-end h-screen">
             <div class="w-full p-5">
                 <div class="mb-4">
@@ -11,19 +11,19 @@
                 <div class="text-sm text-center text-white mb-10">
                     <router-link to="#">Forgot Password?</router-link>
                 </div>
-                <div v-if="loginFailed" class="text-red">Wrong password or email</div>
+                <div v-if="loginFailed" class="text-red-400 mb-2">Wrong password or email</div>
                 <div class="flex items-center justify-between">
                     <button @click="login" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
                         LOG IN
                     </button>
                 </div>
                 <div class="text-m text-center mt-6 text-white">
-                    <p>Dont Have Account Yet? <router-link :to="{name: 'register'}">Sign Up</router-link></p>
+                    <p>Dont Have Account Yet? <router-link :to="routeResolver('Register')" class="text-blue-200">Sign Up</router-link></p>
                 </div>
                 <div class="flex flex-row items-center justify-center pt-5">
-                    <img class="w-10" :src="facebookIcon.default" />
-                    <img class="w-10" :src="instagramIcon.default" />
-                    <img class="w-10" :src="twitterIcon.default" />
+                    <img class="w-10" :src="facebookIcon" />
+                    <img class="w-10" :src="instagramIcon" />
+                    <img class="w-10" :src="twitterIcon" />
                 </div>
             </div>
         </div>
@@ -31,7 +31,54 @@
 </template>
 
 <script>
+import { useAuthStore } from '../store/auth.js'
 export default {
+    name:'login',
+    data(){
+        return {
+            email: '',
+            password: '',
+            loginFailed: false,
+            facebookIcon: require('../assets/icons/facebook.png'),
+            instagramIcon: require('../assets/icons/instagram.png'),
+            twitterIcon: require('../assets/icons/twitter.png'),
+            karaBackground: require('../assets/kara_bg.jpg'),
+        }
+    },
+    inject: ['routeResolver'],
+    setup(){
+        const authStore = useAuthStore()
+
+        return {
+            authStore
+        }
+    },
+    methods:{
+        login(){
+            this.authStore.login(this.email, this.password, 
+                () => {
+                    this.$router.push({ name: 'Dashboard' })
+                },
+                () => {
+                    //error function
+                    console.log('error')
+                    this.loginFailed = true
+                    this.email = ''
+                    this.password = ''
+                }
+            )
+            // this.$store.dispatch('login', {
+            //     email: this.email,
+            //     password: this.password,
+            // })
+            // .then(response => {
+            //     this.$router.push({ name: 'dashboard' })
+            // })
+            // .catch(error => {
+            //     this.loginFailed = true
+            // })
+        },
+    }
 }
 </script>
 

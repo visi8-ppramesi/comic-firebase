@@ -7,39 +7,54 @@
                 </svg>
             </button>
         </div>
-        <div class="text-center text-white mt-3" v-if="searching">search result of "{{query}}"</div>
+        <div class="text-center text-white mt-3" v-if="searching">Search result of "{{ query }}"</div>
         <div class="px-5 py-5 bg-gradient-to-t  to-indigo-900 from-purple-900" v-if="searching">
             <div class="mb-3 text-white">
                 <div>
-                    <div class="text-white float-right">More</div>
                     <div>Comic Search Results</div>
                 </div>
-                <!-- <mq-responsive target="sm-" tag="span">
-                    <div>
-                        <horizontal-slider
-                            :items="processToHorizontalSlider(comics)"
-                            :config="config"
-                            objectCategory="all"
-                            @nextPage="nextPage"
-                        ></horizontal-slider>
-                    </div>
-                </mq-responsive>
-                <mq-responsive target="md+" tag="span"> -->
-                    <div>
-                        <grid
-                            :items="processToHorizontalSlider(comics)"
-                            :config="config"
-                            objectCategory="all"
-                            @nextPage="nextPage"
-                        ></grid>
-                    </div>
-                <!-- </mq-responsive> -->
+                <div>
+                    <grid
+                        :items="processToHorizontalSlider(comics)"
+                        :config="config"
+                        objectCategory="all"
+                        :paginated="true"
+                        @nextPage="nextPage"
+                    ></grid>
+                </div>
             </div>
         </div>
 </template>
 
 <script>
+import Grid from '../components/Grid.vue'
 export default {
+    name: 'search',
+    components: {
+        Grid
+    },
+    created(){
+        
+    },
+    data(){
+        return {
+            searching: true,
+            query: '',
+            searchQuery: '',
+            comics: [],
+            config: {
+
+            }
+        }
+    },
+    methods: {
+        nextPage(){
+
+        },
+        goSearch(){
+
+        }
+    }
 }
 </script>
 

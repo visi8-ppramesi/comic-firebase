@@ -28,6 +28,7 @@
     "@babel/node": "^7.17.10",
     "@babel/register": "^7.17.7",
     "@faker-js/faker": "^6.3.1",
+    "@tailwindcss/typography": "^0.5.2",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
@@ -52,7 +53,8 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
-      "vue/multi-word-component-names": "off"
+      "vue/multi-word-component-names": "off",
+      "no-debugger": "off"
     }
   },
   "browserslist": [
