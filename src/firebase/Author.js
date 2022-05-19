@@ -6,7 +6,7 @@ export default class extends Collection{
     static collection = 'authors'
     static fields = {
         'name': String,
-        'profile_image_url': String,
+        'profile_picture_url': String,
         'description': String,
         'social_media_links': Array,
         'email': String

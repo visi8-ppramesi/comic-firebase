@@ -38,8 +38,41 @@ export default class{
         const eventRef = doc(firebase.db, this.collection, id)
         try{
             const doc = await getDoc(eventRef)
+            const data = doc.data()
             const instance = new this()
-            instance.setData(doc.id, doc.data(), doc)
+            instance.setData(doc.id, data, doc)
+    
+            return instance
+        }catch(err){
+            utils.handleError(err)
+            throw err
+        }
+    }
+
+    static async getDocumentWithStorageResource(id, storageFields = []){
+        const eventRef = doc(firebase.db, this.collection, id)
+        try{
+            const doc = await getDoc(eventRef)
+            let data = doc.data()
+
+            try{
+                const resources = []
+                for(let j = 0; j < storageFields.length; j++){
+                    resources.push(utils.getDataUrlFromStorage(data[storageFields[j]]))
+                }
+
+                await Promise.all(resources).then((resource) => {
+                    for(let k = 0; k < resource.length; k++){
+                        data[storageFields[k]] = resource[k]
+                    }
+                })
+            }catch(err){
+                utils.handleError(err)
+                throw err
+            }
+
+            const instance = new this()
+            instance.setData(doc.id, data, doc)
     
             return instance
         }catch(err){

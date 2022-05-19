@@ -1,4 +1,5 @@
-import { where, limit, orderBy, startAfter } from 'firebase/firestore'
+import { where, limit, orderBy, startAfter, doc } from 'firebase/firestore'
+import firebase from '../firebase.js'
 
 export const orderByLimit = [ orderBy('last_update'), limit(10) ]
 
@@ -26,4 +27,9 @@ export const tagQueryPaginated = (tag, orderByParam = "title", startAtParam = nu
     }else{
         return [ ...tagQuery, orderBy(orderByParam), limit(10)]
     }
+}
+
+export const authorComicsQuery = (authorId) => {
+    const docRef = doc(firebase.db, 'authors', authorId)
+    return [ where('authors', 'array-contains', docRef), limit(6) ]
 }

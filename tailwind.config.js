@@ -1,4 +1,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const widthCalc = Array(4).fill(0).reduce((acc, v, idx) => {
+  acc[(2 + idx) * 72 + ''] = (2 + idx) * 18 + 'rem'
+  return acc
+}, {})
 module.exports = {
   mode: 'jit',
   content: [
@@ -26,7 +30,9 @@ module.exports = {
             "screen/6": "calc(100vw / 6)",
             "screen/8": "calc(100vw / 8)",
             "screen/10": "calc(100vw / 10)",
-            "fit-content": "fit-content"
+            "fit-content": "fit-content",
+            "192": "48rem",
+            ...widthCalc
           }),
           maxHeight: theme => ({
             '0': '0',

@@ -58,10 +58,10 @@
                         <div><router-link :to="routeResolver('Authors', {}, {category: 'all'})" class="text-blue-200">Show More</router-link></div>
                     </div>
                     <mq-responsive target="sm-" tag="span">
-                        <horizontal-slider :items="comics" :config="authorConfig"/>
+                        <horizontal-slider :items="authors" :config="authorConfig"/>
                     </mq-responsive>
                     <mq-responsive target="md+" tag="span">
-                        <grid :items="comics" :config="authorConfig" />
+                        <grid :items="authors" :config="authorConfig" />
                     </mq-responsive>
                 </div>
             </div>
@@ -263,6 +263,7 @@ export default {
             for await(let author of authorGenerator){
                 this.authors.push(author)
             }
+            console.log(this.authors)
         }
     },
     data(){

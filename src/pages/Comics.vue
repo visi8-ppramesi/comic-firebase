@@ -1,10 +1,10 @@
 <template>
-    <div class="mb-3 text-white">
+    <div class="mb-3 text-white md:w-288 md:mx-auto">
         <div class="px-5 py-5">
             <div class="flex items-center justify-between mb-2">
                 <div>{{title}}</div>
             </div>
-            <div class="flex flex-col mb-2">
+            <div class="flex flex-col md:w-1/4 mb-2">
                 <label id="assigned-to-label" class="block text-sm leading-5 font-medium">Sort By</label>
                 <select class="form-select appearance-none
                     block
@@ -27,7 +27,7 @@
                 >
                     <option value="title" selected>Title</option>
                     <option value="release_date">Release Date</option>
-                    <option value="last_updated">Last Updated</option>
+                    <option value="last_update">Last Updated</option>
                     <option value="view_count">Views</option>
                 </select>
             </div>
@@ -36,7 +36,7 @@
                 :config="config"
                 objectCategory="all"
                 :paginated="true"
-                @nextPage="loadComics"
+                @nextPage="loadComics(false)"
                 ref="comicGrid"
             ></grid>
         </div>
@@ -75,7 +75,7 @@ export default {
     mounted(){
         this.query = this.$route.query.category ? this.$route.query.category : 'all'
         this.title = _.startCase(_.toLower(this.query + ' comics'))
-        this.loadComics()
+        this.loadComics(false)
         // Comic.getDocumentsWithStorageResource(categoryQueryPaginated(this.query, this.sortByParam), ['cover_image_url']).then((comics) => {
         //     this.comics.push(...comics)
         //     this.$refs.comicGrid.stopLoading()
@@ -95,8 +95,10 @@ export default {
                 this.$refs.comicGrid.stopLoading()
                 if(startOver){
                     this.comics = comics
+                    console.log('startover')
                 }else{
                     this.comics.push(...comics)
+                    console.log('nah')
                 }
             })
         }

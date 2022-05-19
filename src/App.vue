@@ -436,6 +436,7 @@
     <div class="flex flex-col md:flex-row">
       <div
         class="
+          md:w-96
           max-w-full
           min-h-screen
           main-content

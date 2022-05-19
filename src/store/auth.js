@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', {
         user: null,
         error: null,
         status: {loggingIn: false},
-        profile_image_url: null
+        profile_picture_url: null
     }),
 
     getters: {},
@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
                     console.log('profile')
-                    this.profile_image_url = imageUrl
+                    this.profile_picture_url = imageUrl
                 })
                 this.user = user.toJSON()
                 localStorage.setItem('uid', user.uid)
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
             return User.register(email, password, data).then((user) => {
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
-                    this.profile_image_url = imageUrl
+                    this.profile_picture_url = imageUrl
                 })
                 this.user = user.toJSON()
                 localStorage.setItem('uid', user.uid)
