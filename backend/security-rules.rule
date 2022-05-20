@@ -21,32 +21,29 @@ service cloud.firestore {
 
       //only allowed through functions
       match /purchased_comics/{comic}{
-        allow list: if isAdmin();
-        allow get: if belongsTo(user) || isAdmin();
+        allow read: if belongsTo(user) || isAdmin();
         allow write: if isAdmin();
       }
 
       match /read_history/{history}{
-        allow list: if isAdmin();
-        allow get: if belongsTo(user) || isAdmin();
+        allow read: if belongsTo(user) || isAdmin();
         allow write: if belongsTo(user) || isAdmin();
       }
 
       //only allowed through functions
       match /receipts/{receipt}{
-        allow list: if isAdmin();
-        allow get: if belongsTo(user) || isAdmin();
+        allow read: if belongsTo(user) || isAdmin();
         allow write: if isAdmin();
       }
     }
 
     match /comics/{comic}{
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if isAdmin() || increment();
 
       match /chapters/{chapter}{
         allow read: if true;//if checkIfFree() || checkIfOwned();
-        allow write: if isAdmin();
+        allow write: if isAdmin() || increment();
 
         match /pages/{page}{
           allow read: if checkIfFree() || checkIfOwned();
@@ -71,6 +68,10 @@ service cloud.firestore {
         function commentCurrentUser(){
           return request.auth.uid == resource.data.user.id;
         }
+      }
+      
+      function increment(){
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['view_count']) && request.resource.data.view_count == (resource.data.view_count + 1);
       }
     }
 
@@ -112,9 +113,9 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
-    function hasRole(role){
-      return role in get(/databases/$(database)/documents/user_roles/$(request.auth.uid)).data.roles;
-    }
+    // function hasRole(role){
+    //   return role in get(/databases/$(database)/documents/user_roles/$(request.auth.uid)).data.roles;
+    // }
 
     function isAdmin(){
       return 'admin' in get(/databases/$(database)/documents/user_roles/$(request.auth.uid)).data.roles;

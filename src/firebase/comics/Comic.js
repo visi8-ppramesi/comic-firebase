@@ -4,6 +4,7 @@ import Collection from '../Collection.js'
 import Subcollection from '../Subcollection.js'
 import Chapter from './Chapter.js'
 import Author from '../Author.js'
+import { doc, increment, orderBy, updateDoc } from 'firebase/firestore'
 
 export default class extends Collection{
     static collection = 'comics'
@@ -25,9 +26,24 @@ export default class extends Collection{
         'is_draft':	Boolean,
     }
 
+    async viewComic(){
+        const comicRef = doc(this.constructor.db, 'comics', this.id)
+        return await updateDoc(comicRef, {
+            view_count: increment(1)
+        })
+    }
+
     async getChapters(queries = []){
         const path = [this.constructor.collection, this.id, 'chapters']
+        queries.push(orderBy('chapter_number'))
         this.chapters = await Chapter.getDocuments(path, queries)
+        return this.chapters
+    }
+
+    async getChaptersWithStorageResource(queries = []){
+        const path = [this.constructor.collection, this.id, 'chapters']
+        queries.push(orderBy('chapter_number'))
+        this.chapters = await Chapter.getDocumentsWithStorageResource(path, queries, ['chapter_preview_url'])
         return this.chapters
     }
 

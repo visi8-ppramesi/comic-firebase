@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import User from "@/firebase/users/User";
+import { getDoc, doc } from "firebase/firestore";  
 
 const authErrorHandler = () => {}
 
@@ -7,9 +8,11 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         uid: localStorage.getItem('uid'),
         user: null,
+        userInstance: null,
         error: null,
         status: {loggingIn: false},
-        profile_picture_url: null
+        profile_picture_url: null,
+        isLoggedIn: false,
     }),
 
     getters: {},
@@ -23,9 +26,11 @@ export const useAuthStore = defineStore('auth', {
                     console.log('profile')
                     this.profile_picture_url = imageUrl
                 })
+                this.userInstance = user
                 this.user = user.toJSON()
-                localStorage.setItem('uid', user.uid)
+                localStorage.setItem('uid', this.uid)
                 this.status.loggingIn = false
+                this.isLoggedIn = true
                 successFunc()
             })
             .catch((error) => {
@@ -54,9 +59,11 @@ export const useAuthStore = defineStore('auth', {
                 user.getProfileImage().then((imageUrl) => {
                     this.profile_picture_url = imageUrl
                 })
+                this.userInstance = user
                 this.user = user.toJSON()
-                localStorage.setItem('uid', user.uid)
+                localStorage.setItem('uid', this.uid)
                 this.status.loggingIn = false
+                this.isLoggedIn = true
                 successFunc()
             })
             .catch((error) => {
@@ -69,9 +76,27 @@ export const useAuthStore = defineStore('auth', {
         authAction(){
             User.onAuthStateChanged(user => {
                 if (user) {
-                    this.user = user
-                    this.uid = user.uid
-                    localStorage.setItem('uid', user.uid)
+                    const newUserDocRef = doc(User.db, 'users', user.uid)
+                    getDoc(newUserDocRef).then((doc) => {
+                        const newUser = new User()
+                        newUser.setData(user.uid, doc.data(), newUserDocRef)
+                        this.uid = newUser.id
+                        newUser.getProfileImage().then((imageUrl) => {
+                            this.profile_picture_url = imageUrl
+                        })
+                        this.userInstance = newUser
+                        this.user = newUser.toJSON()
+                        this.isLoggedIn = true
+                        localStorage.setItem('uid', this.uid)
+                    })
+                    // const newUser = new User()
+                    // newUser.setData(user.uid, )
+                    // this.uid = user.id
+                    // user.getProfileImage().then((imageUrl) => {
+                    //     this.profile_picture_url = imageUrl
+                    // })
+                    // this.user = user.toJSON()
+                    // localStorage.setItem('uid', user.uid)
                 } else {
                     this.$reset()
                     localStorage.removeItem('uid')

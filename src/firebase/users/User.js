@@ -3,7 +3,7 @@ import Subcollection from "../Subcollection.js"
 import firebase from '../firebase.js';
 import utils from "../utils/index.js";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where } from "firebase/firestore";  
+import { updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove } from "firebase/firestore";  
 
 const validateUserProfileData = (v) => v
 
@@ -19,9 +19,41 @@ export default class extends Collection{
         'bookmarks': Array,
         'tokens': Number,
         'receipts': Subcollection.resolve('./Receipt.js'),
-        'comics_subscriptions': Array,
+        'comic_subscriptions': Array,
         'email_verified_at': Date,
         'profile_image_url': String,
+    }
+
+    async unsubscribeComic(id){
+        const comicRef = doc(this.constructor.db, 'comics', id)
+        const userRef = doc(this.constructor.db, 'users', this.id)
+        return await updateDoc(userRef, {
+            comic_subscriptions: arrayRemove(comicRef)
+        })
+    }
+
+    async subscribeComic(id){
+        const comicRef = doc(this.constructor.db, 'comics', id)
+        const userRef = doc(this.constructor.db, 'users', this.id)
+        return await updateDoc(userRef, {
+            comic_subscriptions: arrayUnion(comicRef)
+        })
+    }
+
+    async unfavoriteComic(id){
+        const comicRef = doc(this.constructor.db, 'comics', id)
+        const userRef = doc(this.constructor.db, 'users', this.id)
+        return await updateDoc(userRef, {
+            favorites: arrayRemove(comicRef)
+        })
+    }
+
+    async favoriteComic(id){
+        const comicRef = doc(this.constructor.db, 'comics', id)
+        const userRef = doc(this.constructor.db, 'users', this.id)
+        return await updateDoc(userRef, {
+            favorites: arrayUnion(comicRef)
+        })
     }
 
     async getProfileImage(){

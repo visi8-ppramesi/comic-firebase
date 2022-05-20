@@ -475,6 +475,7 @@
 
 <script>
 import { useAuthStore } from './store/auth.js'
+import { mapState } from 'pinia'
 export default {
   name: "App",
   components: {
@@ -501,7 +502,6 @@ export default {
           cartCount: 0,
           mobileMenuOpen: false,
           profileMenuOpen: false,
-          isLoggedIn: false,
           icons: {
               facebook: require('./assets/icons/facebook.png'),
               instagram: require('./assets/icons/instagram.png'),
@@ -519,7 +519,8 @@ export default {
   computed: {
     showNav(){
       return this.$route.meta.showNav
-    }
+    },
+    ...mapState(useAuthStore, ['isLoggedIn'])
   },
   methods: {
     goToSearch(){

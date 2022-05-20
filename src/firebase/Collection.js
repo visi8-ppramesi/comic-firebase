@@ -16,6 +16,7 @@ export default class{
     static collection = ''
     static orderByParam = false
     static fields = {}
+    static db = firebase.db
 
     setData(id, data, doc = null){
         this.id = id

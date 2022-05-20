@@ -10,6 +10,7 @@ import {
     // limit
 } from "firebase/firestore";
 import utils from './utils/index.js'
+import _ from 'lodash'
 
 export default class{
     static orderByParam = false
@@ -20,7 +21,7 @@ export default class{
         this.parentId = parentId
         Object.keys(this.constructor.fields).forEach((field) => {
             const isSubcollection = this.constructor.fields[field] == this
-            if(data[field] && !isSubcollection){
+            if(!_.isNil(data[field]) && !isSubcollection){
                 this[field] = data[field]
             }
         })

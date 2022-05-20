@@ -12,6 +12,7 @@ export default class extends Subcollection{
         'price': Number,
         'ar_price': Number,
         'pages': Subcollection.resolve('./Page.js'),
+        'chapter_preview_url': String
     }
 
     async getPages(queries = []){

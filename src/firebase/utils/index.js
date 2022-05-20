@@ -11,7 +11,7 @@ const getBlob = async (gsPath) => {
 }
 
 const getResourceUrlFromStorage = async (gsPath) => {
-    return await getDownloadURL(gsPath)
+    return await getDownloadURL(ref(firebase.storage, gsPath))
 }
 
 const getDataUrlFromStorage = async (gsPath) => {
