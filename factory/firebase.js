@@ -20,6 +20,6 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 // const analytics = getAnalytics(app);
 const storage = getStorage(app)
-// const signInPromise = signInWithEmailAndPassword(auth, env.VUE_APP_ADMIN_EMAIL, env.VUE_APP_ADMIN_PASSWORD)
+const signInPromise = signInWithEmailAndPassword(auth, env.VUE_APP_ADMIN_EMAIL, env.VUE_APP_ADMIN_PASSWORD)
 
-module.exports = { app, db, auth, storage }
+module.exports = { app, db, auth, storage, signInPromise }

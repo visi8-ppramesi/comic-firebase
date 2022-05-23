@@ -4,6 +4,7 @@ import firebase from '../firebase.js';
 import utils from "../utils/index.js";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove } from "firebase/firestore";  
+import PurchasedComic from "./PurchasedComic.js";
 
 const validateUserProfileData = (v) => v
 
@@ -53,6 +54,28 @@ export default class extends Collection{
         const userRef = doc(this.constructor.db, 'users', this.id)
         return await updateDoc(userRef, {
             favorites: arrayUnion(comicRef)
+        })
+    }
+
+    async getPurchasedComicStatus(id){
+        return await PurchasedComic.getDocument(['users', this.id, 'purchased_comics'], id)
+    }
+
+    async purchaseChapter(comicId, chapterId){
+        console.log(comicId, chapterId)
+        const purchaseRef = doc(this.constructor.db, 'users', this.id, 'purchased_comics', comicId)
+        const chapterRef = doc(this.constructor.db, 'chapters', chapterId)
+        return getDoc(purchaseRef).then((snap) => {
+            if(snap.exists()){
+                return updateDoc(purchaseRef, {
+                    chapters: arrayUnion(chapterRef)
+                })
+            }else{
+                return setDoc(purchaseRef, {
+                    chapters: arrayUnion(chapterRef)
+                })
+
+            }
         })
     }
 

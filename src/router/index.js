@@ -140,6 +140,14 @@ const comicsRoutes = [
         meta: {
             showNav: true
         }
+    },
+    {
+        path: "/chapter/:id",
+        name: "Chapter",
+        component: () => import("@/pages/Chapter.vue"),
+        meta: {
+            showNav: true
+        }
     }
 ]
 

@@ -1,6 +1,6 @@
 import firebase from './firebase.js'
 import { 
-    // doc, 
+    doc, 
     query, 
     // startAfter, 
     collection, 
@@ -36,12 +36,51 @@ export default class{
 
     static async getDocument(path, id){
         const eventRef = doc(firebase.db, ...path, id)
-        const doc = await getDoc(eventRef)
-        const instance = new this()
-        const parentId = path[path.length - 2]
-        instance.setData(parentId, doc.id, doc.data(), doc)
+        try{
+            const doc = await getDoc(eventRef)
+            const data = doc.data()
+            const instance = new this()
+            const parentId = path[path.length - 2]
+            instance.setData(parentId, doc.id, data, doc)
+    
+            return instance
+        }catch(err){
+            utils.handleError(err)
+            throw err
+        }
+    }
 
-        return instance
+    static async getDocumentWithStorageResource(path, id, storageFields = []){
+        const eventRef = doc(firebase.db, ...path, id)
+        const parentId = path[path.length - 2]
+        try{
+            const doc = await getDoc(eventRef)
+            let data = doc.data()
+
+            try{
+                const resources = []
+                for(let j = 0; j < storageFields.length; j++){
+                    resources.push(utils.getDataUrlFromStorage(data[storageFields[j]]))
+                }
+
+                await Promise.all(resources).then((resource) => {
+                    for(let k = 0; k < resource.length; k++){
+                        data[storageFields[k]] = resource[k]
+                    }
+                })
+            }catch(err){
+                utils.handleError(err)
+                throw err
+            }
+
+            const instance = new this()
+            instance.setData(parentId, doc.id, data, doc)
+    
+            return instance
+        }catch(err){
+            utils.handleError(err)
+            throw err
+        }
     }
 
     static async getDocuments(path, queries = []){
@@ -53,14 +92,18 @@ export default class{
         }else{
             q = eventRef
         }
-
-        const snap = await getDocs(q)
-        return utils.parseDocs(snap.docs).map((datum, idx) => {
-            const instance = new this()
-            instance.setData(parentId, datum.id, datum, snap.docs[idx])
-            return instance
-        })
-
+        
+        try{
+            const snap = await getDocs(q)
+            return utils.parseDocs(snap.docs).map((datum, idx) => {
+                const instance = new this()
+                instance.setData(parentId, datum.id, datum, snap.docs[idx])
+                return instance
+            })
+        }catch(err){
+            utils.handleError(err)
+            throw err
+        }
     }
 
     static async getDocumentsWithStorageResource(path, queries = [], storageFields = []){

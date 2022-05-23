@@ -76,9 +76,16 @@
             </div>
 
             <div class="w-2/5 flex justify-end items-center pr-5" >
-                <router-link to="/page/comic">
-                    <button class="text-xs items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">Buy Ep. {{chapter.chapter}}</button>
-                </router-link>
+                <div v-if="!purchasedChapterIds.includes(chapter.id)">
+                    <button class="text-xs items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseChapter(chapter.id)">
+                        Buy Ep. {{chapter.chapter_number}}
+                    </button>
+                </div>
+                <div v-else>
+                    <button class="text-xs items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="goToChapter(chapter.id)">
+                        Read Ep. {{chapter.chapter_number}}
+                    </button>
+                </div>
                 <!-- <button @click="openModal(preview.chapter)">Buy Episode</button> -->
             </div>
         </div>
@@ -94,6 +101,7 @@ import { useAuthStore } from '../store/auth.js'
 import { mapState } from 'pinia'
 export default {
     name: 'comic-show',
+    inject: ['routeResolver'],
     data(){
         return {
             comic: {},
@@ -108,19 +116,37 @@ export default {
             ],
             favorited: false,
             subscribed: false,
+            purchasedChapterIds: [],
             // categories: ''
         }
     },
     created(){
+        console.log('comic created')
         const viewStore = useViewStore()
+        // const authStore = useAuthStore()
         this.fetchComic().then(() => {
             viewStore.viewComic(this.comic)
         })
+        if(!_.isNil(this.userData)){
+            const favComicIds = this.userData.favorites.map((comicRef) => {
+                return comicRef.id
+            })
+            this.favorited = _.includes(favComicIds, this.$route.params.id)
+
+            const subComicIds = this.userData.comic_subscriptions.map((comicRef) => {
+                return comicRef.id
+            })
+            this.subscribed = _.includes(subComicIds, this.$route.params.id)
+
+            this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
+                this.purchasedChapterIds = cpts.chapters.map((v) => v.id)
+                console.log(this.purchasedChapterIds)
+            })
+        }
     },
     watch: {
         userData(){
             if(!_.isNil(this.userData)){
-                console.log(this.userData)
                 const favComicIds = this.userData.favorites.map((comicRef) => {
                     return comicRef.id
                 })
@@ -130,6 +156,11 @@ export default {
                     return comicRef.id
                 })
                 this.subscribed = _.includes(subComicIds, this.$route.params.id)
+
+                this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
+                    this.purchasedChapterIds = cpts.chapters.map((v) => v.id)
+                    console.log(this.purchasedChapterIds)
+                })
             }
         }
     },
@@ -147,6 +178,13 @@ export default {
         })
     },
     methods: {
+        goToChapter(chapterId){
+            this.$router.push(this.routeResolver('Chapter', {id: chapterId}))
+        },
+        async purchaseChapter(chapterId){
+            const purchase = await this.userInstance.purchaseChapter(this.$route.params.id, chapterId)
+            console.log(purchase)
+        },
         async toggleSubscribeComic(){
             if(this.subscribed){
                 await this.userInstance.unsubscribeComic(this.$route.params.id)
