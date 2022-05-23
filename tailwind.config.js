@@ -14,6 +14,9 @@ module.exports = {
           fontFamily: {
               sans: ['Nunito', ...defaultTheme.fontFamily.sans],
           },
+          margin: {
+            'xl': '25%',
+          },
           height: theme => ({
             "screen-navbar": "calc(100vh - 64px)",
             "screen/2": "50vh",
