@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import utils from './utils/index.js'
 import _ from 'lodash'
+import { LongText, ProfilePicture } from './types/index.js';
 
 export default class{
     static orderByParam = false
@@ -21,8 +22,24 @@ export default class{
         this.parentId = parentId
         Object.keys(this.constructor.fields).forEach((field) => {
             const isSubcollection = this.constructor.fields[field] == this
+            const isLongText = this.constructor.fields[field] == LongText
+            const isProfilePicture = this.constructor.fields[field] == ProfilePicture
             if(!_.isNil(data[field]) && !isSubcollection){
-                this[field] = data[field]
+                if(isLongText){
+                    this[field] = data[field].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
+                }else if(isProfilePicture){
+                    if(_.isEmpty(data[field])){
+                        this[field] = firebase.firebaseConfig.defaultProfilePicture
+                    }else{
+                        this[field] = data[field]
+                    }
+                }else{
+                    this[field] = data[field]
+                }
+            }else if(_.isNil(data[field]) && !isSubcollection){
+                if(isProfilePicture){
+                    this[field] = firebase.firebaseConfig.defaultProfilePicture
+                }
             }
         })
         if(doc){

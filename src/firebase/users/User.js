@@ -5,6 +5,7 @@ import utils from "../utils/index.js";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove } from "firebase/firestore";  
 import PurchasedComic from "./PurchasedComic.js";
+import { ProfilePicture } from "../types/index.js";
 
 const validateUserProfileData = (v) => v
 
@@ -22,7 +23,7 @@ export default class extends Collection{
         'receipts': Subcollection.resolve('./Receipt.js'),
         'comic_subscriptions': Array,
         'email_verified_at': Date,
-        'profile_image_url': String,
+        'profile_image_url': ProfilePicture,
     }
 
     async unsubscribeComic(id){

@@ -9,6 +9,7 @@ export default class extends Subcollection{
         'page_image_url': String,
         'is_ar': Boolean,
         'config': Object,
+        'media_type': String
     }
 
     // constructor(path){

@@ -51,7 +51,7 @@
     <div class="divide-y divide-black">
         <div class="flex flex-row h-20 bg-indigo-800 text-white" v-for="(chapter, idx) in chapters" :key="'chapter-'+idx">
             <div class="flex-none w-1/5 lg:w-24">
-                <img class="h-full w-full" :src="chapter.chapter_preview_url" alt="">
+                <img class="h-full w-full object-cover" :src="chapter.chapter_preview_url" alt="">
             </div>
             <!-- <div class="flex-grow flex flex-col p-3 w-2/5 lg:w-2" @click="goToChapter(chapter.id)"> -->
             <div class="flex-grow text-left flex flex-col py-3 pl-3 w-2/5 lg:w-2">
@@ -179,7 +179,7 @@ export default {
     },
     methods: {
         goToChapter(chapterId){
-            this.$router.push(this.routeResolver('Chapter', {id: chapterId}))
+            this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.id, chapterId: chapterId}))
         },
         async purchaseChapter(chapterId){
             const purchase = await this.userInstance.purchaseChapter(this.$route.params.id, chapterId)

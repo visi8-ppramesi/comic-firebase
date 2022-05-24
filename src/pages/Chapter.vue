@@ -36,8 +36,9 @@
 
 <script>
 import comic from "../assets/comic.jpeg";
+import Chapter from '../firebase/comics/Chapter.js'
 export default {
-    name: 'page-show',
+    name: 'chapter',
     data(){
         return {
             comics: comic,
@@ -46,7 +47,12 @@ export default {
                 {image_url: comic, chapter: '1', release_date: '17/05/2022', favorites_count: '20', views: 1000},
             ]
         }
-    }
+    },
+    created(){
+        Chapter.getDocument(['comics', this.$route.params.comicId, 'chapters'], this.$route.params.chapterId).then((cpt) => {
+            cpt.getPages().then(console.log)
+        })
+    },
 }
 </script>
 

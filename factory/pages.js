@@ -9,7 +9,8 @@ module.exports = class PageFactory extends Factory{
             'page_number': pageNum,
             'page_image_url': 'gs://comics-77200.appspot.com/page.jpg',
             'is_ar': false,
-            'config': {}
+            'config': {},
+            'type': 'video'
         }
     }
 }

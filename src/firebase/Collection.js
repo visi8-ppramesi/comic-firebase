@@ -11,6 +11,8 @@ import {
     // limit
 } from "firebase/firestore";  
 import utils from './utils/index.js'
+import { LongText, ProfilePicture } from './types/index.js';
+import _ from 'lodash'
 
 export default class{
     static collection = ''
@@ -22,8 +24,24 @@ export default class{
         this.id = id
         Object.keys(this.constructor.fields).forEach((field) => {
             const isSubcollection = this.constructor.fields[field] == Subcollection
-            if(data[field] && !isSubcollection){
-                this[field] = data[field]
+            const isLongText = this.constructor.fields[field] == LongText
+            const isProfilePicture = this.constructor.fields[field] == ProfilePicture
+            if(!_.isNil(data[field]) && !isSubcollection){
+                if(isLongText){
+                    this[field] = data[field].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
+                }else if(isProfilePicture){
+                    if(_.isEmpty(data[field])){
+                        this[field] = firebase.firebaseConfig.defaultProfilePicture
+                    }else{
+                        this[field] = data[field]
+                    }
+                }else{
+                    this[field] = data[field]
+                }
+            }else if(_.isNil(data[field]) && !isSubcollection){
+                if(isProfilePicture){
+                    this[field] = firebase.firebaseConfig.defaultProfilePicture
+                }
             }
         })
         if(doc){
@@ -104,6 +122,47 @@ export default class{
         }
     }
 
+    static async getDocumentsWithStorageResourceUrl(queries = [], storageFields = []){
+        const eventRef = collection(firebase.db, this.collection)
+        let q;
+        if(queries.length > 0){
+            q = query(eventRef, ...queries)
+        }else{
+            q = eventRef
+        }
+        let snap
+        try {
+            snap = await getDocs(q)
+        } catch (err) {
+            utils.handleError(err)
+            throw err
+        }
+        const docs = Object.values(snap.docs)
+        const events = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            const resources = []
+            for(let j = 0; j < storageFields.length; j++){
+                resources.push(utils.getResourceUrlFromStorage(data[storageFields[j]]))
+            }
+
+            try {
+                await Promise.all(resources).then((resource) => {
+                    for(let k = 0; k < resource.length; k++){
+                        data[storageFields[k]] = resource[k]
+                    }
+                })
+            } catch (err) {
+                utils.handleError(err)
+                throw err
+            }
+            data.doc = docs[i]
+            data.id = docs[i].id
+            events.push(data)
+        }
+        return events
+    }
+
     static async getDocumentsWithStorageResource(queries = [], storageFields = []){
         const eventRef = collection(firebase.db, this.collection)
         let q;
@@ -143,6 +202,45 @@ export default class{
             events.push(data)
         }
         return events
+    }
+
+    static async * generateDocumentsWithStorageResourceUrl(queries = [], storageFields = []){
+        const eventRef = collection(firebase.db, this.collection)
+        let q;
+        if(queries.length > 0){
+            q = query(eventRef, ...queries)
+        }else{
+            q = eventRef
+        }
+        
+        let snap
+        try {
+            snap = await getDocs(q)
+        } catch (err) {
+            utils.handleError(err)
+            throw err
+        }
+        const docs = Object.values(snap.docs)
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            const resources = []
+            for(let j = 0; j < storageFields.length; j++){
+                resources.push(utils.getResourceUrlFromStorage(data[storageFields[j]]))
+            }
+
+            await Promise.all(resources).then((res) => {
+                for(let k = 0; k < res.length; k++){
+                    data[storageFields[k]] = res[k]
+                }
+            })
+            data.doc = docs[i]
+            data.id = docs[i].id
+
+            const instance = new this()
+            instance.setData(data.id, data, data.doc)
+
+            yield instance
+        }
     }
 
     static async * generateDocumentsWithStorageResource(queries = [], storageFields = []){

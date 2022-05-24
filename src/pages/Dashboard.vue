@@ -253,13 +253,13 @@ export default {
             this.banners = banners.value
         },
         async fetchComics(){
-            const comicGenerator = Comic.generateDocumentsWithStorageResource([], ['cover_image_url'])
+            const comicGenerator = Comic.generateDocumentsWithStorageResourceUrl([], ['cover_image_url'])
             for await(let comic of comicGenerator){
                 this.comics.push(comic)
             }
         },
         async fetchAuthors(){
-            const authorGenerator = Author.generateDocumentsWithStorageResource([], ['profile_picture_url'])
+            const authorGenerator = Author.generateDocumentsWithStorageResourceUrl([], ['profile_picture_url'])
             for await(let author of authorGenerator){
                 this.authors.push(author)
             }

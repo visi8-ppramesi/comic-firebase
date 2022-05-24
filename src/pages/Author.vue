@@ -93,7 +93,7 @@ export default {
             this.author = await Author.getDocumentWithStorageResource(this.$route.params.id, ['profile_picture_url'])
         },
         async fetchAuthorComics(){
-            this.comics = await Comic.getDocumentsWithStorageResource(authorComicsQuery(this.$route.params.id), ['cover_image_url'])
+            this.comics = await Comic.getDocumentsWithStorageResourceUrl(authorComicsQuery(this.$route.params.id), ['cover_image_url'])
         },
         // eslint-disable-next-line no-unused-vars
         processToHorizontalSlider(comicObjects) {
