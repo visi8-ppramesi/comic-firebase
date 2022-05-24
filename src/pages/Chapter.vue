@@ -1,16 +1,7 @@
 <template>
     <div class="md:mx-32 xl:mx-72 2xl:mx-xl">
         <div class="w-full">
-            <div class="w-full px-5 py-2 text-center">
-                <label for="chapter" class="text-white xl:text-2xl">Select chapter</label>
-                <div class="flex">
-                    <select class="rounded-lg form-select block w-full mt-1 xl:text-xl" @change="changeChapter(selectedChapter)" v-model="selectedChapter">
-                        <option v-for="(chapter, idx) in chapters" :value="chapter.id" :key="'cpt-' + idx">Episode {{chapter.chapter}}</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="flex items-center justify-center">
+            <div class="flex items-center pt-5 pb-3 justify-center">
                  <div class="h-96 container y mandatory-scroll-snapping">
                     <template v-for="page in pages" :key="page.index">
                         <div>
@@ -22,7 +13,16 @@
                 </div>
             </div>
 
-            <div class="flex justify-center mt-8 pb-5">
+            <div class="w-full px-5 text-center">
+                <div class="flex pb-3 pt-2">
+                    <select class="rounded-lg form-select block w-full mt-1 xl:text-xl" @change="changeChapter(selectedChapter)" v-model="selectedChapter">
+                        <option v-for="(chapter, idx) in chapters" :value="chapter.id" :key="'cpt-' + idx">Episode {{chapter.chapter}}</option>
+                    </select>
+                </div>
+                <label for="chapter" class="text-white xl:text-2xl">Select chapter</label>
+            </div>
+
+            <div class="flex justify-center text-white mt-8 pb-5">
                 <button @click="prevChapter" class="flex bg-indigo-900 h-8 w-20 text-white rounded-lg justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1 mr-1" fill="none" viewBox="0 0 24 24" :stroke="prevEnabled ? '#919191' : '#2f2f2f'">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
