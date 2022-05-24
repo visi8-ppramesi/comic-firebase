@@ -27,6 +27,7 @@ const firebaseConfig = {
     messagingSenderId: envVar.VUE_APP_MESSAGING_SENDER_ID,
     appId: envVar.VUE_APP_APP_ID,
     measurementId: envVar.VUE_APP_MEASUREMENT_ID,
+    defaultProfilePicture: 'gs://comics-77200.appspot.com/default_profile.jpeg'
 };
 
 const app = initializeApp(firebaseConfig);
@@ -42,4 +43,4 @@ if(!weTesting){
 
 setPersistence(auth, browserLocalPersistence)
 
-export default {app, db, auth, storage, analytics, performance};
+export default {app, db, auth, storage, analytics, performance, firebaseConfig};
