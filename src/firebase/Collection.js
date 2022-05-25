@@ -20,7 +20,12 @@ export default class{
     static fields = {}
     static db = firebase.db
 
+    setEmpty(){
+        this.empty = true
+    }
+
     setData(id, data, doc = null){
+        this.empty = false
         this.id = id
         Object.keys(this.constructor.fields).forEach((field) => {
             const isSubcollection = this.constructor.fields[field] == Subcollection
@@ -57,6 +62,11 @@ export default class{
         const eventRef = doc(firebase.db, this.collection, id)
         try{
             const doc = await getDoc(eventRef)
+            if(!doc.exists()){
+                const emptyInstance = new this()
+                emptyInstance.setEmpty()
+                return emptyInstance
+            }
             const data = doc.data()
             const instance = new this()
             instance.setData(doc.id, data, doc)
@@ -72,26 +82,31 @@ export default class{
         const eventRef = doc(firebase.db, this.collection, id)
         try{
             const doc = await getDoc(eventRef)
+            if(!doc.exists()){
+                const emptyInstance = new this()
+                emptyInstance.setEmpty()
+                return emptyInstance
+            }
             let data = doc.data()
+
+            const instance = new this()
+            instance.setData(doc.id, data, doc)
 
             try{
                 const resources = []
                 for(let j = 0; j < storageFields.length; j++){
-                    resources.push(utils.getDataUrlFromStorage(data[storageFields[j]]))
+                    resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
                 }
 
                 await Promise.all(resources).then((resource) => {
                     for(let k = 0; k < resource.length; k++){
-                        data[storageFields[k]] = resource[k]
+                        instance[storageFields[k]] = resource[k]
                     }
                 })
             }catch(err){
                 utils.handleError(err)
                 throw err
             }
-
-            const instance = new this()
-            instance.setData(doc.id, data, doc)
     
             return instance
         }catch(err){
@@ -142,23 +157,30 @@ export default class{
         for(let i = 0; i < docs.length; i++){
             const data = docs[i].data()
             const resources = []
+
+            data.doc = docs[i]
+            data.id = docs[i].id
+
+            const instance = new this()
+            instance.setData(data.id, data, data.doc)
+
             for(let j = 0; j < storageFields.length; j++){
-                resources.push(utils.getResourceUrlFromStorage(data[storageFields[j]]))
+                resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
             }
 
             try {
                 await Promise.all(resources).then((resource) => {
                     for(let k = 0; k < resource.length; k++){
-                        data[storageFields[k]] = resource[k]
+                        instance[storageFields[k]] = resource[k]
                     }
                 })
             } catch (err) {
                 utils.handleError(err)
                 throw err
             }
-            data.doc = docs[i]
-            data.id = docs[i].id
-            events.push(data)
+            // data.doc = docs[i]
+            // data.id = docs[i].id
+            events.push(instance)
         }
         return events
     }
@@ -183,23 +205,30 @@ export default class{
         for(let i = 0; i < docs.length; i++){
             const data = docs[i].data()
             const resources = []
+
+            data.doc = docs[i]
+            data.id = docs[i].id
+
+            const instance = new this()
+            instance.setData(data.id, data, data.doc)
+
             for(let j = 0; j < storageFields.length; j++){
-                resources.push(utils.getDataUrlFromStorage(data[storageFields[j]]))
+                resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
             }
 
             try {
                 await Promise.all(resources).then((resource) => {
                     for(let k = 0; k < resource.length; k++){
-                        data[storageFields[k]] = resource[k]
+                        instance[storageFields[k]] = resource[k]
                     }
                 })
             } catch (err) {
                 utils.handleError(err)
                 throw err
             }
-            data.doc = docs[i]
-            data.id = docs[i].id
-            events.push(data)
+            // data.doc = docs[i]
+            // data.id = docs[i].id
+            events.push(instance)
         }
         return events
     }
@@ -224,20 +253,22 @@ export default class{
         for(let i = 0; i < docs.length; i++){
             const data = docs[i].data()
             const resources = []
-            for(let j = 0; j < storageFields.length; j++){
-                resources.push(utils.getResourceUrlFromStorage(data[storageFields[j]]))
-            }
 
-            await Promise.all(resources).then((res) => {
-                for(let k = 0; k < res.length; k++){
-                    data[storageFields[k]] = res[k]
-                }
-            })
             data.doc = docs[i]
             data.id = docs[i].id
 
             const instance = new this()
             instance.setData(data.id, data, data.doc)
+
+            for(let j = 0; j < storageFields.length; j++){
+                resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
+            }
+
+            await Promise.all(resources).then((res) => {
+                for(let k = 0; k < res.length; k++){
+                    instance[storageFields[k]] = res[k]
+                }
+            })
 
             yield instance
         }
@@ -263,20 +294,21 @@ export default class{
         for(let i = 0; i < docs.length; i++){
             const data = docs[i].data()
             const resources = []
-            for(let j = 0; j < storageFields.length; j++){
-                resources.push(utils.getDataUrlFromStorage(data[storageFields[j]]))
-            }
 
-            await Promise.all(resources).then((res) => {
-                for(let k = 0; k < res.length; k++){
-                    data[storageFields[k]] = res[k]
-                }
-            })
             data.doc = docs[i]
             data.id = docs[i].id
 
             const instance = new this()
             instance.setData(data.id, data, data.doc)
+            for(let j = 0; j < storageFields.length; j++){
+                resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
+            }
+
+            await Promise.all(resources).then((res) => {
+                for(let k = 0; k < res.length; k++){
+                    instance[storageFields[k]] = res[k]
+                }
+            })
 
             yield instance
         }

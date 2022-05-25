@@ -20,8 +20,8 @@ const viewHelper = (id, comic, store) => {
 
 export const useViewStore = defineStore('comicViewed', {
     state: () => ({
-        comics_viewed: _.isNil(storageComicsViewed) ? [] : storageComicsViewed,
-        view_date: _.isNil(storageDateViewed) ? {} : storageDateViewed,
+        comics_viewed: _.isNil(storageComicsViewed) ? [] : JSON.parse(storageComicsViewed),
+        view_date: _.isNil(storageDateViewed) ? {} : JSON.parse(storageDateViewed),
     }),
     
     getters: {},

@@ -3,7 +3,7 @@ import Subcollection from "../Subcollection.js"
 import firebase from '../firebase.js';
 import utils from "../utils/index.js";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove } from "firebase/firestore";  
+import { runTransaction, updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove, increment } from "firebase/firestore";  
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
 
@@ -45,21 +45,53 @@ export default class extends Collection{
     async unfavoriteComic(id){
         const comicRef = doc(this.constructor.db, 'comics', id)
         const userRef = doc(this.constructor.db, 'users', this.id)
-        return await updateDoc(userRef, {
-            favorites: arrayRemove(comicRef)
-        })
+
+        try{
+            return await runTransaction(this.constructor.db, async (transaction) => {
+                transaction.update(comicRef, { favorite_count: increment(-1) });
+                transaction.update(userRef, { favorites: arrayRemove(comicRef) })
+            });
+        }catch(error){
+            utils.handleError(error)
+            throw error
+        }
+        // const incrementPromise = updateDoc(comicRef, {
+        //     favorite_count: decrement(1)
+        // })
+        // const updatePromise = updateDoc(userRef, {
+        //     favorites: arrayRemove(comicRef)
+        // })
+        // return await Promise.all([updatePromise, incrementPromise])
     }
 
     async favoriteComic(id){
         const comicRef = doc(this.constructor.db, 'comics', id)
         const userRef = doc(this.constructor.db, 'users', this.id)
-        return await updateDoc(userRef, {
-            favorites: arrayUnion(comicRef)
-        })
+
+        try{
+            return await runTransaction(this.constructor.db, async (transaction) => {
+                transaction.update(comicRef, { favorite_count: increment(1) });
+                transaction.update(userRef, { favorites: arrayUnion(comicRef) })
+            });
+        }catch(error){
+            utils.handleError(error)
+            throw error
+        }
+        // const incrementPromise = updateDoc(comicRef, {
+        //     favorite_count: increment(1)
+        // })
+        // const updatePromise = updateDoc(userRef, {
+        //     favorites: arrayUnion(comicRef)
+        // })
+        // return await Promise.all([updatePromise, incrementPromise])
     }
 
     async getPurchasedComicStatus(id){
-        return await PurchasedComic.getDocument(['users', this.id, 'purchased_comics'], id)
+        const purchasedInstance = await PurchasedComic.getDocument(['users', this.id, 'purchased_comics'], id)
+        if(purchasedInstance.empty){
+            purchasedInstance.chapters = []
+        }
+        return purchasedInstance
     }
 
     async purchaseChapter(comicId, chapterId){

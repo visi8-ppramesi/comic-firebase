@@ -36,7 +36,7 @@
                 :config="config"
                 objectCategory="all"
                 :paginated="true"
-                @nextPage="loadComics(false)"
+                @loadMore="loadComics(false)"
                 ref="comicGrid"
             ></grid>
         </div>

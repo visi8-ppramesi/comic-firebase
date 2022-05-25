@@ -1,5 +1,6 @@
-import { where, limit, orderBy, startAfter, doc } from 'firebase/firestore'
+import { where, limit, orderBy, startAfter, doc, FieldPath } from 'firebase/firestore'
 import firebase from '../firebase.js'
+import _ from 'lodash'
 
 export const orderByLimit = [ orderBy('last_update'), limit(10) ]
 
@@ -32,4 +33,40 @@ export const tagQueryPaginated = (tag, orderByParam = "title", startAtParam = nu
 export const authorComicsQuery = (authorId) => {
     const docRef = doc(firebase.db, 'authors', authorId)
     return [ where('authors', 'array-contains', docRef), limit(6) ]
+}
+
+export const searchQueryArray = (searchQ, orderByParam = 'title', startAtParam = null) => {
+    if(typeof searchQ == 'string'){
+        searchQ = [...new Set([...searchQ.split(' ')])]
+    }else if(_.isObject(searchQ)){
+        searchQ = Object.keys(searchQ)
+    }
+
+    searchQ = searchQ.map(_.toLower)
+
+    if(startAtParam){
+        return [where('keywords', 'array-contains-any', searchQ), orderBy(orderByParam), limit(10), startAfter(startAtParam)]
+    }else{
+        return [where('keywords', 'array-contains-any', searchQ), orderBy(orderByParam), limit(10)]
+    }
+}
+
+export const searchQueryMap = (searchQ) => {//, orderByParam = 'title', startAtParam = null) => {
+    if(typeof searchQ == 'string'){
+        searchQ = [...new Set([...searchQ.split(' ')])]
+    }else if(_.isObject(searchQ)){
+        searchQ = Object.keys(searchQ)
+    }
+
+    searchQ = searchQ.map(_.toLower)
+    
+    const whereQueries = searchQ.map((key) => {
+        return where(new FieldPath('keywords', key), '==', true)
+    })
+    return [...whereQueries]
+    // if(startAtParam){
+    //     return [...whereQueries, orderBy(orderByParam), limit(10), startAfter(startAtParam)]
+    // }else{
+    //     return [...whereQueries, orderBy(orderByParam), limit(10)]
+    // }
 }

@@ -1,17 +1,30 @@
 <template>
-    <div class="md:mx-32 xl:mx-72 2xl:mx-xl">
+    <div v-if="!loading" class="md:mx-32 xl:mx-72 2xl:mx-xl">
         <div class="w-full">
-            <div class="flex items-center pt-5 pb-3 justify-center">
-                 <div class="h-96 container y mandatory-scroll-snapping">
-                    <template v-for="page in pages" :key="page.index">
-                        <div>
-                            <router-link to="route('web.scene', {page: page.id})">
+            <div class="bg-black w-full">
+                <template v-for="(page, idx) in pages" :key="'item-' + idx">
+                    <div v-if="page.media_type == 'image'">
+                        <image-viewer :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
+                    </div>
+                    <div v-else-if="page.media_type == 'video'">
+                        <video-player :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></video-player>
+                    </div>
+                </template>
+            </div>
+            <!-- <div class="flex items-center pt-5 pb-3 justify-center">
+                 <div class="container y mandatory-scroll-snapping">
+                    <template v-for="(page, idx) in pages" :key="'item-' + idx">
+                        <div v-if="page.media_type == 'image'">
+                            <router-link :to="routeResolver('Scene', {page: page.id})">
                                 <img class="w-full h-full lg:object-fill lg:w-full" :src="page.image_url">
                             </router-link>
                         </div>
+                        <div v-else-if="page.media_type == 'video'">
+                            <video-player :link="page.page_image_url" :idx="idx" :ref="'videoPlayer' + idx" :key="'video-' + idx"></video-player>
+                        </div>
                     </template>
                 </div>
-            </div>
+            </div> -->
 
             <div class="w-full px-5 text-center">
                 <div class="flex pb-3 pt-2">
@@ -43,71 +56,143 @@
 <script>
 
 import comic1 from "../assets/2.jpg";
-import comic2 from "../assets/3.jpg";
-import comic3 from "../assets/4.jpg";
-import comic4 from "../assets/5.jpg";
-import comic5 from "../assets/comic.png";
-import comic from "../assets/comic.jpeg";
+// import comic2 from "../assets/3.jpg";
+// import comic3 from "../assets/4.jpg";
+// import comic4 from "../assets/5.jpg";
+// import comic5 from "../assets/comic.png";
 import Chapter from '../firebase/comics/Chapter.js'
+import VideoPlayer from '../components/VideoPlayer.vue'
+import ImageViewer from '../components/ImageViewer.vue'
+import { orderBy } from 'firebase/firestore'
+import _ from 'lodash'
 
 export default {
     name: 'chapter',
+    inject: ['routeResolver'],
+    components: {
+        ImageViewer,
+        VideoPlayer
+    },
     data(){
         return {
+            loading: true,
             comics: comic1,
-            pages:[
-                {image_url: comic1},
-                {image_url: comic2},
-                {image_url: comic3},
-                {image_url: comic4},
-                {image_url: comic5},
-            ],
+            // pages:[
+            //     {image_url: comic1},
+            //     {image_url: comic2},
+            //     {image_url: comic3},
+            //     {image_url: comic4},
+            //     {image_url: comic5},
+            // ],
             chapters: [
                 {image_url: comic1, chapter: '1', release_date: '17/05/2022', favorites_count: '20', views: 1000},
-            ]
+            ],
+            chapter: null,
+            pages: [],
+            chapterPromise: null,
+            scrollFunc: null
         }
     },
     created(){
-        Chapter.getDocument(['comics', this.$route.params.comicId, 'chapters'], this.$route.params.chapterId).then((cpt) => {
-            cpt.getPages().then(console.log)
+        this.chapterPromise = this.fetchChapter().then(() => {
+            this.loading = false
+            return true
         })
     },
+    mounted(){
+        console.log('mounted')
+        this.chapterPromise.then(() => {
+            const loaders = []
+            console.log(this.$refs)
+            Object.keys(this.$refs).forEach((el) => {
+                loaders.push(this.$refs[el][0].getLoader())
+            })
+            
+
+            const pagesDupe = [...this.pages]
+            pagesDupe.pop()
+
+            pagesDupe.forEach((page, idx) => {
+                if(page.media_type == 'video'){
+                    const containerIndex = 'mediaViewer' + (idx + 1)
+                    const play = _.once(this.$refs[containerIndex][0].playVideo)
+                    loaders[idx].elem.addEventListener('ended', () => {
+                        loaders[idx + 1].loader()
+                        loaders[idx + 1].scroller()
+                        play()
+                    })
+                }
+            })
+
+            loaders[0].loader()
+            loaders[0].scroller()
+
+            this.scrollFunc = () => {
+                _.debounce(() => {
+                    for(let i = 1; i < this.pages.length; i++){
+                        const containerIndex = 'mediaViewer' + i
+                        const myRect = this.$refs[containerIndex][0].$el.getBoundingClientRect()
+                        if(myRect.top - window.innerHeight < 1){
+                            loaders[i].loader()
+                        }
+                        // if(!_.isEmpty(this.$refs[containerIndex][0])){
+                        // }
+                    }
+                }, 100)()
+            }
+
+            document.addEventListener('scroll', this.scrollFunc)
+        })
+        
+    },
+    beforeUnmount(){
+        if(this.scrollFunc){
+            document.removeEventListener('scroll', this.scrollFunc)
+        }
+    },
+    methods: {
+        async fetchChapter(){
+            this.chapter = await Chapter.getDocument(['comics', this.$route.params.comicId, 'chapters'], this.$route.params.chapterId)
+            this.pages = await this.chapter.getPages([orderBy('page_number')])
+            return true
+        }
+    }
 }
 </script>
 
 <style>
 .container {
-  display: flex;
-  overflow: auto;
-  flex: none;
+    display: flex;
+    overflow-y: auto;
+    flex: none;
 }
 
 .container.y {
-  width: 380px;
-  height: 650px;
-  flex-flow: column nowrap;
+    width: 380px;
+    height: 650px;
+    flex-flow: column nowrap;
 }
 
 .y.mandatory-scroll-snapping {
-  scroll-snap-type: y mandatory;
+    scroll-snap-type: y mandatory;
 }
 
 .container > div {
-  text-align: center;
-  scroll-snap-align: center;
-  flex: none;
+    text-align: center;
+    scroll-snap-align: center;
+    flex: none;
 }
 
 .y.container > div {
-  line-height: 256px;
-  font-size: 128px;
-  width: 100%;
-  height: 100%;
+    line-height: 256px;
+    font-size: 128px;
+    width: 100%;
+    height: 100%;
 }
 /* appearance fixes */
 .y.container > div:first-child {
-  line-height: 1.3;
-  font-size: 64px;
+    line-height: 1.3;
+    font-size: 64px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 959px){

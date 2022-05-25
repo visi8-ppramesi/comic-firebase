@@ -36,7 +36,7 @@
                 :config="config"
                 objectCategory="all"
                 :paginated="true"
-                @nextPage="loadAuthors"
+                @loadMore="loadAuthors"
                 ref="authorGrid"
             ></grid>
         </div>

@@ -16,7 +16,7 @@
                         <horizontal-slider :items="comics" :config="comicConfig" />
                     </mq-responsive>
                     <mq-responsive target="md+" tag="span">
-                        <grid :items="comics" :config="comicConfig" />
+                        <grid :showLoading="false" ref="allGrid" :items="comics" :config="comicConfig" />
                     </mq-responsive>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                         <horizontal-slider :items="comics" :config="comicConfig" />
                     </mq-responsive>
                     <mq-responsive target="md+" tag="span">
-                        <grid :items="comics" :config="comicConfig" />
+                        <grid :showLoading="false" ref="adventureGrid" :items="comics" :config="comicConfig" />
                     </mq-responsive>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                         <horizontal-slider :items="comics" :config="comicConfig" />
                     </mq-responsive>
                     <mq-responsive target="md+" tag="span">
-                        <grid :items="comics" :config="comicConfig" />
+                        <grid :showLoading="false" ref="scifiGrid" :items="comics" :config="comicConfig" />
                     </mq-responsive>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                         <horizontal-slider :items="authors" :config="authorConfig"/>
                     </mq-responsive>
                     <mq-responsive target="md+" tag="span">
-                        <grid :items="authors" :config="authorConfig" />
+                        <grid :showLoading="false" ref="authorGrid" :items="authors" :config="authorConfig" />
                     </mq-responsive>
                 </div>
             </div>
@@ -285,10 +285,12 @@ export default {
             }
         }
     },
-    created(){
+    mounted(){
         this.fetchComics()
         this.fetchAuthors()
         this.fetchBanners()
+    },
+    created(){
         // Comic.getDocuments().then((docs) => {
         //     this.comics = docs
         // })

@@ -1,9 +1,10 @@
 import firebase from '../firebase.js'
 // import { collection, orderBy, startAt, endAt, query, getDocs } from 'firebase/firestore'
 import { getDownloadURL, getBlob as getStorageBlob, ref } from 'firebase/storage'
+import router from '../../router/index.js'
 // import geofire from 'geofire-common'
 
-let images = {}
+let medias = {}
 let cache = {}
 
 const getBlob = async (gsPath) => {
@@ -46,13 +47,13 @@ const getDataUrlFromStorage = async (gsPath) => {
 const getProtectedDataUrlFromStorage = async (gsPath) => {
     const blob = await getBlob(gsPath)
     const identifier = (Math.random() + 1).toString(36).substring(2)
-    images[identifier] = URL.createObjectURL(blob)
-    return { image: images[identifier], identifier }
+    medias[identifier] = URL.createObjectURL(blob)
+    return { media: medias[identifier], identifier }
 }
 
 const revokeDataUrl = (url, identifier) => {
     setTimeout(() => {
-        delete images[identifier]
+        delete medias[identifier]
         URL.revokeObjectURL(url)
     }, 0)
 }
@@ -110,8 +111,12 @@ const parseDocs = (docs, extraFields = []) => {
 //     })
 // }
 
+const redirectToLogin = () => {
+    router.push({name: 'Login'})
+}
+
 const handleError = function(err){
     return err
 }
 
-export default { getResourceUrlFromStorage, handleError, getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs, getProtectedDataUrlFromStorage, revokeDataUrl }
+export default { redirectToLogin, getResourceUrlFromStorage, handleError, getBlob, getDataUrlFromStorage, constructArtistUrl, constructEventUrl, parseDocs, getProtectedDataUrlFromStorage, revokeDataUrl }

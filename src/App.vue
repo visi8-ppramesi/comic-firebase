@@ -3,7 +3,7 @@
     <nav class="bg-gray-800" v-show="showNav">
       <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
-          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+          <div class="absolute inset-y-0 left-0 flex items-center md:hidden">
             <!-- Mobile menu button-->
             <button
               @click="mobileMenuOpen = !mobileMenuOpen"
@@ -62,7 +62,7 @@
               flex-1 flex
               items-center
               justify-center
-              sm:items-stretch sm:justify-start
+              md:items-stretch md:justify-start
             "
           >
             <div
@@ -80,7 +80,7 @@
                 alt="Workflow"
               />
             </div>
-            <div class="hidden sm:block sm:ml-6">
+            <div class="hidden md:block md:ml-6">
               <div class="flex space-x-4">
                 <!-- <router-link @click="mobileMenuOpen = false" :to="{name: 'dashboard'}" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
                                 <router-link :to="{}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Team</router-link>
@@ -98,7 +98,7 @@
               flex
               items-center
               pr-2
-              sm:static sm:inset-auto sm:ml-6 sm:pr-0
+              md:static md:inset-auto md:ml-6 md:pr-0
             "
           >
             <!-- Profile dropdown -->
@@ -139,9 +139,9 @@
                 >
                   <span class="sr-only">Open user menu</span>
                   <img
-                    v-if="profile_image_url"
+                    v-if="profile_picture_url"
                     class="h-8 w-8 rounded-full"
-                    :src="profile_image_url"
+                    :src="profile_picture_url"
                     alt=""
                   />
                   <svg
@@ -206,7 +206,7 @@
               flex
               items-center
               pr-2
-              sm:static sm:inset-auto sm:ml-6 sm:pr-0
+              md:static md:inset-auto md:ml-6 md:pr-0
             "
           >
             <svg
@@ -303,7 +303,7 @@
 
       <!-- Mobile menu, show/hide based on menu state. -->
       <div
-        class="sm:hidden bg-gray-800 absolute w-full"
+        class="md:hidden bg-gray-800 absolute w-full"
         id="mobile-menu"
         v-if="mobileMenuOpen"
       >
@@ -520,11 +520,11 @@ export default {
     showNav(){
       return this.$route.meta.showNav
     },
-    ...mapState(useAuthStore, ['isLoggedIn'])
+    ...mapState(useAuthStore, ['isLoggedIn', 'profile_picture_url'])
   },
   methods: {
     goToSearch(){
-      console.log('asdfadsf')
+      this.$router.push(this.routeResolver('Search'))
     },
     test(){
       console.log(this.authStore)
