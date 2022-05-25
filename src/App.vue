@@ -70,18 +70,29 @@
               class="flex-shrink-0 flex items-center"
             >
               <img
-                class="block lg:hidden h-16 w-auto"
+                class="block md:hidden h-16 w-auto"
                 :src="visi8Icon"
                 alt="Workflow"
               />
               <img
-                class="hidden lg:block h-8 w-auto"
+                class="hidden md:block h-8 w-auto"
                 :src="visi8Icon"
                 alt="Workflow"
               />
             </div>
             <div class="hidden md:block md:ml-6">
               <div class="flex space-x-4">
+                <div v-if="isLoggedIn" class="px-2 py-2 space-y-1">
+                  <router-link :to="routeResolver('Dashboard')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
+                  <router-link :to="routeResolver('MyComics')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">My Comics</router-link>
+                  <router-link :to="routeResolver('MyTransactions')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page" >My Transactions</router-link >
+                  <router-link :to="routeResolver('Logout')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Logout</router-link>
+                </div>
+                <div v-else class="px-2 py-2 space-y-1">
+                  <router-link :to="routeResolver('Dashboard')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
+                  <router-link :to="routeResolver('Login')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Login</router-link>
+                  <router-link :to="routeResolver('Register')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Register</router-link>
+                </div>
                 <!-- <router-link @click="mobileMenuOpen = false" :to="{name: 'dashboard'}" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
                                 <router-link :to="{}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Team</router-link>
                                 <router-link :to="{}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Projects</router-link>

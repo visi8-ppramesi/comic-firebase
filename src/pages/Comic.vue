@@ -1,6 +1,6 @@
 <template>
     <div v-if="!loading">
-        <div class="h-screen-navbar bg-cover text-left pt-64 description-block text-white flex flex-col justify-end p-5 bg-center" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + comic.cover_image_url + ');'"><!-- top block -->
+        <div class="min-h-screen-navbar bg-cover text-left pt-64 description-block text-white flex flex-col justify-end p-5 bg-center" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + comic.cover_image_url + ');'"><!-- top block -->
             <div>
                 <div>{{categories}}</div>
             </div>

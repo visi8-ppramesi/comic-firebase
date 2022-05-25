@@ -37,6 +37,9 @@ module.exports = {
             "192": "48rem",
             ...widthCalc
           }),
+          minHeight: theme => ({
+            "screen-navbar": "calc(100vh - 64px)",
+          }),
           maxHeight: theme => ({
             '0': '0',
             '1/4': '25vh',
