@@ -1,8 +1,11 @@
 <template>
     <vueper-slides slide-image-inside class="w-full">
-        <vueper-slide v-for="(banner, idx) in banners" :key="idx" :title="banner.title" :image="banner.banner_image_url" :link="routeResolver(banner.target_type, {id: banner.target}, {}, 'string')">
+        <vueper-slide v-for="(banner, idx) in banners" :key="idx" :title="banner.title">
+         <!-- :image="banner.banner_image_url" :link="routeResolver(banner.target_type, {id: banner.target}, {}, 'string')"> -->
             <template #content>
-                <img :src="banner.banner_image_url" alt="">
+                <router-link :to="routeResolver(banner.target_type, {id: banner.target}, {}, 'string')">
+                    <img class="w-full h-full object-cover" :src="banner.banner_image_url" alt="">
+                </router-link>
             </template>
         </vueper-slide>
     </vueper-slides>

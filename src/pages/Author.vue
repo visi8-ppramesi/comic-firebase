@@ -2,7 +2,7 @@
         <div class="rounded-xl m-5 bg-gray-200 bg-opacity-70 border border-indigo-600">
             <div class="flex flex-col md:flex-row p-5">
                 <div>
-                    <img class="w-full md:w-24 md:h-36" :src="author.profile_picture_url" />
+                    <img class="rounded-t-xl w-full md:w-24 md:h-36" :src="author.profile_picture_url" />
                 </div>
                 <div class="mt-2 md:mt-0">
                     <div class="md:ml-4 text-2xl font-bold">
@@ -25,11 +25,11 @@
                 </div>
             </div>
             <div class="p-5">
-                <div class="text-xl font-bold">About Author :</div>
+                <!-- <div class="text-xl font-bold">About Author :</div> -->
                 <div>{{author.description}}</div>
             </div>
             <div class="p-5">
-                <div class="text-xl font-bold">Author Books :</div>
+                <!-- <div class="text-xl font-bold">Author Books :</div> -->
                 <div class="mb-3">
                     <div>
                         <horizontal-slider :items="comics"

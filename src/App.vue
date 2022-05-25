@@ -538,7 +538,6 @@ export default {
       this.$router.push(this.routeResolver('Search'))
     },
     test(){
-      console.log(this.authStore)
       this.$toast.open({
         message: "Test message from Vue",
         type: "success",
