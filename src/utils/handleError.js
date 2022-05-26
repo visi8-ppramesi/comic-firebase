@@ -15,7 +15,8 @@ export default function(err, type){
                 message: "Something went wrong!",
                 type: "error",
                 duration: 5000,
-                dismissible: true
+                dismissible: true,
+                position: 'bottom'
             })
             break;
         case 'getDocumentsError':
@@ -23,7 +24,8 @@ export default function(err, type){
                 message: "Something went wrong!",
                 type: "error",
                 duration: 5000,
-                dismissible: true
+                dismissible: true,
+                position: 'bottom'
             })
             break;
         case 'generateDocumentsError':
@@ -31,7 +33,8 @@ export default function(err, type){
                 message: "Something went wrong!",
                 type: "error",
                 duration: 5000,
-                dismissible: true
+                dismissible: true,
+                position: 'bottom'
             })
             break;
         case 'favoriteError':
@@ -39,7 +42,8 @@ export default function(err, type){
                 message: "Something went wrong!",
                 type: "error",
                 duration: 5000,
-                dismissible: true
+                dismissible: true,
+                position: 'bottom'
             })
             break;
         default:
