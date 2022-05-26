@@ -17,7 +17,7 @@ service cloud.firestore {
       allow get: if belongsTo(user) || isAdmin();
       allow update: if belongsTo(user) || isAdmin();
       allow delete: if belongsTo(user) || isAdmin();
-      allow create: if true;
+      allow create: if canCreateUser() || isAdmin();
 
       //only allowed through functions
       match /purchased_comics/{comic}{
@@ -34,6 +34,10 @@ service cloud.firestore {
       match /receipts/{receipt}{
         allow read: if belongsTo(user) || isAdmin();
         allow write: if isAdmin();
+      }
+
+      function canCreateUser(){
+        return request.resource.data.keys().hasOnly(['email', 'name', 'full_name', 'bookmarks', 'favorites', 'comic_subscriptions', 'profile_image_url']);
       }
     }
     

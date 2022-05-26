@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-cover bg-no-repeat bg-center" :style="'background-image: linear-gradient(rgba(23,167,105,0.3) 50%, rgb(49 46 129)), url(' + karaBackground +');'">
-        <div class="flex items-end h-screen">
-            <div class="w-full p-5">
+    <div class="bg-cover bg-no-repeat bg-center overflow-y-scroll" :style="'background-image: linear-gradient(rgba(23,167,105,0.3) 50%, rgb(49 46 129)), url(' + karaBackground +');'">
+        <div class="h-screen">
+            <div class="w-full md:w-96 md:mx-auto min-h-screen flex flex-col p-5 justify-end">
                 <form autocomplete="off">
                     <div class="mb-4">
                         <input name="username" for="username" class="shadow appearance-none border rounded-full w-full py-2 px-3 text-grey-darker" v-model="username" id="username" type="text" placeholder="Username">
@@ -16,6 +16,7 @@
                         <input name="password" for="password" class="shadow appearance-none border border-red rounded-full w-full py-2 px-3 text-grey-darker mb-3" v-model="password" id="password" type="password" placeholder="Password">
                     </div>
                 </form>
+                <div v-if="registerFailed" class="text-red-400 mb-2">Register failed! Email already exists!</div>
                 <div class="flex flex-col items-center justify-between">
                     <button @click="register" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
                         Register
@@ -38,7 +39,19 @@
 import { useAuthStore } from '../store/auth.js'
 export default {
     name: 'register',
-    inject: ['routeResolver'],
+    inject: [
+        'routeResolver',
+        'emitter'
+    ],
+    mounted(){
+        this.emitter.on('registerError', () => {
+            this.registerFailed = true
+            this.email = ''
+            this.password = ''
+            this.username = ''
+            this.full_name = ''
+        })
+    },
     data(){
         return {
             email: '',
@@ -50,6 +63,7 @@ export default {
             instagramIcon: require('../assets/icons/instagram.png'),
             twitterIcon: require('../assets/icons/twitter.png'),
             karaBackground: require('../assets/kara_bg.jpg'),
+            registerFailed: false
         }
     },
     setup(){
@@ -60,9 +74,11 @@ export default {
     },
     methods:{
         register(){
-            this.authStore.register(this.email, this.password, {name: this.name, full_name: this.full_name}, 
+            this.authStore.register(this.email, this.password, 
+                { name: this.username, full_name: this.full_name }, 
                 () => {
-                    this.$router.push({ name: 'Dashboard' })
+                    console.log('route push')
+                    this.$router.push({ name: 'Login', query: { registered: 1 } })
                 },
                 () => {
                     this.loginFailed = true

@@ -2,6 +2,7 @@ import firebase from '../firebase.js'
 // import { collection, orderBy, startAt, endAt, query, getDocs } from 'firebase/firestore'
 import { getDownloadURL, getBlob as getStorageBlob, ref } from 'firebase/storage'
 import router from '../../router/index.js'
+import emitter from '@/utils/emitter.js'
 // import geofire from 'geofire-common'
 
 let medias = {}
@@ -115,7 +116,25 @@ const redirectToLogin = () => {
     router.push({name: 'Login'})
 }
 
-const handleError = function(err){
+const handleError = function(err, type){
+    switch(type){
+        case 'loginError':
+            emitter.emit('loginError')
+            break;
+        case 'registerError':
+            emitter.emit('registerError')
+            break;
+        case 'getDocumentError':
+            break;
+        case 'getDocumentsError':
+            break;
+        case 'generateDocumentsError':
+            break;
+        case 'favoriteError':
+            break;
+        default:
+            break;
+    }
     return err
 }
 

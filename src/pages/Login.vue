@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-cover bg-no-repeat bg-center" :style="'background-image: linear-gradient(rgba(23,167,105,0.3) 50%, rgb(49 46 129)), url(' + karaBackground +');'">
-        <div class="flex items-end h-screen">
-            <div class="w-full p-5">
+    <div class="bg-cover bg-no-repeat bg-center overflow-y-scroll" :style="'background-image: linear-gradient(rgba(23,167,105,0.3) 50%, rgb(49 46 129)), url(' + karaBackground +');'">
+        <div class="h-screen">
+            <div class="w-full md:w-96 md:mx-auto min-h-screen flex flex-col p-5 justify-end">
                 <div class="mb-4">
                     <input name="email" for="email" class="shadow appearance-none border rounded-full w-full py-2 px-3 text-grey-darker" v-model="email" id="email" type="text" placeholder="Email">
                 </div>
@@ -18,7 +18,7 @@
                     </button>
                 </div>
                 <div class="text-m text-center mt-6 text-white">
-                    <p>Dont Have Account Yet? <router-link :to="routeResolver('Register')" class="text-blue-200">Sign Up</router-link></p>
+                    <p>Dont have an account yet? <router-link :to="routeResolver('Register')" class="text-blue-200">Sign up</router-link></p>
                 </div>
                 <div class="flex flex-row items-center justify-center pt-5">
                     <img class="w-10" :src="facebookIcon" />
@@ -45,7 +45,17 @@ export default {
             karaBackground: require('../assets/kara_bg.jpg'),
         }
     },
-    inject: ['routeResolver'],
+    inject: [
+        'routeResolver',
+        'emitter'
+    ],
+    mounted(){
+        this.emitter.on('loginError', () => {
+            this.loginFailed = true
+            this.email = ''
+            this.password = ''
+        })
+    },
     setup(){
         const authStore = useAuthStore()
 

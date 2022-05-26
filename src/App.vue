@@ -455,7 +455,6 @@
           bg-gradient-to-t
           from-purple-800
           to-indigo-900
-          md:pb-5
           h-auto
           text-black
         "

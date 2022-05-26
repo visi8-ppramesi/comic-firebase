@@ -12,6 +12,7 @@ import {
 import utils from './utils/index.js'
 import _ from 'lodash'
 import { LongText, ProfilePicture } from './types/index.js';
+import handleError from '@/utils/handleError.js';
 
 export default class{
     static orderByParam = false
@@ -72,7 +73,7 @@ export default class{
     
             return instance
         }catch(err){
-            utils.handleError(err)
+            handleError(err, 'getDocumentError')
             throw err
         }
     }
@@ -104,13 +105,13 @@ export default class{
                     }
                 })
             }catch(err){
-                utils.handleError(err)
+                handleError(err, 'getDocumentError')
                 throw err
             }
     
             return instance
         }catch(err){
-            utils.handleError(err)
+            handleError(err, 'getDocumentError')
             throw err
         }
     }
@@ -128,7 +129,7 @@ export default class{
         try {
             snap = await getDocs(q)
         } catch (err) {
-            utils.handleError(err)
+            handleError(err, 'getDocumentsError')
             throw err
         }
         const docs = Object.values(snap.docs)
@@ -154,7 +155,7 @@ export default class{
                     }
                 })
             } catch (err) {
-                utils.handleError(err)
+                handleError(err, 'getDocumentsError')
                 throw err
             }
             // data.doc = docs[i]
@@ -182,7 +183,7 @@ export default class{
                 return instance
             })
         }catch(err){
-            utils.handleError(err)
+            handleError(err, 'getDocumentsError')
             throw err
         }
     }
@@ -201,7 +202,7 @@ export default class{
         try {
             snap = await getDocs(q)
         } catch (err) {
-            utils.handleError(err)
+            handleError(err, 'generateDocumentsError')
             throw err
         }
         const docs = Object.values(snap.docs)
@@ -219,11 +220,16 @@ export default class{
                 resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
             }
 
-            await Promise.all(resources).then((res) => {
-                for(let k = 0; k < res.length; k++){
-                    instance[storageFields[k]] = res[k]
-                }
-            })
+            try {
+                await Promise.all(resources).then((res) => {
+                    for(let k = 0; k < res.length; k++){
+                        instance[storageFields[k]] = res[k]
+                    }
+                })
+            } catch (err) {
+                handleError(err, 'generateDocumentsError')
+                throw err
+            }
 
             yield instance
         }
@@ -239,7 +245,13 @@ export default class{
             q = eventRef
         }
         
-        const snap = await getDocs(q)
+        let snap
+        try {
+            snap = await getDocs(q)
+        } catch (err) {
+            handleError(err, 'getDocumentsError')
+            throw err
+        }
         const docs = Object.values(snap.docs)
         const results = []
         for(let i = 0; i < docs.length; i++){
@@ -252,11 +264,17 @@ export default class{
                 resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
             }
 
-            await Promise.all(resources).then((resource) => {
-                for(let k = 0; k < resource.length; k++){
-                    instance[storageFields[k]] = resource[k]
-                }
-            })
+            try {
+                await Promise.all(resources).then((res) => {
+                    for(let k = 0; k < res.length; k++){
+                        instance[storageFields[k]] = res[k]
+                    }
+                })
+            } catch (err) {
+                handleError(err, 'getDocumentsError')
+                throw err
+            }
+
             results.push(instance)
         }
         return results
@@ -276,7 +294,7 @@ export default class{
         try {
             snap = await getDocs(q)
         } catch (err) {
-            utils.handleError(err)
+            handleError(err, 'generateDocumentsError')
             throw err
         }
 
@@ -294,11 +312,16 @@ export default class{
                 resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
             }
 
-            await Promise.all(resources).then((res) => {
-                for(let k = 0; k < res.length; k++){
-                    instance[storageFields[k]] = res[k]
-                }
-            })
+            try {
+                await Promise.all(resources).then((res) => {
+                    for(let k = 0; k < res.length; k++){
+                        instance[storageFields[k]] = res[k]
+                    }
+                })
+            } catch (err) {
+                handleError(err, 'generateDocumentsError')
+                throw err
+            }
 
             yield instance
         }

@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";  
 import utils from './utils/index.js'
 import { LongText, ProfilePicture } from './types/index.js';
+import handleError from '@/utils/handleError.js';
 import _ from 'lodash'
 
 export default class{
@@ -73,7 +74,7 @@ export default class{
     
             return instance
         }catch(err){
-            utils.handleError(err)
+            handleError(err, 'getDocumentError')
             throw err
         }
     }
@@ -104,13 +105,13 @@ export default class{
                     }
                 })
             }catch(err){
-                utils.handleError(err)
+                handleError(err, 'getDocumentError')
                 throw err
             }
     
             return instance
         }catch(err){
-            utils.handleError(err)
+            handleError(err, 'getDocumentError')
             throw err
         }
     }
@@ -132,7 +133,7 @@ export default class{
                 return instance
             })
         }catch(err){
-            utils.handleError(err)
+            handleError(err, 'getDocumentsError')
             throw err
         }
     }
@@ -149,7 +150,7 @@ export default class{
         try {
             snap = await getDocs(q)
         } catch (err) {
-            utils.handleError(err)
+            handleError(err, 'getDocumentsError')
             throw err
         }
         const docs = Object.values(snap.docs)
@@ -175,7 +176,7 @@ export default class{
                     }
                 })
             } catch (err) {
-                utils.handleError(err)
+                handleError(err, 'getDocumentsError')
                 throw err
             }
             // data.doc = docs[i]
@@ -197,7 +198,7 @@ export default class{
         try {
             snap = await getDocs(q)
         } catch (err) {
-            utils.handleError(err)
+            handleError(err, 'getDocumentsError')
             throw err
         }
         const docs = Object.values(snap.docs)
@@ -223,7 +224,7 @@ export default class{
                     }
                 })
             } catch (err) {
-                utils.handleError(err)
+                handleError(err, 'getDocumentsError')
                 throw err
             }
             // data.doc = docs[i]
@@ -246,7 +247,7 @@ export default class{
         try {
             snap = await getDocs(q)
         } catch (err) {
-            utils.handleError(err)
+            handleError(err, 'generateDocumentsError')
             throw err
         }
         const docs = Object.values(snap.docs)
@@ -287,7 +288,7 @@ export default class{
         try {
             snap = await getDocs(q)
         } catch (err) {
-            utils.handleError(err)
+            handleError(err, 'generateDocumentsError')
             throw err
         }
         const docs = Object.values(snap.docs)

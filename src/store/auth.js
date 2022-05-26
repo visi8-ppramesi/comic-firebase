@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import User from "@/firebase/users/User";
-import { getDoc, doc } from "firebase/firestore";  
-
-const authErrorHandler = () => {}
+import { getDoc, doc } from "firebase/firestore";
+// import handleError from "@/utils/handleError";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -34,7 +33,7 @@ export const useAuthStore = defineStore('auth', {
                 successFunc()
             })
             .catch((error) => {
-                authErrorHandler(error)
+                // handleError(error, 'loginError')
                 this.status.loggingIn = false
                 this.error = error.message
                 errorFunc(error)
@@ -47,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
                 successFunc()
             })
             .catch((error) => {
-                authErrorHandler(error)
+                // handleError(error, 'logoutError')
                 this.error = error.message
                 errorFunc(error)
             })
@@ -55,6 +54,7 @@ export const useAuthStore = defineStore('auth', {
         async register(email, password, data, successFunc = () => {}, errorFunc = () => {}){
             this.status.loggingIn = true
             return User.register(email, password, data).then((user) => {
+                console.log('auth store register')
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
                     this.profile_picture_url = imageUrl
@@ -67,7 +67,7 @@ export const useAuthStore = defineStore('auth', {
                 successFunc()
             })
             .catch((error) => {
-                authErrorHandler(error)
+                // handleError(error, 'registerError')
                 this.error = error.message
                 this.status.loggingIn = false
                 errorFunc(error)

@@ -33,3 +33,5 @@ app.use(createPinia())
 app.component('mq-responsive', MqResponsive)
 
 app.mount('#app')
+
+export default app

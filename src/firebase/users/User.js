@@ -6,8 +6,24 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } f
 import { runTransaction, updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove, increment } from "firebase/firestore";  
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
+import _ from 'lodash';
+import handleError from "@/utils/handleError.js";
 
-const validateUserProfileData = (v) => v
+const validateUserProfileData = (data) => {
+    const acceptedFields = ['name', 'full_name']
+    if(!_.isEqual(Object.keys(data).sort(), acceptedFields.sort())){
+        return false
+    }
+    return data
+}
+
+const fillData = (dataObject, email) => {
+    dataObject.bookmarks = []
+    dataObject.favorites = []
+    dataObject.comic_subscriptions = []
+    dataObject.profile_image_url = null
+    dataObject.email = email
+}
 
 export default class extends Collection{
     static collection = 'users'
@@ -15,11 +31,11 @@ export default class extends Collection{
     static fields = {
         'email': String,
         'name': String,
+        'full_name': String,
         'purchased_comics': Subcollection.resolve('./PurchasedComic.js'),
         'read_history': Subcollection.resolve('./ReadHistory.js'),
         'favorites': Array,
         'bookmarks': Array,
-        'tokens': Number,
         'receipts': Subcollection.resolve('./Receipt.js'),
         'comic_subscriptions': Array,
         'email_verified_at': Date,
@@ -52,7 +68,7 @@ export default class extends Collection{
                 transaction.update(userRef, { favorites: arrayRemove(comicRef) })
             });
         }catch(error){
-            utils.handleError(error)
+            handleError(error, 'favoriteError')
             throw error
         }
         // const incrementPromise = updateDoc(comicRef, {
@@ -74,7 +90,7 @@ export default class extends Collection{
                 transaction.update(userRef, { favorites: arrayUnion(comicRef) })
             });
         }catch(error){
-            utils.handleError(error)
+            handleError(error, 'favoriteError')
             throw error
         }
         // const incrementPromise = updateDoc(comicRef, {
@@ -134,6 +150,9 @@ export default class extends Collection{
             const newUserDocRef = doc(firebase.db, 'users', cred.user.uid)
             const newProfile = await getDoc(newUserDocRef)
             return {profile: newProfile.data(), cred: cred, id: cred.user.uid, doc: newUserDocRef}
+        }).catch((err) => {
+            handleError(err, 'loginError')
+            throw err
         })
 
         const instance = new this()
@@ -146,12 +165,30 @@ export default class extends Collection{
         if(!validatedUserData){
             throw 'validator error'
         }
-        const data = await createUserWithEmailAndPassword(firebase.auth, email, password).then(async (newUser) => {
-            const newUserDocRef = doc(firebase.db, 'users', newUser.user.uid)
-            console.log([newUserDocRef, validatedUserData, newUser.user.uid])
-            const newProfile = await setDoc(newUserDocRef, validatedUserData)
-            return {profile: newProfile.data(), cred: newUser, id: newUser.user.uid, doc: newUserDocRef}
+        fillData(validatedUserData, email)
+        let newUser, newUserDocRef
+        const data = await createUserWithEmailAndPassword(firebase.auth, email, password).then((promisedNewUser) => {
+            newUser = promisedNewUser
+            newUserDocRef = doc(firebase.db, 'users', promisedNewUser.user.uid)
+            return setDoc(newUserDocRef, validatedUserData)
+            // try{
+            //     const newProfile = await setDoc(newUserDocRef, validatedUserData)
+            //     console.log('new user doc set')
+            //     console.log('hello')
+            //     return {profile: newProfile.data(), cred: newUser, id: newUser.user.uid, doc: newUserDocRef}
+            // }catch(err){
+            //     handleError(err)
+            //     throw err
+            // }
+        }).then((newProfile) => {
+            console.log('after create new user doc', newProfile)
+            return {profile: validatedUserData, cred: newUser, id: newUser.user.uid, doc: newUserDocRef}
+        }).catch((err) => {
+            handleError(err, 'registerError')
+            throw err
         })
+
+        console.log('after user create')
 
         const instance = new this()
         instance.setData(data.id, data.profile, data.doc)
