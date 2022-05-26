@@ -91,7 +91,7 @@ export default {
         loadAuthors(startOver = false){
             this.$refs.authorGrid.startLoading()
             const lastRef = this.authors[this.authors.length - 1] && !startOver ? this.authors[this.authors.length - 1].doc : null
-            Author.getDocumentsWithStorageResource(categoryQueryPaginated(this.query, this.sortByParam, lastRef), ['profile_picture_url']).then((authors) => {
+            Author.getDocumentsWithStorageResourceUrl(categoryQueryPaginated(this.query, this.sortByParam, lastRef), ['profile_picture_url']).then((authors) => {
                 this.$refs.authorGrid.stopLoading()
                 if(startOver){
                     this.authors = authors

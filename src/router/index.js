@@ -142,7 +142,7 @@ const comicsRoutes = [
         }
     },
     {
-        path: "/chapter/:id",
+        path: "/comic/:comicId/chapter/:chapterId",
         name: "Chapter",
         component: () => import("@/pages/Chapter.vue"),
         meta: {

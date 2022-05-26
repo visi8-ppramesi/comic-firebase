@@ -91,7 +91,7 @@ export default {
         loadComics(startOver = false){
             this.$refs.comicGrid.startLoading()
             const lastRef = this.comics[this.comics.length - 1] && !startOver ? this.comics[this.comics.length - 1].doc : null
-            Comic.getDocumentsWithStorageResource(categoryQueryPaginated(this.query, this.sortByParam, lastRef), ['cover_image_url']).then((comics) => {
+            Comic.getDocumentsWithStorageResourceUrl(categoryQueryPaginated(this.query, this.sortByParam, lastRef), ['cover_image_url']).then((comics) => {
                 this.$refs.comicGrid.stopLoading()
                 if(startOver){
                     this.comics = comics

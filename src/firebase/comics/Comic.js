@@ -4,6 +4,7 @@ import Collection from '../Collection.js'
 import Subcollection from '../Subcollection.js'
 import Chapter from './Chapter.js'
 import Author from '../Author.js'
+import { LongText } from '../types/index.js'
 import { doc, increment, orderBy, updateDoc } from 'firebase/firestore'
 
 export default class extends Collection{
@@ -18,7 +19,7 @@ export default class extends Collection{
         'authors_data':	Array,
         // 'authors_split': Subcollection,
         'comments':	Subcollection.resolve('./Comment.js'),
-        'description': String,
+        'description': LongText,
         'chapters':	Subcollection.resolve('./Chapter.js'),
         'tags':	Array,
         'categories': Array,

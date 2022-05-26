@@ -41,13 +41,17 @@
 </template>
 
 <script>
+
 import comic1 from "../assets/2.jpg";
 import comic2 from "../assets/3.jpg";
 import comic3 from "../assets/4.jpg";
 import comic4 from "../assets/5.jpg";
 import comic5 from "../assets/comic.png";
+import comic from "../assets/comic.jpeg";
+import Chapter from '../firebase/comics/Chapter.js'
+
 export default {
-    name: 'page-show',
+    name: 'chapter',
     data(){
         return {
             comics: comic1,
@@ -62,7 +66,12 @@ export default {
                 {image_url: comic1, chapter: '1', release_date: '17/05/2022', favorites_count: '20', views: 1000},
             ]
         }
-    }
+    },
+    created(){
+        Chapter.getDocument(['comics', this.$route.params.comicId, 'chapters'], this.$route.params.chapterId).then((cpt) => {
+            cpt.getPages().then(console.log)
+        })
+    },
 }
 </script>
 
