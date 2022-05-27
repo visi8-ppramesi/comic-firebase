@@ -4,7 +4,12 @@
          <!-- :image="banner.banner_image_url" :link="routeResolver(banner.target_type, {id: banner.target}, {}, 'string')"> -->
             <template #content>
                 <router-link :to="routeResolver(banner.target_type, {id: banner.target}, {}, 'string')">
-                    <img class="w-full h-full object-cover" :src="banner.banner_image_url" alt="">
+                    <mq-responsive target="sm-" tag="span">
+                        <img class="w-full h-full object-cover" :src="banner.banner_image_url" alt="">
+                    </mq-responsive>
+                    <mq-responsive target="md+" tag="span">
+                        <img class="w-full h-full object-cover" :src="banner.banner_image_url_wide ? banner.banner_image_url_wide : banner.banner_image_url" alt="">
+                    </mq-responsive>
                 </router-link>
             </template>
         </vueper-slide>
@@ -59,3 +64,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.transform{
+    transform: rotate(180deg);
+}
+</style>

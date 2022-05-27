@@ -75,12 +75,12 @@
                 alt="Workflow"
               />
               <img
-                class="hidden md:block h-8 w-auto"
+                class="hidden md:block h-16 w-auto"
                 :src="visi8Icon"
                 alt="Workflow"
               />
             </div>
-            <div class="hidden md:block md:ml-6">
+            <div class="hidden md:flex items-center md:ml-6">
               <div class="flex space-x-4">
                 <div v-if="isLoggedIn" class="px-2 py-2 space-y-1">
                   <router-link :to="routeResolver('Dashboard')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
@@ -195,7 +195,7 @@
               >
                 <!-- Active: "bg-gray-100", Not Active: "" -->
                 <router-link
-                  :to="routeResolver('MyProfile')"
+                  :to="routeResolver('MyAccount')"
                   class="block px-4 py-2 text-sm text-gray-700"
                   >My Account</router-link
                 >
