@@ -2,6 +2,7 @@ const fb = require('../firebase.js')
 const _ = require('lodash')
 const ComicFactory = require('../comics.js')
 const ChapterFactory = require('../chapters.js')
+const { ref, listAll, updateMetadata } = require('firebase/storage')
 const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collectionGroup, where, query, FieldPath, orderBy, limit } = require('firebase/firestore')
 
 // let one = true
@@ -10,29 +11,57 @@ const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collecti
 //     soul: true,
 // }
 fb.signInPromise.then(() => {
-    const counts = {}
-    const usersRef = collection(ComicFactory.db, 'users')
-    getDocs(usersRef).then((snap) => {
-        snap.forEach((doc) => {
-            const data = doc.data()
-            data.favorites.forEach((comic) => {
-                console.log(comic)
-                if(counts[comic.id]){
-                    counts[comic.id]++
-                }else{
-                    counts[comic.id] = 1
-                }
+    const listRef = ref(fb.storage, '')
+    listAll(listRef).then((res) => {
+        res.prefixes.forEach((prefix) => {
+            listAll(prefix).then((innerRes) => {
+                innerRes.prefixes.forEach((prefix) => {
+                    listAll(prefix).then((innerInnerRes) => {
+                        innerInnerRes.items.forEach((item) => {
+                            updateMetadata(item, {
+                                cacheControl: 'public,max-age=86400'
+                            })
+                        })
+                    })
+                })
+
+                innerRes.items.forEach((item) => {
+                    updateMetadata(item, {
+                        cacheControl: 'public,max-age=86400'
+                    })
+                })
             })
         })
-        Object.keys(counts).forEach((comicId) => {
-            const comicRef = doc(ComicFactory.db, 'comics', comicId)
-            updateDoc(comicRef, {
-                favorite_count: counts[comicId]
-            }).then((updateComic) => {
-                console.log(updateComic)
+
+        res.items.forEach((item) => {
+            updateMetadata(item, {
+                cacheControl: 'public,max-age=86400'
             })
         })
     })
+    // const counts = {}
+    // const usersRef = collection(ComicFactory.db, 'users')
+    // getDocs(usersRef).then((snap) => {
+    //     snap.forEach((doc) => {
+    //         const data = doc.data()
+    //         data.favorites.forEach((comic) => {
+    //             console.log(comic)
+    //             if(counts[comic.id]){
+    //                 counts[comic.id]++
+    //             }else{
+    //                 counts[comic.id] = 1
+    //             }
+    //         })
+    //     })
+    //     Object.keys(counts).forEach((comicId) => {
+    //         const comicRef = doc(ComicFactory.db, 'comics', comicId)
+    //         updateDoc(comicRef, {
+    //             favorite_count: counts[comicId]
+    //         }).then((updateComic) => {
+    //             console.log(updateComic)
+    //         })
+    //     })
+    // })
     // const comicCollection = collection(ComicFactory.db, 'comics')
     // const q = query(comicCollection, 
     //     ...Object.keys(huh).map((key) => {
