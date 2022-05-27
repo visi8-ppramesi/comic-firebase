@@ -471,12 +471,14 @@
         <router-link :to="routeResolver('PrivacyPolicy')">Privacy Policy</router-link>
       </div>
       <div class="h-12 py-2 flex justify-center content-center items-center">FAQ</div>
-      <div class="py-2 flex justify-center content-center items-center">
-        Follow Us On
-        <div class="flex w-full flex flex-row items-center justify-center mt-2">
-          <a v-for="(soc, idx) in socials" :key="'soc-' + idx" :to="soc.link">
-            <img class="w-12" :src="icons[soc.icon]" />
-          </a>
+      <div>
+        <div class="h-12 py-2 flex justify-center content-center items-center">
+          <router-link :to="routeResolver('PrivacyPolicy')">Follow Us On</router-link>
+        </div>
+        <div class="flex items-center justify-center">
+          <img class="w-8" :src="facebook" />
+          <img class="w-8" :src="instagram" />
+          <img class="w-8" :src="twitter" />
         </div>
       </div>
     </div>
@@ -486,6 +488,9 @@
 <script>
 import { useAuthStore } from './store/auth.js'
 import { mapState } from 'pinia'
+// import facebook from "../assets/icons/facebook.png";
+// import instagram from "../assets/icons/instagram.png";
+// import twitter from "../assets/icons/twitter.png";
 export default {
   name: "App",
   components: {
@@ -513,12 +518,12 @@ export default {
           mobileMenuOpen: false,
           profileMenuOpen: false,
           icons: {
-              facebook: require('./assets/icons/facebook.png'),
-              instagram: require('./assets/icons/instagram.png'),
-              twitter: require('./assets/icons/twitter.png'),
-              visi8: require('./assets/visi8_logo.png')
+              comic: require('./assets/comic.jpeg'),
           },
-          visi8Icon: require('./assets/visi8_logo.png'),//require('./assets/visi8_logo.png'),
+          visi8Icon: require('./assets/visi8_logo.png'),
+          facebook: require('./assets/icons/facebook.png'),
+          instagram: require('./assets/icons/instagram.png'),
+          twitter: require('./assets/icons/twitter.png'),//require('./assets/visi8_logo.png'),
           socials: [],
       }
   },
