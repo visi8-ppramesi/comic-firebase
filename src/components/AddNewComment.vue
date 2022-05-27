@@ -20,7 +20,7 @@
 export default {
     name: 'add-new-comment',
     props: ['commentKey'],
-    inject: ['swal'],
+    // inject: ['swal'],
     data(){
         return {
             message: ''
@@ -28,19 +28,19 @@ export default {
     },
     methods:{
         submit(){
-            axios.post(route('comments.store'), {
-                commentable_encrypted_key: this.commentKey,
-                message: this.message
-            })
-            .then((response) => {
-                this.message = ''
-                this.emitter.emit('reloadComments')
-                return this.swal.fire({
-                    icon: "success",
-                    title: "Comment posted!",
-                    text: "Comment posted succesful!",
-                })
-            })
+            // axios.post(route('comments.store'), {
+            //     commentable_encrypted_key: this.commentKey,
+            //     message: this.message
+            // })
+            // .then((response) => {
+            //     this.message = ''
+            //     this.emitter.emit('reloadComments')
+            //     return this.swal.fire({
+            //         icon: "success",
+            //         title: "Comment posted!",
+            //         text: "Comment posted succesful!",
+            //     })
+            // })
         }
     }
 }

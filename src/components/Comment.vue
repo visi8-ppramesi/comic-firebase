@@ -91,7 +91,7 @@ import moment, { isMoment } from 'moment'
 export default {
     name: 'comment',
     props: ['comment'],
-    inject: ['swal'],
+    // inject: ['swal'],
     data(){
         return {
             moment: null,
@@ -127,62 +127,62 @@ export default {
                 }
             })
         },
-        deleteComment(id){
-            const swalWithBootstrapButtons = this.swal.mixin({
-                customClass: {
-                    confirmButton: 'bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded',
-                    cancelButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                },
-                buttonsStyling: false
-            })
+        deleteComment(){//id){
+            // const swalWithBootstrapButtons = this.swal.mixin({
+            //     customClass: {
+            //         confirmButton: 'bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded',
+            //         cancelButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            //     },
+            //     buttonsStyling: false
+            // })
 
-            swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    axios.delete(route('api.comment.delete', {comment: id}))
-                    .then((response) => {
-                        this.emitter.emit('reloadComments')
-                        swalWithBootstrapButtons.fire(
-                            'Deleted!',
-                            'Your comment has been deleted.',
-                            'success'
-                        )
-                    })
-                } else if (
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Your comment is safe :)',
-                        'error'
-                    )
-                }
-            })
+            // swalWithBootstrapButtons.fire({
+            //     title: 'Are you sure?',
+            //     text: "You won't be able to revert this!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonText: 'Yes, delete it!',
+            //     cancelButtonText: 'No, cancel!',
+            //     reverseButtons: true
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         axios.delete(route('api.comment.delete', {comment: id}))
+            //         .then((response) => {
+            //             this.emitter.emit('reloadComments')
+            //             swalWithBootstrapButtons.fire(
+            //                 'Deleted!',
+            //                 'Your comment has been deleted.',
+            //                 'success'
+            //             )
+            //         })
+            //     } else if (
+            //         result.dismiss === Swal.DismissReason.cancel
+            //     ) {
+            //         swalWithBootstrapButtons.fire(
+            //             'Cancelled',
+            //             'Your comment is safe :)',
+            //             'error'
+            //         )
+            //     }
+            // })
         },
         toggleReplyBox(){
             this.replyBox = !this.replyBox
         },
         submit(){
-            axios.post(route('comments.reply', {comment: this.comment.id}), {
-                message: this.message
-            })
-            .then((response) => {
-                this.message = ''
-                this.replyBox = false
-                this.emitter.emit('reloadComments')
-                return this.swal.fire({
-                    icon: "success",
-                    title: "Comment posted!",
-                    text: "Comment posted succesful!",
-                })
-            })
+            // axios.post(route('comments.reply', {comment: this.comment.id}), {
+            //     message: this.message
+            // })
+            // .then((response) => {
+            //     this.message = ''
+            //     this.replyBox = false
+            //     this.emitter.emit('reloadComments')
+            //     return this.swal.fire({
+            //         icon: "success",
+            //         title: "Comment posted!",
+            //         text: "Comment posted succesful!",
+            //     })
+            // })
         }
     }
 }
