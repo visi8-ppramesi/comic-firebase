@@ -29,7 +29,7 @@
             <div class="w-full px-5 text-center">
                 <div class="flex pb-3 pt-2">
                     <select class="rounded-lg form-select block w-full mt-1 xl:text-xl" @change="changeChapter(selectedChapter)" v-model="selectedChapter">
-                        <option v-for="(chapter, idx) in chapters" :value="chapter.id" :key="'cpt-' + idx">Episode {{chapter.chapter}}</option>
+                        <option v-for="(chapter, idx) in chapters" :value="chapter.id" :key="'cpt-' + idx">Episode {{chapter.chapter_number}}</option>
                     </select>
                 </div>
                 <label for="chapter" class="text-white xl:text-2xl">Select chapter</label>
@@ -55,7 +55,7 @@
 
 <script>
 
-import comic1 from "../assets/2.jpg";
+// import comic1 from "../assets/2.jpg";
 // import comic2 from "../assets/3.jpg";
 // import comic3 from "../assets/4.jpg";
 // import comic4 from "../assets/5.jpg";
@@ -65,6 +65,7 @@ import VideoPlayer from '../components/VideoPlayer.vue'
 import ImageViewer from '../components/ImageViewer.vue'
 import { orderBy } from 'firebase/firestore'
 import _ from 'lodash'
+import Comic from '@/firebase/comics/Comic';
 
 export default {
     name: 'chapter',
@@ -75,8 +76,10 @@ export default {
     },
     data(){
         return {
+            prevEnabled: true,
+            nextEnabled: true,
             loading: true,
-            comics: comic1,
+            comic: null,
             // pages:[
             //     {image_url: comic1},
             //     {image_url: comic2},
@@ -84,13 +87,33 @@ export default {
             //     {image_url: comic4},
             //     {image_url: comic5},
             // ],
-            chapters: [
-                {image_url: comic1, chapter: '1', release_date: '17/05/2022', favorites_count: '20', views: 1000},
-            ],
+            chapters: [],
             chapter: null,
             pages: [],
             chapterPromise: null,
-            scrollFunc: null
+            scrollFunc: null,
+            selectedChapter: null
+        }
+    },
+    watch: {
+        comic(){
+            this.chapters = this.comic.chapters_data.sort((a, b) => {
+                if(a.chapter_number < b.chapter_number){
+                    return -1
+                }else if(a.chapter_number > b.chapter_number){
+                    return 1
+                }
+
+                return 0
+            })
+
+            const findCpt = this.chapters.findIndex((cpt) => cpt.id == this.$route.params.chapterId)
+            if(findCpt == 0){
+                this.prevEnabled = false
+            }
+            if(findCpt == this.chapters.length - 1){
+                this.nextEnabled = false
+            }
         }
     },
     created(){
@@ -101,6 +124,7 @@ export default {
     },
     mounted(){
         console.log('mounted')
+        this.selectedChapter = this.$route.params.chapterId
         this.chapterPromise.then(() => {
             const loaders = []
             console.log(this.$refs)
@@ -151,8 +175,24 @@ export default {
         }
     },
     methods: {
+        changeChapter(chapterId){
+            this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.comicId, chapterId: chapterId}))
+        },
+        prevChapter(){
+            const findCpt = this.chapters.findIndex((cpt) => cpt.id == this.$route.params.chapterId)
+            const prevCpt = this.chapters[findCpt - 1]
+            console.log(prevCpt)
+            this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.comicId, chapterId: prevCpt.id}))
+        },
+        nextChapter(){
+            const findCpt = this.chapters.findIndex((cpt) => cpt.id == this.$route.params.chapterId)
+            const nextCpt = this.chapters[findCpt + 1]
+            console.log(nextCpt)
+            this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.comicId, chapterId: nextCpt.id}))
+        },
         async fetchChapter(){
             this.chapter = await Chapter.getDocument(['comics', this.$route.params.comicId, 'chapters'], this.$route.params.chapterId)
+            this.comic = await Comic.getDocument(this.$route.params.comicId)
             this.pages = await this.chapter.getPages([orderBy('page_number')])
             return true
         }

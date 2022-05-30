@@ -3,9 +3,10 @@
 import Collection from '../Collection.js'
 import Subcollection from '../Subcollection.js'
 import Chapter from './Chapter.js'
-import Author from '../Author.js'
+import Comment from './Comment.js'
 import { LongText } from '../types/index.js'
 import { doc, increment, orderBy, updateDoc } from 'firebase/firestore'
+import utils from '../utils/index.js'
 
 export default class extends Collection{
     static collection = 'comics'
@@ -25,6 +26,7 @@ export default class extends Collection{
         'categories': Array,
         'cover_image_url': String,
         'is_draft':	Boolean,
+        'chapters_data': Array
     }
 
     async viewComic(){
@@ -50,7 +52,14 @@ export default class extends Collection{
 
     async getComments(queries = []){
         const path = [this.constructor.collection, this.id, 'comments']
-        this.comments = await Author.getDocuments(path, queries)
+        this.comments = await Promise.all((await Comment.getDocuments(path, queries)).map(async (doc) => {
+            doc.user_data.profile_image_url = await utils.getDataUrlFromStorage(doc.user_data.profile_image_url)
+            return doc
+        }))
         return this.comments
+    }
+
+    createNewCommentListener(callback){
+        return Comment.createNewCommentListener(this.id, callback)
     }
 }

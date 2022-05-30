@@ -15,8 +15,10 @@ import { LongText, ProfilePicture } from './types/index.js';
 import handleError from '@/utils/handleError.js';
 
 export default class{
+    static collection = ''
     static orderByParam = false
     static fields = {}
+    static db = firebase.db
 
     setEmpty(){
         this.empty = true
@@ -55,6 +57,20 @@ export default class{
     
     toJSON(){
         return {...this}
+    }
+
+    async fetchResources(storageFields){
+        const self = this
+        const promises = []
+        for(let i = 0; i < storageFields.length; i++){
+            promises.push(utils.getDataUrlFromStorage(this[storageFields[i]]))
+        }
+
+        return await Promise.all(promises).then((resource) => {
+            for(let k = 0; k < resource.length; k++){
+                self[storageFields[k]] = resource[k]
+            }
+        })
     }
 
     static async getDocument(path, id){

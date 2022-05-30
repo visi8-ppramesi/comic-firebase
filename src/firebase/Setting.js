@@ -7,6 +7,10 @@ export default class extends Collection{
         'value': Object
     }
 
+    static async getSocials(){
+        return await this.getDocument('socials')
+    }
+
     static async getBanners(){
         const banners = await this.getDocument('banners')
 

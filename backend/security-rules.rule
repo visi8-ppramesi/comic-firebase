@@ -70,17 +70,21 @@ service cloud.firestore {
 
       match /comments/{comment}{
         allow read: if true;
-        allow create: if isLoggedIn();
-        allow update: if commentCurrentUser();
-        allow delete: if commentCurrentUser();
+        allow create: if isLoggedIn() && commentFieldCheck();
+        allow update: if isAdmin() || (commentCurrentUser() && commentFieldCheck());
+        allow delete: if isAdmin() || (commentCurrentUser() && commentFieldCheck());
 
         function commentCurrentUser(){
           return request.auth.uid == resource.data.user.id;
         }
+
+        function commentFieldCheck(){
+          return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['user', 'user_data', 'message', 'flag', 'date'])
+        }
       }
       
       function increment(){
-        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['view_count']) && request.resource.data.view_count == (resource.data.view_count + 1);
+        return isLoggedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['view_count']) && request.resource.data.view_count == (resource.data.view_count + 1);
       }
 
       function favToggle(){

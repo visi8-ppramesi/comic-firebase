@@ -184,6 +184,14 @@ export const routes = [
             showNav: true
         }
     },
+    {
+        path: "/faq",
+        name: "FAQ",
+        component: () => import("@/pages/FAQ.vue"),
+        meta: {
+            showNav: true
+        }
+    },
     ...authorRoutes,
     ...authRoutes,
     ...infoRoutes,

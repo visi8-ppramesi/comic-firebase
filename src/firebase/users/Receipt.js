@@ -13,7 +13,4 @@ export default class extends Subcollection{
         'items': Array,
         'transaction_id': String,
     }
-
-    constructor(path){
-    }
 }

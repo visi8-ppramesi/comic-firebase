@@ -84,6 +84,7 @@
               <div class="flex space-x-4">
                 <div v-if="isLoggedIn" class="px-2 py-2 space-y-1">
                   <router-link :to="routeResolver('Dashboard')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
+                  <router-link :to="routeResolver('MyAccount')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">My Account</router-link>
                   <router-link :to="routeResolver('MyComics')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">My Comics</router-link>
                   <router-link :to="routeResolver('MyTransactions')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page" >My Transactions</router-link >
                   <router-link :to="routeResolver('Logout')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Logout</router-link>
@@ -150,13 +151,13 @@
                 >
                   <span class="sr-only">Open user menu</span>
                   <img
-                    v-if="profile_picture_url"
+                    v-if="isLoggedIn && profile_picture_url"
                     class="h-8 w-8 rounded-full"
                     :src="profile_picture_url"
                     alt=""
                   />
                   <svg
-                    v-else
+                    v-else-if="isLoggedIn"
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-8 w-8"
                     fill="none"
@@ -236,7 +237,7 @@
               />
             </svg>
             <div class="ml-3 relative">
-              <div>
+              <div v-if="isLoggedIn">
                 <button
                   @click="profileMenuOpen = !profileMenuOpen"
                   type="button"
@@ -333,6 +334,21 @@
             "
             aria-current="page"
             >Dashboard</router-link
+          >
+          <router-link
+            :to="routeResolver('MyAccount')"
+            class="
+              bg-gray-900
+              text-white
+              block
+              px-3
+              py-2
+              rounded-md
+              text-base
+              font-medium
+            "
+            aria-current="page"
+            >My Account</router-link
           >
           <router-link
             :to="routeResolver('MyComics')"
@@ -466,19 +482,23 @@
       <div class="h-12 py-2 flex justify-center content-center items-center">
         <router-link :to="routeResolver('AboutUs')">About Us</router-link>
       </div>
-      <div class="h-12 py-2 flex justify-center content-center items-center">My Account</div>
+      <div v-if="isLoggedIn" class="h-12 py-2 flex justify-center content-center items-center">
+        <router-link :to="routeResolver('MyAccount')">My Account</router-link>
+      </div>
       <div class="h-12 py-2 flex justify-center content-center items-center">
         <router-link :to="routeResolver('PrivacyPolicy')">Privacy Policy</router-link>
       </div>
-      <div class="h-12 py-2 flex justify-center content-center items-center">FAQ</div>
+      <div class="h-12 py-2 flex justify-center content-center items-center">
+        <router-link :to="routeResolver('FAQ')">FAQ</router-link>
+      </div>
       <div>
         <div class="h-12 py-2 flex justify-center content-center items-center">
           <router-link :to="routeResolver('PrivacyPolicy')">Follow Us On</router-link>
         </div>
         <div class="flex items-center justify-center">
-          <img class="w-8" :src="facebook" />
-          <img class="w-8" :src="instagram" />
-          <img class="w-8" :src="twitter" />
+          <a target="_blank" :href="socials.facebook"><img class="w-8" :src="facebook" /></a>
+          <a target="_blank" :href="socials.instagram"><img class="w-8" :src="instagram" /></a>
+          <a target="_blank" :href="socials.twitter"><img class="w-8" :src="twitter" /></a>
         </div>
       </div>
     </div>
@@ -488,6 +508,7 @@
 <script>
 import { useAuthStore } from './store/auth.js'
 import { mapState } from 'pinia'
+import Settings from './firebase/Setting.js'
 // import facebook from "../assets/icons/facebook.png";
 // import instagram from "../assets/icons/instagram.png";
 // import twitter from "../assets/icons/twitter.png";
@@ -501,6 +522,7 @@ export default {
       this.mobileMenuOpen = false
       this.profileMenuOpen = false
     })
+    this.getSocials()
   },
   setup(){
     const authStore = useAuthStore()
@@ -524,7 +546,7 @@ export default {
           facebook: require('./assets/icons/facebook.png'),
           instagram: require('./assets/icons/instagram.png'),
           twitter: require('./assets/icons/twitter.png'),//require('./assets/visi8_logo.png'),
-          socials: [],
+          socials: {},
       }
   },
   inject: [
@@ -538,6 +560,10 @@ export default {
     ...mapState(useAuthStore, ['isLoggedIn', 'profile_picture_url'])
   },
   methods: {
+    async getSocials(){
+      this.socials = (await Settings.getSocials()).value
+      console.log(this.socials)
+    },
     goToSearch(){
       this.$router.push(this.routeResolver('Search'))
     },

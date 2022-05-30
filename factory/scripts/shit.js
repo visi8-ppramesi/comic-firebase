@@ -10,35 +10,93 @@ const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collecti
 //     latin: true,
 //     soul: true,
 // }
-fb.signInPromise.then(() => {
-    const listRef = ref(fb.storage, '')
-    listAll(listRef).then((res) => {
-        res.prefixes.forEach((prefix) => {
-            listAll(prefix).then((innerRes) => {
-                innerRes.prefixes.forEach((prefix) => {
-                    listAll(prefix).then((innerInnerRes) => {
-                        innerInnerRes.items.forEach((item) => {
-                            updateMetadata(item, {
-                                cacheControl: 'public,max-age=86400'
-                            })
-                        })
-                    })
-                })
 
-                innerRes.items.forEach((item) => {
-                    updateMetadata(item, {
-                        cacheControl: 'public,max-age=86400'
-                    })
-                })
-            })
+const genres = {
+    'folk': 'horror',
+    'latin': 'scifi',
+    'hip hop': 'superhero',
+    'stage and screen': 'fantasy',
+    'blues': 'horror',
+    'metal': 'scifi',
+    'classical': 'superhero',
+    'children': 'children',
+    'scifi': 'scifi',
+    'fantasy': 'fantasy'
+}
+
+const main = async () => {
+    await fb.signInPromise
+    const comicsCollection = collection(ComicFactory.db, 'comics')
+    const snap = await getDocs(comicsCollection)
+    const comicDocs = Object.values(snap.docs)
+    for(let i = 0; i < comicDocs.length; i++){
+        const comicDoc = comicDocs[i]
+        const tags = comicDoc.data().tags
+        await updateDoc(comicDoc.ref, {
+            categories: tags
         })
 
-        res.items.forEach((item) => {
-            updateMetadata(item, {
-                cacheControl: 'public,max-age=86400'
-            })
-        })
-    })
+        // const comicCptData = []
+        // const cptCollection = collection(ComicFactory.db, 'comics', comicDoc.id, 'chapters')
+        // const cptSnap = await getDocs(cptCollection)
+        // const cptDocs = Object.values(cptSnap.docs)
+        // for(let j = 0; j < cptDocs.length; j++){
+        //     const cptDoc = cptDocs[j]
+        //     const chapter_number = cptDoc.data().chapter_number
+        //     const id = cptDoc.id
+        //     const cptData = { id, chapter_number }
+        //     comicCptData.push(cptData)
+        // }
+        // if(comicCptData.length > 0){
+        //     await updateDoc(comicDoc.ref, { chapters_data: comicCptData })
+        // }
+    }
+}
+
+main()
+// fb.signInPromise.then(() => {
+//     const comicsCollection = collection(ComicFactory.db, 'comics')
+//     getDocs(comicsCollection).then((snap) => {
+//         snap.forEach((comicDoc) => {
+//             const comicCptData = []
+//             const cptCollection = collection(ComicFactory.db, 'comics', comicDoc.id, 'chapters')
+//             getDocs(cptCollection).then((cptSnap) => {
+//                 cptSnap.forEach((cptDoc) => {
+//                     const chapter_number = cptDoc.data().chapter_number
+//                     const id = cptDoc.id
+//                     const cptData = { id, chapter_number }
+//                 })
+//             })
+//         })
+//     })
+    // const listRef = ref(fb.storage, '')
+    // listAll(listRef).then((res) => {
+    //     res.prefixes.forEach((prefix) => {
+    //         listAll(prefix).then((innerRes) => {
+    //             innerRes.prefixes.forEach((prefix) => {
+    //                 listAll(prefix).then((innerInnerRes) => {
+    //                     innerInnerRes.items.forEach((item) => {
+    //                         updateMetadata(item, {
+    //                             cacheControl: 'public,max-age=86400'
+    //                         })
+    //                     })
+    //                 })
+    //             })
+
+    //             innerRes.items.forEach((item) => {
+    //                 updateMetadata(item, {
+    //                     cacheControl: 'public,max-age=86400'
+    //                 })
+    //             })
+    //         })
+    //     })
+
+    //     res.items.forEach((item) => {
+    //         updateMetadata(item, {
+    //             cacheControl: 'public,max-age=86400'
+    //         })
+    //     })
+    // })
     // const counts = {}
     // const usersRef = collection(ComicFactory.db, 'users')
     // getDocs(usersRef).then((snap) => {
@@ -103,7 +161,7 @@ fb.signInPromise.then(() => {
     // getDoc(doc(ComicFactory.db, 'authors', 'EZ7uQtb2V3wU4asdfasdfasdfzxcvzxczxcvrQ1fG9J')).then((snap) => {
     //     console.log(snap.exists())
     // })
-})
+// })
 
 // fb.signInPromise.then(() => {
 //     getDocs(collectionGroup(ComicFactory.db, 'pages')).then((pageSnap) => {

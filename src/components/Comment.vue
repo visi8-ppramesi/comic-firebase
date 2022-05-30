@@ -87,45 +87,42 @@
 </template>
 
 <script>
-import moment, { isMoment } from 'moment'
 export default {
     name: 'comment',
     props: ['comment'],
     // inject: ['swal'],
     data(){
         return {
-            moment: null,
             replyBox: false,
             message: '',
             likes: {},
         }
     },
     created(){
-        this.moment = moment
-        this.likes[this.comment.id] = this.comment.liked
-        this.comment.all_children_with_commenter.forEach((el) => {
-            this.likes[el.id] = el.liked
-        })
+        // this.likes[this.comment.id] = this.comment.liked
+        // this.comment.all_children_with_commenter.forEach((el) => {
+        //     this.likes[el.id] = el.liked
+        // })
     },
     methods:{
         likeComment(commentId, liked){
-            let vote = true
-            if(liked){
-                vote = false
-            }
-            axios.post(route('api.comment.vote', {comment: commentId}), {
-                vote: vote
-            })
-            .then((response) => {
-                this.likes[commentId] = !liked
-                if(this.comment.id === commentId){
-                    this.comment.rating = response.data.rating
-                }else{
-                    let idx = this.comment.all_children_with_commenter.findIndex(el => el.id === commentId)
-                    this.comment.all_children_with_commenter[idx].rating = response.data.rating
-                    // this.comment.all_children_with_commenter[idx].liked = !vote
-                }
-            })
+            // let vote = true
+            // if(liked){
+            //     vote = false
+            // }
+            // axios.post(route('api.comment.vote', {comment: commentId}), {
+            //     vote: vote
+            // })
+            // .then((response) => {
+            //     this.likes[commentId] = !liked
+            //     if(this.comment.id === commentId){
+            //         this.comment.rating = response.data.rating
+            //     }else{
+            //         let idx = this.comment.all_children_with_commenter.findIndex(el => el.id === commentId)
+            //         this.comment.all_children_with_commenter[idx].rating = response.data.rating
+            //         // this.comment.all_children_with_commenter[idx].liked = !vote
+            //     }
+            // })
         },
         deleteComment(){//id){
             // const swalWithBootstrapButtons = this.swal.mixin({
@@ -167,7 +164,7 @@ export default {
             // })
         },
         toggleReplyBox(){
-            this.replyBox = !this.replyBox
+            // this.replyBox = !this.replyBox
         },
         submit(){
             // axios.post(route('comments.reply', {comment: this.comment.id}), {

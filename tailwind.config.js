@@ -17,6 +17,7 @@ module.exports = {
           margin: {
             'xl': '25%',
           },
+          //eslint-disable-next-line no-unused-vars
           height: theme => ({
             "screen-navbar": "calc(100vh - 64px)",
             "screen/2": "50vh",
@@ -25,6 +26,7 @@ module.exports = {
             "screen/5": "calc(100vh / 5)",
             "fit-content": "fit-content"
           }),
+          //eslint-disable-next-line no-unused-vars
           width: theme => ({
             "screen/2": "50vw",
             "screen/3": "calc(100vw / 3)",
@@ -37,9 +39,11 @@ module.exports = {
             "192": "48rem",
             ...widthCalc
           }),
+          //eslint-disable-next-line no-unused-vars
           minHeight: theme => ({
             "screen-navbar": "calc(100vh - 64px)",
           }),
+          //eslint-disable-next-line no-unused-vars
           maxHeight: theme => ({
             '0': '0',
             '1/4': '25vh',
@@ -47,6 +51,7 @@ module.exports = {
             '3/4': '75vh',
             'full': '100vh',
           }),
+          //eslint-disable-next-line no-unused-vars
           maxWidth: theme => ({
             '0': '0',
             '1/4': '25vw',

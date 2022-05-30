@@ -91,16 +91,45 @@
                 </div>
             </div>
         </div>
+        <div class="p-5">
+            <div v-if="isLoggedIn" class="flex mx-auto items-center shadow-lg mb-4 max-w-lg">
+                <div class="w-full max-w-xl bg-white rounded-md px-4 pt-2">
+                    <div class="flex flex-wrap -mx-3 mb-6">
+                        <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add a new comment</h2>
+                        <div class="w-full md:w-full px-3 mb-2 mt-2">
+                            <textarea v-model="newComment" class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white" name="body" placeholder='Type Your Comment' required></textarea>
+                        </div>
+                        <div class="w-full md:w-full flex md:w-full px-3">
+                            <!-- <div class="flex items-start w-1/2 text-gray-700 px-2 mr-auto">
+                                <svg fill="none" class="w-5 h-5 text-gray-600 mr-1" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div> -->
+                            <div class="-mr-1">
+                                <input type="button" @click="submitComment" class="text-center w-40 bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100" value='Post Comment'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-for="(comment, idx) in comments" :key="idx">
+                <!-- <img :src="comment.user_data.profile_image_url" /> -->
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import Comic from '@/firebase/comics/Comic';
+import Comic from '@/firebase/comics/Comic.js';
+import Comment from '@/firebase/comics/Comment.js';
+import { orderByDateDesc } from '@/firebase/utils/queries.js'
+// import Comment from '@/firebase/comics/Comment.js';
 import comic from "../assets/comic.jpeg";
 import _ from 'lodash'
 import { useViewStore } from '../store/view.js'
 import { useAuthStore } from '../store/auth.js'
 import { mapState } from 'pinia'
+import utils from '../firebase/utils/index.js'
 export default {
     name: 'comic-show',
     inject: ['routeResolver'],
@@ -120,11 +149,12 @@ export default {
             favorited: false,
             subscribed: false,
             purchasedChapterIds: [],
+            comments: [],
+            newComment: ''
             // categories: ''
         }
     },
     created(){
-        console.log('comic created')
         const viewStore = useViewStore()
         // const authStore = useAuthStore()
         this.fetchComic().then(() => {
@@ -144,7 +174,6 @@ export default {
 
             this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
                 this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpts.chapters.map((v) => v.id)])]
-                console.log(this.purchasedChapterIds)
             })
         }
     },
@@ -162,8 +191,7 @@ export default {
                 this.subscribed = _.includes(subComicIds, this.$route.params.id)
 
                 this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpt) => {
-                this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpt.chapters.map((v) => v.id)])]
-                    console.log(this.purchasedChapterIds)
+                    this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpt.chapters.map((v) => v.id)])]
                 })
             }
         }
@@ -178,7 +206,8 @@ export default {
         },
         ...mapState(useAuthStore, {
             userData: 'user',
-            userInstance: 'userInstance'
+            userInstance: 'userInstance',
+            isLoggedIn: 'isLoggedIn'
         })
     },
     methods: {
@@ -186,8 +215,7 @@ export default {
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.id, chapterId: chapterId}))
         },
         async purchaseChapter(chapterId){
-            const purchase = await this.userInstance.purchaseChapter(this.$route.params.id, chapterId)
-            console.log(purchase)
+            await this.userInstance.purchaseChapter(this.$route.params.id, chapterId)
         },
         async toggleSubscribeComic(){
             if(this.userInstance){
@@ -221,9 +249,26 @@ export default {
         },
         async fetchComic(){
             this.comic = await Comic.getDocumentWithStorageResource(this.$route.params.id, ['cover_image_url'])
+            this.comments = await this.comic.getComments(orderByDateDesc)
             this.chapters = (await this.comic.getChaptersWithStorageResource()).map(this.formatChapter)
             this.purchasedChapterIds.push(...this.chapters.filter((cpt) => cpt.price == 0).map(cpt => cpt.id))
+
+            let firstRun = false
+            this.comic.createNewCommentListener((newCommInstance) => {
+                if(firstRun){
+                    utils.getDataUrlFromStorage(newCommInstance.user_data.profile_image_url).then((image) => {
+                        newCommInstance.user_data.profile_image_url = image
+                        this.comments.unshift(newCommInstance)
+                    })
+                }else{
+                    firstRun = true
+                }
+            })
             return this.comic
+        },
+        async submitComment(){
+            await Comment.addComment(this.$route.params.id, this.newComment, this.userData)
+            this.newComment = ''
         }
     }
 }

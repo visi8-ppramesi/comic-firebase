@@ -11,7 +11,20 @@ import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
 import 'vue-toast-notification/dist/theme-sugar.css';
+import _ from 'lodash'
 
+_.mixin({
+    pipeline: function(){
+        const args = (_.isArray(arguments[0])) ? arguments[0] : arguments;
+        return function(seed){
+            return _.reduce(
+                args,
+                function(l,r) { return r(l); },
+                seed
+            )
+        }
+    }
+})
 
 const app = createApp(App)
 // const emitter = mitt()

@@ -8,7 +8,4 @@ export default class extends Subcollection{
         'comic': Subcollection.resolve('../comics/Comic.js'),
         'chapters': [ Subcollection.resolve('../comics/Chapter.js'), ]
     }
-
-    constructor(path){
-    }
 }

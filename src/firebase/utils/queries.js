@@ -2,6 +2,10 @@ import { where, limit, orderBy, startAfter, doc, FieldPath } from 'firebase/fire
 import firebase from '../firebase.js'
 import _ from 'lodash'
 
+export const orderByDateDesc = [ orderBy('date', 'desc') ]
+
+export const authorLimitTen = [ orderBy('name'), limit(10) ]
+
 export const orderByLimit = [ orderBy('last_update'), limit(10) ]
 
 export const scifiQuery = [ where('categories', 'array-contains', 'scifi') ]

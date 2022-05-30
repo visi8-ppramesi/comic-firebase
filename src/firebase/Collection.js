@@ -59,6 +59,20 @@ export default class{
         return {...this}
     }
 
+    async fetchResources(storageFields){
+        const self = this
+        const promises = []
+        for(let i = 0; i < storageFields.length; i++){
+            promises.push(utils.getDataUrlFromStorage(this[storageFields[i]]))
+        }
+
+        return await Promise.all(promises).then((resource) => {
+            for(let k = 0; k < resource.length; k++){
+                self[storageFields[k]] = resource[k]
+            }
+        })
+    }
+
     static async getDocument(id){
         const eventRef = doc(firebase.db, this.collection, id)
         try{

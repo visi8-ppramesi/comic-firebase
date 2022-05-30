@@ -230,6 +230,7 @@ import Banner from '../components/Banner.vue'
 import Comic from '../firebase/comics/Comic.js'
 import Author from '@/firebase/Author'
 import Setting from '@/firebase/Setting'
+import { authorLimitTen, orderByLimit } from '../firebase/utils/queries.js'
 // import { where } from 'firebase/firestore'
 // import Tag from '../firebase/Tag.js'
 // import UserRole from '../firebase/UserRole.js'
@@ -253,13 +254,13 @@ export default {
             this.banners = banners.value
         },
         async fetchComics(){
-            const comicGenerator = Comic.generateDocumentsWithStorageResource([], ['cover_image_url'])
+            const comicGenerator = Comic.generateDocumentsWithStorageResource(orderByLimit, ['cover_image_url'])
             for await(let comic of comicGenerator){
                 this.comics.push(comic)
             }
         },
         async fetchAuthors(){
-            const authorGenerator = Author.generateDocumentsWithStorageResource([], ['profile_picture_url'])
+            const authorGenerator = Author.generateDocumentsWithStorageResource(authorLimitTen, ['profile_picture_url'])
             for await(let author of authorGenerator){
                 this.authors.push(author)
             }
@@ -286,6 +287,7 @@ export default {
         }
     },
     mounted(){
+        console.log(this.routeResolver('Comics', {}, {category: 'adventure'}))
         this.fetchComics()
         this.fetchAuthors()
         this.fetchBanners()
