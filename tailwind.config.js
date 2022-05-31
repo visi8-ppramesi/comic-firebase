@@ -34,6 +34,8 @@ module.exports = {
             "screen/8": "calc(100vw / 8)",
             "screen/10": "calc(100vw / 10)",
             "fit-content": "fit-content",
+            "xl": "28rem",
+            "2xl": "45rem",
             "192": "48rem",
             ...widthCalc
           }),

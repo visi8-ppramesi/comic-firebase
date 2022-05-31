@@ -438,13 +438,12 @@
         class="
           md:w-96
           max-w-full
-          min-h-screen
+          min-h-full
           main-content
           flex-1
           bg-gradient-to-t
           from-purple-800
           to-indigo-900
-          md:pb-5
           h-auto
           text-black
         "
