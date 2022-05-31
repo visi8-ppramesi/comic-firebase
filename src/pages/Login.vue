@@ -67,7 +67,9 @@ export default {
         login(){
             this.authStore.login(this.email, this.password, 
                 () => {
-                    this.$router.push({ name: 'Dashboard' })
+                    const fromRouteStr = localStorage.getItem('fromRoute')
+                    const fromRoute = fromRouteStr ? JSON.parse(fromRouteStr) : { name: 'Dashboard' }
+                    this.$router.push(fromRoute)
                 },
                 () => {
                     //error function

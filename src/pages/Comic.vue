@@ -1,6 +1,6 @@
 <template>
     <div v-if="!loading">
-        <div class="min-h-screen-navbar bg-cover text-left pt-64 description-block text-white flex flex-col justify-end p-5 bg-center" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + comic.cover_image_url + ');'"><!-- top block -->
+        <div class="min-h-screen-navbar bg-cover text-left description-block text-white flex flex-col justify-end p-5 bg-center" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + comic.cover_image_url + ');'"><!-- top block -->
             <div>
                 <div>{{categories}}</div>
             </div>
@@ -91,9 +91,9 @@
                 </div>
             </div>
         </div>
-        <div class="p-5">
-            <div v-if="isLoggedIn" class="flex mx-auto items-center shadow-lg mb-4 max-w-lg">
-                <div class="w-full max-w-xl bg-white rounded-md px-4 pt-2">
+        <div class="p-5" :class="comments.length > 0 ? 'pb-3' : 'pb-0'">
+            <div v-if="isLoggedIn" class="flex mx-auto items-center shadow-lg mb-5 max-w-xl">
+                <div class="w-full bg-white rounded-md px-4 pt-2">
                     <div class="flex flex-wrap -mx-3 mb-6">
                         <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add a new comment</h2>
                         <div class="w-full md:w-full px-3 mb-2 mt-2">
@@ -112,7 +112,17 @@
                     </div>
                 </div>
             </div>
+            <div v-if="comments.length > 0" class="text-white text-lg">Comments</div>
             <div v-for="(comment, idx) in comments" :key="idx">
+                <comment-component
+                    @deleteComment="onCommentDelete"
+                    :commentObject="comment"
+                    :allowDelete="canUserDelete(comment.user)"
+                    :commentMessage="comment.message"
+                    :userName="comment.user_data.name"
+                    :postDate="comment.date"
+                    :profilePicture="comment.user_data.profile_image_url"
+                />
                 <!-- <img :src="comment.user_data.profile_image_url" /> -->
             </div>
         </div>
@@ -120,6 +130,7 @@
 </template>
 
 <script>
+import CommentComponent from '../components/Comment.vue'
 import Comic from '@/firebase/comics/Comic.js';
 import Comment from '@/firebase/comics/Comment.js';
 import { orderByDateDesc } from '@/firebase/utils/queries.js'
@@ -133,6 +144,9 @@ import utils from '../firebase/utils/index.js'
 export default {
     name: 'comic-show',
     inject: ['routeResolver'],
+    components: {
+        CommentComponent
+    },
     data(){
         return {
             loading: true,
@@ -211,6 +225,17 @@ export default {
         })
     },
     methods: {
+        onCommentDelete(id){
+            this.comments = _.remove(this.comments, (comment) => {
+                return comment.id != id
+            })
+        },
+        canUserDelete(userRef){
+            if(!this.userData){
+                return false
+            }
+            return userRef.id == this.userData.id
+        },
         goToChapter(chapterId){
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.id, chapterId: chapterId}))
         },
@@ -256,10 +281,15 @@ export default {
             let firstRun = false
             this.comic.createNewCommentListener((newCommInstance) => {
                 if(firstRun){
-                    utils.getDataUrlFromStorage(newCommInstance.user_data.profile_image_url).then((image) => {
-                        newCommInstance.user_data.profile_image_url = image
-                        this.comments.unshift(newCommInstance)
+                    const foundId = _.findIndex(this.comments, (com) => {
+                        return com.id == newCommInstance.id
                     })
+                    if(foundId < 0){
+                        utils.getDataUrlFromStorage(newCommInstance.user_data.profile_image_url).then((image) => {
+                            newCommInstance.user_data.profile_image_url = image
+                            this.comments.unshift(newCommInstance)
+                        })
+                    }
                 }else{
                     firstRun = true
                 }

@@ -46,6 +46,15 @@ export default function(err, type){
                 position: 'bottom'
             })
             break;
+        case 'deleteCommentError':
+            app._instance.proxy.$toast.open({
+                message: "Can't delete comment! Something went wrong!",
+                type: "error",
+                duration: 5000,
+                dismissible: true,
+                position: 'bottom'
+            })
+            break;
         default:
             break;
     }

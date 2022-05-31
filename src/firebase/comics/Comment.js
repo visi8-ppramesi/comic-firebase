@@ -1,5 +1,6 @@
 import Subcollection from "../Subcollection";
-import { addDoc, doc, collection, onSnapshot, query, orderBy, limit } from "firebase/firestore";
+import { addDoc, doc, collection, onSnapshot, query, orderBy, limit, deleteDoc } from "firebase/firestore";
+import handleError from "@/utils/handleError";
 // import firebase from '../firebase.js'
 // import User from "../users/User";
 
@@ -13,14 +14,26 @@ export default class extends Subcollection{
         'date': Date
     }
 
+    async deleteComment(){
+        try{
+            const comRef = doc(this.constructor.db, 'comics', this.parentId, 'comments', this.id)
+            return await deleteDoc(comRef)
+        }catch(err){
+            handleError(err, 'deleteCommentError')
+            throw err
+        }
+    }
+
     static async createNewCommentListener(comicId, callback){
         const commentConstructor = (snap) => {
-            const data = snap.docs[0].data()
-            const instance = new this()
-            const parentId = comicId
-            instance.setData(parentId, snap.docs[0].id, data, snap.docs[0])
-
-            callback(instance)
+            if(!snap.empty){
+                const data = snap.docs[0].data()
+                const instance = new this()
+                const parentId = comicId
+                instance.setData(parentId, snap.docs[0].id, data, snap.docs[0])
+    
+                callback(instance)
+            }
         }
         const collRef = collection(this.db, 'comics', comicId, 'comments')
         return onSnapshot(query(collRef, orderBy('date', 'desc'), limit(1)), commentConstructor)
