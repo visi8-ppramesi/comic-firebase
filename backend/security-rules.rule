@@ -70,16 +70,20 @@ service cloud.firestore {
 
       match /comments/{comment}{
         allow read: if true;
-        allow create: if isLoggedIn() && commentFieldCheck();
-        allow update: if isAdmin() || (commentCurrentUser() && commentFieldCheck());
-        allow delete: if isAdmin() || (commentCurrentUser() && commentFieldCheck());
+        allow create: if isAdmin() || (isLoggedIn() && commentFieldCheck(['user', 'user_data', 'message', 'flag', 'date']) && commentRequestCurrentUser());
+        allow update: if isAdmin() || (isLoggedIn() && commentFieldCheck(['message']) && commentResourceCurrentUser());
+        allow delete: if isAdmin() || (isLoggedIn() && commentResourceCurrentUser());
 
-        function commentCurrentUser(){
-          return request.auth.uid == resource.data.user.id;
+        function commentResourceCurrentUser(){
+          return /databases/$(database)/documents/users/$(request.auth.uid) == resource.data.user;
         }
 
-        function commentFieldCheck(){
-          return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['user', 'user_data', 'message', 'flag', 'date'])
+        function commentRequestCurrentUser(){
+          return /databases/$(database)/documents/users/$(request.auth.uid) == request.resource.data.user;
+        }
+
+        function commentFieldCheck(fieldCheck){
+          return request.resource.data.keys().hasOnly(fieldCheck)
         }
       }
       
