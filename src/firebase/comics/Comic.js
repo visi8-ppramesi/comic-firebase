@@ -18,7 +18,12 @@ export default class extends Collection{
         'favorite_count': Number,
         'release_date': Date,
         'authors': [ Collection.resolve('../Author.js') ],
-        'authors_data':	Array,
+        // 'authors_data':	Array,
+        'authors_data': new InstanceData({
+            id: String,
+            name: String,
+            profile_picture_url: String
+        }),
         // 'authors_split': Subcollection,
         'comments':	Subcollection.resolve('./Comment.js'),
         'description': LongText,

@@ -15,6 +15,29 @@ import { LongText, ProfilePicture, InstanceData, StorageLink } from './types/ind
 import handleError from '@/utils/handleError.js';
 import _ from 'lodash'
 
+//eslint-disable-next-line no-unused-vars
+const setDataHelper = async (fields, instance, key, data, extraConditional = true) => {
+    const isLongText = fields[key] == LongText
+    const isProfilePicture = fields[key] == ProfilePicture
+    const isStorageLink = fields[key] == StorageLink
+
+    if(!_.isNil(data[key]) && extraConditional){
+        if(isLongText){
+            instance[key] = data[key].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
+        }else if(isProfilePicture){
+            if(_.isEmpty(data[key])){
+                instance[key] = firebase.firebaseConfig.defaultProfilePicture
+            }else{
+                instance[key] = data[key]
+            }
+        }else if(isStorageLink){
+            instance[key] = await utils.getDataUrlFromStorage(data[key])
+        }else{
+            instance[key] = data[key]
+        }
+    }
+}
+
 export default class{
     static collection = ''
     static orderByParam = false
@@ -44,30 +67,34 @@ export default class{
                     const myData = data[field][i]
                     const instanceData = {}
                     for(let j = 0; j < fieldKeys.length; j++){
-                        const isInstanceDataLongText = this.constructor.fields[field].fields[fieldKeys[j]] == LongText
-                        const isInstanceDataProfilePicture = this.constructor.fields[field].fields[fieldKeys[j]] == ProfilePicture
-                        const isInstanceStorageLink = this.constructor.fields[field].fields[fieldKeys[j]] == StorageLink
+                        await setDataHelper(this.constructor.fields[field].fields, instanceData, fieldKeys[j], myData)
+
+                        // const isInstanceDataLongText = this.constructor.fields[field].fields[fieldKeys[j]] == LongText
+                        // const isInstanceDataProfilePicture = this.constructor.fields[field].fields[fieldKeys[j]] == ProfilePicture
+                        // const isInstanceStorageLink = this.constructor.fields[field].fields[fieldKeys[j]] == StorageLink
                         
-                        if(!_.isNil(myData[fieldKeys[j]])){
-                            if(isInstanceDataLongText){
-                                instanceData[fieldKeys[j]] = myData[fieldKeys[j]].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
-                            }else if(isInstanceDataProfilePicture){
-                                if(_.isEmpty(myData[fieldKeys[j]])){
-                                    instanceData[fieldKeys[j]] = firebase.firebaseConfig.defaultProfilePicture
-                                }else{
-                                    instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
-                                }
-                            }else if(isInstanceStorageLink){
-                                instanceData[fieldKeys[j]] = await utils.getDataUrlFromStorage(myData[fieldKeys[j]])
-                            }else{
-                                instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
-                            }
-                        }
+                        // if(!_.isNil(myData[fieldKeys[j]])){
+                        //     if(isInstanceDataLongText){
+                        //         instanceData[fieldKeys[j]] = myData[fieldKeys[j]].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
+                        //     }else if(isInstanceDataProfilePicture){
+                        //         if(_.isEmpty(myData[fieldKeys[j]])){
+                        //             instanceData[fieldKeys[j]] = firebase.firebaseConfig.defaultProfilePicture
+                        //         }else{
+                        //             instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
+                        //         }
+                        //     }else if(isInstanceStorageLink){
+                        //         instanceData[fieldKeys[j]] = await utils.getDataUrlFromStorage(myData[fieldKeys[j]])
+                        //     }else{
+                        //         instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
+                        //     }
+                        // }
                     }
                     thisMyData.push(instanceData)
                 }
                 this[field] = thisMyData
             }else if(!_.isNil(data[field]) && !isSubcollection){
+                // await setDataHelper(this.constructor.fields, this, field, data, !isSubcollection)
+
                 if(isLongText){
                     this[field] = data[field].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
                 }else if(isProfilePicture){
