@@ -3,6 +3,7 @@ import errorHandler from "./utils/errorHandler";
 import _ from 'lodash'
 
 const storageComicsViewed = localStorage.getItem('comics_viewed')
+const storageChaptersViewed = localStorage.getItem('chapters_viewed')
 const storageDateViewed = localStorage.getItem('view_date')
 
 const viewHelper = (id, comic, store) => {
@@ -18,17 +19,34 @@ const viewHelper = (id, comic, store) => {
     }
 }
 
+const viewChapterHelper = (id, chapter, store) => {
+    try{
+        return chapter.viewChapter().then(() => {
+            store.chapters_viewed.push(id)
+            localStorage.setItem('chapters_viewed', JSON.stringify(store.chapters_viewed))
+        })
+    }catch(err){
+        errorHandler(err)
+    }
+}
+
 export const useViewStore = defineStore('comicViewed', {
     state: () => ({
         comics_viewed: _.isNil(storageComicsViewed) ? [] : JSON.parse(storageComicsViewed),
         view_date: _.isNil(storageDateViewed) ? {} : JSON.parse(storageDateViewed),
+        chapters_viewed: _.isNil(storageChaptersViewed) ? [] : JSON.parse(storageChaptersViewed)
     }),
     
     getters: {},
 
     actions: {
+        viewChapter(chapterInstance){
+            const id = chapterInstance.id
+            if(!_.includes(this.chapters_viewed, id)){
+                return viewChapterHelper(id, chapterInstance, this)
+            }
+        },
         viewComic(comicInstance){
-            console.log('viewing')
             const id = comicInstance.id
             if(!_.includes(this.comics_viewed, id)){
                 if(!(id in this.view_date)){

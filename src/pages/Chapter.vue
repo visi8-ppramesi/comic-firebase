@@ -64,6 +64,7 @@ import Chapter from '../firebase/comics/Chapter.js'
 import VideoPlayer from '../components/VideoPlayer.vue'
 import ImageViewer from '../components/ImageViewer.vue'
 import { orderBy } from 'firebase/firestore'
+import { useViewStore } from '../store/view.js'
 import _ from 'lodash'
 import Comic from '@/firebase/comics/Comic';
 
@@ -117,7 +118,9 @@ export default {
         }
     },
     created(){
+        const viewStore = useViewStore()
         this.chapterPromise = this.fetchChapter().then(() => {
+            viewStore.viewChapter(this.chapter)
             this.loading = false
             return true
         })
