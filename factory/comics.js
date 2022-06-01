@@ -6,6 +6,7 @@ const Factory = require('./factory.js')
 const AuthorFactory = require('./authors.js')
 const TagFactory = require('./tags.js')
 const CategoryFactory = require('./categories.js')
+const { settings } = require('./firebase.js')
 const _ = require('lodash')
 
 module.exports = class ComicFactory extends Factory{
@@ -57,17 +58,27 @@ module.exports = class ComicFactory extends Factory{
         const newPages = []
         for(let i = 0; i < docs.length; i++){
             const doc = docs[i]
+            for(let m = 0; m < settings.counterShardNum; m++){
+                await setDoc(doc(this.db, 'comics', doc.id, 'counters', m.toString()), {
+                    view_count: 0
+                })
+            }
             for(let k = 0; k < cptNum; k++){
                 const newData = await ChapterFactory.createData(k + 1)
-                console.log(newData)
                 const newDoc = await addDoc(collection(this.db, 'comics', doc.id, 'chapters'), newData)
+                
                 const newDocId = newDoc.id
                 const updatedComic = await updateDoc(doc(this.db, 'comics', doc.id), {
                     chapters_data: arrayUnion({ id: newDocId, chapter_number: k + 1 })
                 })
+
+                for(let q = 0; q < settings.counterShardNum; q++){
+                    await setDoc(doc(this.db, 'comics', doc.id, 'chapters', newDocId, 'counters', q.toString()), {
+                        view_count: 0
+                    })
+                }
                 for(let j = 0; j < pgNum; j++){
                     const newPageData = await PageFactory.createData(j + 1)
-                    console.log(newPageData)
                     const newPageDoc = await addDoc(collection(this.db, 'comics', doc.id, 'chapters', newDoc.id, 'pages'), newPageData)
                     newPages.push(newPageDoc)
                 }

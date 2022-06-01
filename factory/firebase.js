@@ -15,6 +15,10 @@ const firebaseConfig = {
     measurementId: env.VUE_APP_MEASUREMENT_ID,
 };
 
+const settings = {
+    counterShardNum: 10
+}
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -22,4 +26,4 @@ const auth = getAuth(app);
 const storage = getStorage(app)
 const signInPromise = signInWithEmailAndPassword(auth, env.VUE_APP_ADMIN_EMAIL, env.VUE_APP_ADMIN_PASSWORD)
 
-module.exports = { app, db, auth, storage, signInPromise }
+module.exports = { app, db, auth, storage, signInPromise, settings }

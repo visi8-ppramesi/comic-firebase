@@ -33,11 +33,17 @@ export const useViewStore = defineStore('comicViewed', {
             if(!_.includes(this.comics_viewed, id)){
                 if(!(id in this.view_date)){
                     return viewHelper(id, comicInstance, this)
-                }else{
+                }/*else{
                     const viewDate = new Date(this.view_date[id])
                     if(viewDate < comicInstance.last_update.toDate()){
                         return viewHelper(id, comicInstance, this)
                     }
+                }*/
+            }else{
+                console.log(comicInstance)
+                const viewDate = new Date(this.view_date[id])
+                if(viewDate < comicInstance.last_update.toDate()){
+                    return viewHelper(id, comicInstance, this)
                 }
             }
             return false

@@ -4,9 +4,10 @@ import Collection from '../Collection.js'
 import Subcollection from '../Subcollection.js'
 import Chapter from './Chapter.js'
 import Comment from './Comment.js'
-import { LongText } from '../types/index.js'
+import { LongText, InstanceData, StorageLink } from '../types/index.js'
 import { doc, increment, orderBy, updateDoc } from 'firebase/firestore'
 import utils from '../utils/index.js'
+import firebaseSettings from '../firebaseSettings.js'
 
 export default class extends Collection{
     static collection = 'comics'
@@ -26,11 +27,21 @@ export default class extends Collection{
         'categories': Array,
         'cover_image_url': String,
         'is_draft':	Boolean,
-        'chapters_data': Array
+        // 'chapters_data': Array,
+        'last_update': Date,
+        'chapters_data': new InstanceData({
+            id: String, 
+            chapter_number: Number, 
+            chapter_preview_url: StorageLink, 
+            release_date: Date, 
+            view_count: Number, 
+            price: Number
+        })
     }
 
     async viewComic(){
-        const comicRef = doc(this.constructor.db, 'comics', this.id)
+        const counterIndex = Math.floor(Math.random() * firebaseSettings.counterShardNum).toString()
+        const comicRef = doc(this.constructor.db, 'comics', this.id, 'counters', counterIndex)
         return await updateDoc(comicRef, {
             view_count: increment(1)
         })

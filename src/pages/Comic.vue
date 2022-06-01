@@ -135,7 +135,7 @@ import Comic from '@/firebase/comics/Comic.js';
 import Comment from '@/firebase/comics/Comment.js';
 import { orderByDateDesc } from '@/firebase/utils/queries.js'
 // import Comment from '@/firebase/comics/Comment.js';
-import comic from "../assets/comic.jpeg";
+// import comic from "../assets/comic.jpeg";
 import _ from 'lodash'
 import { useViewStore } from '../store/view.js'
 import { useAuthStore } from '../store/auth.js'
@@ -157,9 +157,7 @@ export default {
             authors: [
                 {name: 'Andrew White'}
             ],
-            chapters: [
-                {chapter_preview_url: comic, chapter_number: '1', release_date: '17/05/2022', view_count: '20'},
-            ],
+            chapters: [],
             favorited: false,
             subscribed: false,
             purchasedChapterIds: [],
@@ -274,8 +272,22 @@ export default {
         },
         async fetchComic(){
             this.comic = await Comic.getDocumentWithStorageResource(this.$route.params.id, ['cover_image_url'])
-            this.comments = await this.comic.getComments(orderByDateDesc)
-            this.chapters = (await this.comic.getChaptersWithStorageResource()).map(this.formatChapter)
+            this.comments = await this.comic.getComments(orderByDateDesc())
+            this.chapters = this.comic.chapters_data.map(this.formatChapter)//(await this.comic.getChaptersWithStorageResource()).map(this.formatChapter)
+                .sort((a, b) => {
+                    if(a.chapter_number > b.chapter_number){
+                        return 1
+                    }
+                    if(a.chapter_number < b.chapter_number){
+                        return -1
+                    }
+                    return 0
+                })
+            // for(let i = 0; i < tempChapters.length; i++){
+            //     tempChapters[i].chapter_preview_url = await utils.getDataUrlFromStorage(tempChapters[i].chapter_preview_url)
+            //     this.chapters.push(tempChapters[i])
+            // }
+
             this.purchasedChapterIds.push(...this.chapters.filter((cpt) => cpt.price == 0).map(cpt => cpt.id))
 
             let firstRun = false

@@ -6,6 +6,9 @@ service cloud.firestore {
     //  allow read, write: if
     //      request.time < timestamp.date(2022, 6, 11);
     // }
+    match /{path=**}/counters/{counter} {
+      allow read: if true;
+    }
 
     match /config/{config}{
       allow read: if true;
@@ -48,11 +51,21 @@ service cloud.firestore {
 
     match /comics/{comic}{
       allow read: if true;
-      allow write: if isAdmin() || increment() || favToggle();
+      allow write: if isAdmin() || favToggle();// || increment();
+
+      match /counters/{counter}{
+        allow read: if true;//isAdmin();
+        allow write: if isAdmin() || increment();
+      }
 
       match /chapters/{chapter}{
-        allow read: if true;//if checkIfFree() || checkIfOwned();
-        allow write: if isAdmin() || increment();
+        allow read: if isAdmin() || checkIfFree() || checkIfOwned();
+        allow write: if isAdmin();// || increment();
+
+        match /counters/{counter}{
+          allow read: if true;//isAdmin();
+          allow write: if isAdmin() || increment();
+        }
 
         match /pages/{page}{
           allow read: if checkIfFree() || checkIfOwned() || isAdmin();

@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import utils from './utils/index.js'
 import _ from 'lodash'
-import { LongText, ProfilePicture } from './types/index.js';
+import { LongText, ProfilePicture, InstanceData, StorageLink } from './types/index.js';
 import handleError from '@/utils/handleError.js';
 
 export default class{
@@ -24,15 +24,50 @@ export default class{
         this.empty = true
     }
 
-    setData(parentId, id, data, doc = null){
+    async setData(parentId, id, data, doc = null){
         this.empty = false
         this.id = id
         this.parentId = parentId
-        Object.keys(this.constructor.fields).forEach((field) => {
+        const fields = Object.keys(this.constructor.fields)
+        for(let p = 0; p < fields.length; p++){
+            const field = fields[p]
+        // }
+        // Object.keys(this.constructor.fields).forEach((field) => {
             const isSubcollection = this.constructor.fields[field] == this
             const isLongText = this.constructor.fields[field] == LongText
             const isProfilePicture = this.constructor.fields[field] == ProfilePicture
-            if(!_.isNil(data[field]) && !isSubcollection){
+            const isInstanceData = this.constructor.fields[field] instanceof InstanceData
+            if(isInstanceData){
+                const fieldKeys = this.constructor.fields[field].keys
+                const thisMyData = []
+                for(let i = 0; i < data[field].length; i++){
+                    const myData = data[field][i]
+                    const instanceData = {}
+                    for(let j = 0; j < fieldKeys.length; j++){
+                        const isInstanceDataLongText = this.constructor.fields[field].fields[fieldKeys[j]] == LongText
+                        const isInstanceDataProfilePicture = this.constructor.fields[field].fields[fieldKeys[j]] == ProfilePicture
+                        const isInstanceStorageLink = this.constructor.fields[field].fields[fieldKeys[j]] == StorageLink
+                        
+                        if(!_.isNil(myData[fieldKeys[j]])){
+                            if(isInstanceDataLongText){
+                                instanceData[fieldKeys[j]] = myData[fieldKeys[j]].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
+                            }else if(isInstanceDataProfilePicture){
+                                if(_.isEmpty(myData[fieldKeys[j]])){
+                                    instanceData[fieldKeys[j]] = firebase.firebaseConfig.defaultProfilePicture
+                                }else{
+                                    instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
+                                }
+                            }else if(isInstanceStorageLink){
+                                instanceData[fieldKeys[j]] = await utils.getDataUrlFromStorage(myData[fieldKeys[j]])
+                            }else{
+                                instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
+                            }
+                        }
+                    }
+                    thisMyData.push(instanceData)
+                }
+                this[field] = thisMyData
+            }else if(!_.isNil(data[field]) && !isSubcollection){
                 if(isLongText){
                     this[field] = data[field].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
                 }else if(isProfilePicture){
@@ -49,7 +84,30 @@ export default class{
                     this[field] = firebase.firebaseConfig.defaultProfilePicture
                 }
             }
-        })
+        }
+        // })
+        // Object.keys(this.constructor.fields).forEach((field) => {
+        //     const isSubcollection = this.constructor.fields[field] == this
+        //     const isLongText = this.constructor.fields[field] == LongText
+        //     const isProfilePicture = this.constructor.fields[field] == ProfilePicture
+        //     if(!_.isNil(data[field]) && !isSubcollection){
+        //         if(isLongText){
+        //             this[field] = data[field].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
+        //         }else if(isProfilePicture){
+        //             if(_.isEmpty(data[field])){
+        //                 this[field] = firebase.firebaseConfig.defaultProfilePicture
+        //             }else{
+        //                 this[field] = data[field]
+        //             }
+        //         }else{
+        //             this[field] = data[field]
+        //         }
+        //     }else if(_.isNil(data[field]) && !isSubcollection){
+        //         if(isProfilePicture){
+        //             this[field] = firebase.firebaseConfig.defaultProfilePicture
+        //         }
+        //     }
+        // })
         if(doc){
             this.doc = doc
         }
@@ -85,7 +143,7 @@ export default class{
             const data = doc.data()
             const instance = new this()
             const parentId = path[path.length - 2]
-            instance.setData(parentId, doc.id, data, doc)
+            await instance.setData(parentId, doc.id, data, doc)
     
             return instance
         }catch(err){
@@ -107,7 +165,7 @@ export default class{
             let data = doc.data()
 
             const instance = new this()
-            instance.setData(parentId, doc.id, data, doc)
+            await instance.setData(parentId, doc.id, data, doc)
 
             try{
                 const resources = []
@@ -158,7 +216,7 @@ export default class{
             data.id = docs[i].id
 
             const instance = new this()
-            instance.setData(parentId, data.id, data, data.doc)
+            await instance.setData(parentId, data.id, data, data.doc)
 
             for(let j = 0; j < storageFields.length; j++){
                 resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
@@ -193,11 +251,11 @@ export default class{
         
         try{
             const snap = await getDocs(q)
-            return utils.parseDocs(snap.docs).map((datum, idx) => {
+            return await Promise.all(utils.parseDocs(snap.docs).map(async (datum, idx) => {
                 const instance = new this()
-                instance.setData(parentId, datum.id, datum, snap.docs[idx])
+                await instance.setData(parentId, datum.id, datum, snap.docs[idx])
                 return instance
-            })
+            }))
         }catch(err){
             handleError(err, 'getDocumentsError')
             throw err
@@ -230,7 +288,7 @@ export default class{
             data.id = docs[i].id
 
             const instance = new this()
-            instance.setData(parentId, data.id, data, data.doc)
+            await instance.setData(parentId, data.id, data, data.doc)
 
             for(let j = 0; j < storageFields.length; j++){
                 resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
@@ -275,7 +333,7 @@ export default class{
             const resources = []
 
             const instance = new this()
-            instance.setData(parentId, docs[i].id, data, docs[i])
+            await instance.setData(parentId, docs[i].id, data, docs[i])
             for(let j = 0; j < storageFields.length; j++){
                 resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
             }
@@ -323,7 +381,7 @@ export default class{
             data.id = docs[i].id
 
             const instance = new this()
-            instance.setData(parentId, docs[i].id, data, docs[i])
+            await instance.setData(parentId, docs[i].id, data, docs[i])
             for(let j = 0; j < storageFields.length; j++){
                 resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
             }

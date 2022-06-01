@@ -3,7 +3,7 @@ const _ = require('lodash')
 const ComicFactory = require('../comics.js')
 const ChapterFactory = require('../chapters.js')
 const { ref, listAll, updateMetadata } = require('firebase/storage')
-const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collectionGroup, where, query, FieldPath, orderBy, limit } = require('firebase/firestore')
+const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collectionGroup, where, query, FieldPath, orderBy, limit, setDoc } = require('firebase/firestore')
 
 // let one = true
 // const huh = {
@@ -26,15 +26,91 @@ const genres = {
 
 const main = async () => {
     await fb.signInPromise
-    const comicsCollection = collection(ComicFactory.db, 'comics')
-    const snap = await getDocs(comicsCollection)
-    const comicDocs = Object.values(snap.docs)
-    for(let i = 0; i < comicDocs.length; i++){
-        const comicDoc = comicDocs[i]
-        const tags = comicDoc.data().tags
-        await updateDoc(comicDoc.ref, {
-            categories: tags
-        })
+    // const comicColl = collection(ComicFactory.db, 'comics')
+    // const comicSnap = await getDocs(comicColl)
+    // const comicDocs = Object.values(comicSnap.docs)
+    // for(let i = 0; i < comicDocs.length; i++){
+    //     const comicDoc = comicDocs[i]
+    //     const chapterColl = collection(ComicFactory.db, 'comics', comicDoc.id, 'chapters')
+    //     const chapterSnap = await getDocs(chapterColl)
+    //     const chapterDocs = Object.values(chapterSnap.docs)
+    //     const comicCptData = []
+    //     for(let j = 0; j < chapterDocs.length; j++){
+    //         const chapterDoc = chapterDocs[j]
+    //         const chapterData = chapterDoc.data()
+    //         const chapterDataObj = {
+    //             id: chapterDoc.id, 
+    //             chapter_number: chapterData.chapter_number, 
+    //             chapter_preview_url: chapterData.chapter_preview_url, 
+    //             release_date: chapterData.release_date, 
+    //             view_count: chapterData.view_count,
+    //             price: chapterData.price
+    //         }
+    //         comicCptData.push(chapterDataObj)
+
+    //         // for(let k = 0; k < 10; k++){
+    //         //     const cptViewCountDoc = doc(ComicFactory.db, 'comics', comicDoc.id, 'chapters', chapterDoc.id, 'counters', k.toString())
+    //         //     await setDoc(cptViewCountDoc, {
+    //         //         view_count: 0
+    //         //     })
+    //         // }
+    //     }
+    //     await updateDoc(doc(ComicFactory.db, 'comics', comicDoc.id), {
+    //         chapters_data: comicCptData
+    //     })
+    // }
+
+    // await fb.signInPromise
+    // const NS_PER_SEC = 1e9;
+    // const MS_PER_NS = 1e-6  
+    // const time = process.hrtime();
+    const collGroup = collectionGroup(ComicFactory.db, 'counters')
+    const docSnap = await getDocs(collGroup)
+    const docs = Object.values(docSnap.docs)
+    // const aggregated = {}
+    for(let j = 0; j < docs.length; j++){
+        // docs[j].get('view_count')
+        const path = docs[j].ref.path.split('/')
+        console.log(path)
+        // const comicId = path[1]
+        // if(aggregated[comicId]){
+        //     aggregated[comicId] += docs[j].get('view_count')
+        // }else{
+        //     aggregated[comicId] = docs[j].get('view_count')
+        // }
+    }
+    // const comicIds = Object.keys(aggregated)
+    // for(let i = 0; i < comicIds.length; i++){
+    //     const comicRef = doc(ComicFactory.db, 'comics', comicIds[i])
+    //     await updateDoc(comicRef, {
+    //         view_count: aggregated[comicIds[i]]
+    //     })
+    // }
+    // const diff = process.hrtime(time);
+    // console.log(`Benchmark took ${ (diff[0] * NS_PER_SEC + diff[1])  * MS_PER_NS } milliseconds`);
+    // const comicsCollection = collection(ComicFactory.db, 'comics')
+    // const comicSnaps = await getDocs(comicsCollection)
+    // const comicDocs = Object.values(comicSnaps.docs)
+    // for(let j = 0; j < comicDocs.length; j++){
+    //     for(let i = 0; i < 10; i++){
+    //         const subdocRef = doc(ComicFactory.db, 'comics', comicDocs[j].id, 'counters', i.toString())
+    //         await setDoc(subdocRef, { view_count: 0 })
+    //     }
+    //     await updateDoc(comicDocs[j], { view_count: 0 })
+    // }
+    // await fb.signInPromise
+    // const comicsCollection = collection(ComicFactory.db, 'comics')
+    // getDocs(comicsCollection).then((snap) => {
+    //     console.log(snap.size)
+    // })
+    // const snap = await getDocs(comicsCollection)
+    // const comicDocs = Object.values(snap.docs)
+    // for(let i = 0; i < comicDocs.length; i++){
+    //     const comicDoc = comicDocs[i]
+    //     const tags = comicDoc.data().tags
+    //     await updateDoc(comicDoc.ref, {
+    //         categories: tags
+    //     })
 
         // const comicCptData = []
         // const cptCollection = collection(ComicFactory.db, 'comics', comicDoc.id, 'chapters')
@@ -50,7 +126,7 @@ const main = async () => {
         // if(comicCptData.length > 0){
         //     await updateDoc(comicDoc.ref, { chapters_data: comicCptData })
         // }
-    }
+    // }
 }
 
 main()
@@ -126,7 +202,33 @@ main()
     //         return where(new FieldPath('keywords', key), '==', true),
     //         orderBy('name'),
     //         limit(10)
+    //     })    // await fb.signInPromise
+    // const NS_PER_SEC = 1e9;
+    // const MS_PER_NS = 1e-6  
+    // const time = process.hrtime();
+    // const collGroup = collectionGroup(ComicFactory.db, 'counters')
+    // const docSnap = await getDocs(collGroup)
+    // const docs = Object.values(docSnap.docs)
+    // const aggregated = {}
+    // for(let j = 0; j < docs.length; j++){
+    //     // docs[j].get('view_count')
+    //     const path = docs[j].ref.path.split('/')
+    //     const comicId = path[1]
+    //     if(aggregated[comicId]){
+    //         aggregated[comicId] += docs[j].get('view_count')
+    //     }else{
+    //         aggregated[comicId] = docs[j].get('view_count')
+    //     }
+    // }
+    // const comicIds = Object.keys(aggregated)
+    // for(let i = 0; i < comicIds.length; i++){
+    //     const comicRef = doc(ComicFactory.db, 'comics', comicIds[i])
+    //     await updateDoc(comicRef, {
+    //         view_count: aggregated[comicIds[i]]
     //     })
+    // }
+    // const diff = process.hrtime(time);
+    // console.log(`Benchmark took ${ (diff[0] * NS_PER_SEC + diff[1])  * MS_PER_NS } milliseconds`);
     // )
 
     // const q = query(comicCollection, where('keywords', 'array-contains-all', ['kara', 'guardian', 'realms']))

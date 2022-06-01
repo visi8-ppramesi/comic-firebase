@@ -2,7 +2,10 @@ import { where, limit, orderBy, startAfter, doc, FieldPath } from 'firebase/fire
 import firebase from '../firebase.js'
 import _ from 'lodash'
 
-export const orderByDateDesc = [ orderBy('date', 'desc') ]
+export const orderByDateDesc = (startAtParam = null) => 
+    startAtParam ? 
+        [ orderBy('date', 'desc'), limit(10), startAfter(startAtParam) ] :
+        [ orderBy('date', 'desc'), limit(10) ]
 
 export const authorLimitTen = [ orderBy('name'), limit(10) ]
 

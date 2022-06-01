@@ -2,6 +2,8 @@
 // import settings from '../firebaseSettings.js'
 import Subcollection from '../Subcollection.js'
 import Page from './Page.js'
+import firebaseSettings from '../firebaseSettings.js'
+import { doc, increment, updateDoc } from 'firebase/firestore'
 
 export default class extends Subcollection{
     static collection = 'chapter_number'
@@ -13,6 +15,14 @@ export default class extends Subcollection{
         'ar_price': Number,
         'pages': Subcollection.resolve('./Page.js'),
         'chapter_preview_url': String
+    }
+
+    async viewChapter(){
+        const counterIndex = Math.floor(Math.random() * firebaseSettings.counterShardNum).toString()
+        const chapterRef = doc(this.constructor.db, 'comics', this.parentId, 'chapters', this.id, 'counters', counterIndex)
+        return await updateDoc(chapterRef, {
+            view_count: increment(1)
+        })
     }
 
     async getPages(queries = []){
