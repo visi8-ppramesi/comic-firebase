@@ -1,12 +1,12 @@
 <template>
-    <div class="max-w-xl mx-auto flex text-black mb-2">
+    <div class="w-full mx-auto flex text-black mb-2">
         <div class="rounded-md bg-white lg:text-md xl:text-lg flex-1 shadow-lg px-4 py-4 sm:px-6 sm:py-4 leading-relaxed">
             <div class="flex flex-row">
                 <img class="flex items-center justify-center rounded-full w-12 h-12 sm:w-16 sm:h-16" :src="profilePicture" alt="">
                 <div class="flex flex-col w-full">
                     <div class="flex flex-row">
                         <div class="px-3 flex flex-col flex-grow items-start justify-center gap-y-1">
-                            <span class="font-extrabold text-sm lg:text-xl leading-3">{{ userName }}</span> <span class="lg:text-lg text-xs text-gray-900 leading-3">{{ formattedDate }}</span>
+                            <span class="font-extrabold text-sm lg:text-xl leading-3 lg:text-xl xl:text-2xl">{{ userName }}</span> <span class="=lg:text-xl xl:text-2xl text-xs text-gray-900 leading-3">{{ formattedDate }}</span>
                         </div>
                         <button v-if="allowDelete" class="flex items-start justify-between" @click="deleteComment">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -14,7 +14,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="pl-3 sm:pl-3 text-left pt-3">
+                    <div class="pl-3 sm:pl-3 text-left pt-3 lg:text-xl xl:text-2xl">
                         {{ commentMessage }}
                     </div>
                 </div>
