@@ -2,7 +2,7 @@ import Collection from "../Collection.js"
 import Subcollection from "../Subcollection.js"
 import firebase from '../firebase.js';
 import utils from "../utils/index.js";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, updateEmail, updatePassword as authUpdatePassword, reauthenticateWithCredential, EmailAuthCredential } from "firebase/auth";
 import { runTransaction, updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove, increment } from "firebase/firestore";  
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
@@ -137,6 +137,21 @@ export default class extends Collection{
         }
     }
 
+    async updateProfileData({ email, name, full_name }){
+        await updateEmail(firebase.auth.currentUser, email)
+        return await updateDoc(this.doc.ref, {
+            email, name, full_name
+        })
+    }
+
+    async updatePassword(oldPassword, newPassword){
+        const cred = EmailAuthCredential.credential(this.email, oldPassword)
+        return await reauthenticateWithCredential(firebase.auth.currentUser, cred).then(() => {
+            return authUpdatePassword(firebase.auth.currentUser, newPassword)
+        })
+        
+    }
+
     static getCurrentUser(){
         return firebase.auth.currentUser
     }
@@ -149,14 +164,14 @@ export default class extends Collection{
         const data = await signInWithEmailAndPassword(firebase.auth, email, password).then(async (cred) => {
             const newUserDocRef = doc(firebase.db, 'users', cred.user.uid)
             const newProfile = await getDoc(newUserDocRef)
-            return {profile: newProfile.data(), cred: cred, id: cred.user.uid, doc: newUserDocRef}
+            return {profile: newProfile.data(), cred: cred, id: cred.user.uid, doc: newProfile}
         }).catch((err) => {
             handleError(err, 'loginError')
             throw err
         })
 
         const instance = new this()
-        instance.setData(data.id, data.profile, data.doc)
+        await instance.setData(data.id, data.profile, data.doc)
         return instance
     }
 
@@ -168,6 +183,9 @@ export default class extends Collection{
         fillData(validatedUserData, email)
         let newUser, newUserDocRef
         const data = await createUserWithEmailAndPassword(firebase.auth, email, password).then((promisedNewUser) => {
+            updateProfile(promisedNewUser, {
+                displayName: userData.name
+            })
             newUser = promisedNewUser
             newUserDocRef = doc(firebase.db, 'users', promisedNewUser.user.uid)
             return setDoc(newUserDocRef, validatedUserData)
@@ -182,7 +200,7 @@ export default class extends Collection{
             // }
         }).then((newProfile) => {
             console.log('after create new user doc', newProfile)
-            return {profile: validatedUserData, cred: newUser, id: newUser.user.uid, doc: newUserDocRef}
+            return {profile: validatedUserData, cred: newUser, id: newUser.user.uid, doc: newProfile}
         }).catch((err) => {
             handleError(err, 'registerError')
             throw err
@@ -191,7 +209,7 @@ export default class extends Collection{
         console.log('after user create')
 
         const instance = new this()
-        instance.setData(data.id, data.profile, data.doc)
+        await instance.setData(data.id, data.profile, data.doc)
         return instance
 
         // .then((userDoc) => {

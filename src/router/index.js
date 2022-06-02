@@ -211,7 +211,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if(from.name && from.name !== 'Logout' && from.name !== 'Login' && from.name !== 'Register'){
-        console.log(from)
         const fromRoute = {
             name: from.name,
             params: from.params,

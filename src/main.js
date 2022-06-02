@@ -10,6 +10,7 @@ import routeResolver from './utils/routeResolver';
 import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
+import VueLoading from 'vue-loading-overlay';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import _ from 'lodash'
 
@@ -42,6 +43,7 @@ app.use(injector)
 app.use(router)
 app.use(VueToast)
 app.use(Vue3Mq, {preset: 'tailwind'})
+app.use(VueLoading);
 app.use(createPinia())
 app.component('mq-responsive', MqResponsive)
 

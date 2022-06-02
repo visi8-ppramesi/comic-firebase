@@ -30,9 +30,9 @@ export default class extends Subcollection{
                 const data = snap.docs[0].data()
                 const instance = new this()
                 const parentId = comicId
-                instance.setData(parentId, snap.docs[0].id, data, snap.docs[0])
-    
-                callback(instance)
+                instance.setData(parentId, snap.docs[0].id, data, snap.docs[0]).then(() => {
+                    callback(instance)
+                })
             }
         }
         const collRef = collection(this.db, 'comics', comicId, 'comments')

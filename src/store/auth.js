@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
         userInstance: null,
         error: null,
         status: {loggingIn: false},
-        profile_picture_url: null,
+        profile_image_url: null,
         isLoggedIn: false,
     }),
 
@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
                     console.log('profile')
-                    this.profile_picture_url = imageUrl
+                    this.profile_image_url = imageUrl
                 })
                 this.userInstance = user
                 this.user = user.toJSON()
@@ -57,7 +57,7 @@ export const useAuthStore = defineStore('auth', {
                 console.log('auth store register')
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
-                    this.profile_picture_url = imageUrl
+                    this.profile_image_url = imageUrl
                 })
                 this.userInstance = user
                 this.user = user.toJSON()
@@ -79,21 +79,23 @@ export const useAuthStore = defineStore('auth', {
                     const newUserDocRef = doc(User.db, 'users', user.uid)
                     getDoc(newUserDocRef).then((doc) => {
                         const newUser = new User()
-                        newUser.setData(user.uid, doc.data(), newUserDocRef)
-                        this.uid = newUser.id
-                        newUser.getProfileImage().then((imageUrl) => {
-                            this.profile_picture_url = imageUrl
+                        //eslint-disable-next-line no-unused-vars
+                        newUser.setData(user.uid, doc.data(), doc).then((__) => {
+                            this.uid = newUser.id
+                            newUser.getProfileImage().then((imageUrl) => {
+                                this.profile_image_url = imageUrl
+                            })
+                            this.userInstance = newUser
+                            this.user = newUser.toJSON()
+                            this.isLoggedIn = true
+                            localStorage.setItem('uid', this.uid)
                         })
-                        this.userInstance = newUser
-                        this.user = newUser.toJSON()
-                        this.isLoggedIn = true
-                        localStorage.setItem('uid', this.uid)
                     })
                     // const newUser = new User()
                     // newUser.setData(user.uid, )
                     // this.uid = user.id
                     // user.getProfileImage().then((imageUrl) => {
-                    //     this.profile_picture_url = imageUrl
+                    //     this.profile_image_url = imageUrl
                     // })
                     // this.user = user.toJSON()
                     // localStorage.setItem('uid', user.uid)

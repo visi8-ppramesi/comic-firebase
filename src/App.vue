@@ -151,9 +151,9 @@
                 >
                   <span class="sr-only">Open user menu</span>
                   <img
-                    v-if="isLoggedIn && profile_picture_url"
+                    v-if="isLoggedIn && profile_image_url"
                     class="h-8 w-8 rounded-full"
-                    :src="profile_picture_url"
+                    :src="profile_image_url"
                     alt=""
                   />
                   <svg
@@ -464,7 +464,7 @@
       <div
         class="
           md:w-96
-          max-w-full
+          max-w-screen
           min-h-screen
           main-content
           flex-1
@@ -557,12 +557,11 @@ export default {
     showNav(){
       return this.$route.meta.showNav
     },
-    ...mapState(useAuthStore, ['isLoggedIn', 'profile_picture_url'])
+    ...mapState(useAuthStore, ['isLoggedIn', 'profile_image_url'])
   },
   methods: {
     async getSocials(){
       this.socials = (await Settings.getSocials()).value
-      console.log(this.socials)
     },
     goToSearch(){
       this.$router.push(this.routeResolver('Search'))

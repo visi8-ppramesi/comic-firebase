@@ -6,8 +6,9 @@ import {
     getAuth, 
     setPersistence
 } from "firebase/auth";
-import { getStorage } from 'firebase/storage'
+import { getStorage } from 'firebase/storage';
 import { getPerformance } from "firebase/performance";
+// import _ from 'lodash'
 // import dotenv from 'dotenv'
 
 const weTesting = process.env.TEST == 'true'
@@ -30,6 +31,12 @@ const firebaseConfig = {
     defaultProfilePicture: 'gs://comics-77200.appspot.com/default_profile.jpeg'
 };
 
+const buildGsPath = (fullPath) => {
+    const baseArray = ('gs://' + firebaseConfig.storageBucket).split('/')
+    baseArray.push(...fullPath.split().filter(v => v.length > 0))
+    return baseArray.join('/')
+}
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -43,4 +50,4 @@ if(!weTesting){
 
 setPersistence(auth, browserLocalPersistence)
 
-export default {app, db, auth, storage, analytics, performance, firebaseConfig};
+export default {app, db, auth, storage, analytics, performance, firebaseConfig, buildGsPath};

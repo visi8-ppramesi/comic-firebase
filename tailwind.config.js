@@ -49,7 +49,7 @@ module.exports = {
             '1/4': '25vh',
             '1/2': '50vh',
             '3/4': '75vh',
-            'full': '100vh',
+            // 'full': '100vh',
           }),
           //eslint-disable-next-line no-unused-vars
           maxWidth: theme => ({
@@ -57,7 +57,7 @@ module.exports = {
             '1/4': '25vw',
             '1/2': '50vw',
             '3/4': '75vw',
-            'full': '100vw',
+            // 'full': '100vw',
           })
       },
   },

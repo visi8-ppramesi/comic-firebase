@@ -44,6 +44,20 @@ export default class{
     static fields = {}
     static db = firebase.db
 
+    constructor(){
+        Object.values(this.constructor.fields).forEach((fieldType) => {
+            const isClass = fieldType.toString().substring(0, 5) === 'class'
+            if(isClass){
+                const funcs = _.remove(Object.getOwnPropertyNames(fieldType.prototype), (n) => n != 'constructor')
+                funcs.forEach((func) => {
+                    Object.assign(this, {
+                        [func]: fieldType.prototype[func]
+                    })
+                })
+            }
+        })
+    }
+
     setEmpty(){
         this.empty = true
     }
@@ -54,65 +68,32 @@ export default class{
         const fields = Object.keys(this.constructor.fields)
         for(let p = 0; p < fields.length; p++){
             const field = fields[p]
-        // }
-        // Object.keys(this.constructor.fields).forEach((field) => {
+            
             const isSubcollection = this.constructor.fields[field] == Subcollection
-            const isLongText = this.constructor.fields[field] == LongText
             const isProfilePicture = this.constructor.fields[field] == ProfilePicture
             const isInstanceData = this.constructor.fields[field] instanceof InstanceData
-            if(isInstanceData){
-                const fieldKeys = this.constructor.fields[field].keys
-                const thisMyData = []
-                for(let i = 0; i < data[field].length; i++){
-                    const myData = data[field][i]
-                    const instanceData = {}
-                    for(let j = 0; j < fieldKeys.length; j++){
-                        await setDataHelper(this.constructor.fields[field].fields, instanceData, fieldKeys[j], myData)
-
-                        // const isInstanceDataLongText = this.constructor.fields[field].fields[fieldKeys[j]] == LongText
-                        // const isInstanceDataProfilePicture = this.constructor.fields[field].fields[fieldKeys[j]] == ProfilePicture
-                        // const isInstanceStorageLink = this.constructor.fields[field].fields[fieldKeys[j]] == StorageLink
-                        
-                        // if(!_.isNil(myData[fieldKeys[j]])){
-                        //     if(isInstanceDataLongText){
-                        //         instanceData[fieldKeys[j]] = myData[fieldKeys[j]].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
-                        //     }else if(isInstanceDataProfilePicture){
-                        //         if(_.isEmpty(myData[fieldKeys[j]])){
-                        //             instanceData[fieldKeys[j]] = firebase.firebaseConfig.defaultProfilePicture
-                        //         }else{
-                        //             instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
-                        //         }
-                        //     }else if(isInstanceStorageLink){
-                        //         instanceData[fieldKeys[j]] = await utils.getDataUrlFromStorage(myData[fieldKeys[j]])
-                        //     }else{
-                        //         instanceData[fieldKeys[j]] = myData[fieldKeys[j]]
-                        //     }
-                        // }
+            if(!isSubcollection){
+                if(isInstanceData){
+                    const fieldKeys = this.constructor.fields[field].keys
+                    const thisMyData = []
+                    for(let i = 0; i < data[field].length; i++){
+                        const myData = data[field][i]
+                        const instanceData = {}
+                        for(let j = 0; j < fieldKeys.length; j++){
+                            await setDataHelper(this.constructor.fields[field].fields, instanceData, fieldKeys[j], myData)
+                        }
+                        thisMyData.push(instanceData)
                     }
-                    thisMyData.push(instanceData)
-                }
-                this[field] = thisMyData
-            }else if(!_.isNil(data[field]) && !isSubcollection){
-                // await setDataHelper(this.constructor.fields, this, field, data, !isSubcollection)
-
-                if(isLongText){
-                    this[field] = data[field].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
-                }else if(isProfilePicture){
-                    if(_.isEmpty(data[field])){
+                    this[field] = thisMyData
+                }else if(!_.isNil(data[field])){
+                    await setDataHelper(this.constructor.fields, this, field, data)
+                }else if(_.isNil(data[field])){
+                    if(isProfilePicture){
                         this[field] = firebase.firebaseConfig.defaultProfilePicture
-                    }else{
-                        this[field] = data[field]
                     }
-                }else{
-                    this[field] = data[field]
-                }
-            }else if(_.isNil(data[field]) && !isSubcollection){
-                if(isProfilePicture){
-                    this[field] = firebase.firebaseConfig.defaultProfilePicture
                 }
             }
         }
-        // })
         if(doc){
             this.doc = doc
         }

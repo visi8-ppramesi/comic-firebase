@@ -1,11 +1,11 @@
 <template>
     <div class="lg:mx-20 xl:mx-32">
         <div v-if="!loading">
-            <div class="md:grid md:grid-cols-2">
+            <div class="md:grid md:grid-cols-2 md:rounded-b-lg shadow-md overflow-hidden">
                 <div class="md:grid md:grid-cols-1">
-                    <div class="md:bg-cover md:w-full max-h-full text-left pt-64 description-block text-white flex flex-col justify-end p-5" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + comic.cover_image_url + ');'"><!-- top block -->
+                    <div class="min-h-screen-navbar md:min-h-screen/2 md:max-h-full bg-cover md:w-full max-h-screen text-left pt-64 description-block text-white flex flex-col justify-end p-5" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + comic.cover_image_url + ');'"><!-- top block -->
                         <div>
-                            <div class="lg:text-xl xl:text-2xl">{{categories}}</div>
+                            <div class="lg:text-md xl:text-lg">{{categories}}</div>
                         </div>
 
                         <div class="flex flex-row justify-between">
@@ -17,25 +17,25 @@
 
                         <div>
                             <template v-for="(author, idx) in comic.authors_data" :key="'author-' + idx">
-                                <div  class="lg:text-xl xl:text-2xl">{{author.name}}</div>
+                                <div  class="lg:text-md xl:text-lg">{{author.name}}</div>
                             </template>
                         </div>
 
-                        <div class="text-sm lg:text-xl xl:text-2xl" v-html="comic.description"></div>
+                        <div class="text-sm lg:text-md xl:text-lg" v-html="comic.description"></div>
 
                         <div class="flex mt-2">
                             <svg class="lg:h-7 lg:w-7 xl:h-8 xl:h-8" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                            <div class="text-sm px-2 lg:text-xl xl:text-2xl">{{ comic.view_count }} views</div>
+                            <div class="text-sm px-2 lg:text-md xl:text-lg">{{ comic.view_count }} views</div>
                             <div class="flex">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 lg:h-7 lg:w-7 xl:h-8 xl:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                 </svg>
-                                <div class="text-sm px-2 lg:text-xl xl:text-2xl">{{ comic.favorite_count }}</div>
+                                <div class="text-sm px-2 lg:text-md xl:text-lg">{{ comic.favorite_count }}</div>
                             </div>
                         </div>
 
                         <div class="flex flex-row content-center justify-between">
-                            <button class="lg:text-xl xl:text-2xl text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
+                            <button class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
                             <!-- <template v-if="purchased">
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="continueReading(true)">View with AR</button>
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" v-if="isEmpty(bookmark)" @click="startReading">Start Reading</button>
@@ -55,7 +55,7 @@
 
                 <div class="md:grid md:grid-cols-1">
                     <div class="divide-y divide-black">
-                        <div class="md:w-full md:h-full">
+                        <div class="md:bg-indigo-900 md:w-full md:h-full">
                             <div class="flex flex-row h-24 md:w-full bg-indigo-800 text-white" v-for="(chapter, idx) in chapters" :key="'chapter-'+idx">
                                 <div class="flex-none w-1/5 md:w-24 lg:w-24">
                                     <img class="h-full w-full object-cover" :src="chapter.chapter_preview_url" alt="">
@@ -63,8 +63,8 @@
                                 <!-- <div class="flex-grow flex flex-col p-3 w-2/5 lg:w-2" @click="goToChapter(chapter.id)"> -->
                                 <div class="flex-grow text-left flex flex-col py-3 pl-3 w-2/5 lg:w-96">
                                     <div class="w-100">
-                                        <span class="text-sm lg:text-xl xl:text-2xl">Ep. {{chapter.chapter_number}}</span>
-                                        <span class="text-xs lg:text-lg xl:text-xl ml-2">{{chapter.release_date}}</span>
+                                        <span class="text-sm lg:text-md xl:text-lg">Ep. {{chapter.chapter_number}}</span>
+                                        <span class="text-xs lg:text-md xl:text-lg ml-2">{{chapter.release_date}}</span>
                                     </div>
                                     <div class="flex flex-row mt-2">
                                         <!-- <div class="flex flex-row">
@@ -84,7 +84,7 @@
 
                                 <div class="w-2/5 md:w-36 lg:w-96 flex justify-end items-center pr-5" >
                                     <div v-if="!purchasedChapterIds.includes(chapter.id)">
-                                        <button class="text-xs lg:text-lg xl:text-xl items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseChapter(chapter.id)">
+                                        <button class="text-xs lg:text-md xl:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseChapter(chapter.id)">
                                             Buy Ep. {{chapter.chapter_number}}
                                         </button>
                                     </div>
@@ -121,7 +121,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="comments.length > 0" class="text-white text-lg lg:text-2xl xl:text-3xl">Comments</div>
+                <div v-if="comments.length > 0" class="max-w-xl w-full mx-auto text-white text-lg lg:text-lg xl:text-xl">Comments</div>
                 <div v-for="(comment, idx) in comments" :key="idx">
                     <comment-component
                         @deleteComment="onCommentDelete"
@@ -202,6 +202,7 @@ export default {
     watch: {
         userData(){
             if(!_.isNil(this.userData)){
+                this.userInstance.test()
                 const favComicIds = this.userData.favorites.map((comicRef) => {
                     return comicRef.id
                 })
@@ -300,9 +301,10 @@ export default {
 
             this.purchasedChapterIds.push(...this.chapters.filter((cpt) => cpt.price == 0).map(cpt => cpt.id))
 
-            let firstRun = false
+            let firstRun = this.comments == 0
             this.comic.createNewCommentListener((newCommInstance) => {
                 if(firstRun){
+                    console.log('hello')
                     const foundId = _.findIndex(this.comments, (com) => {
                         return com.id == newCommInstance.id
                     })
