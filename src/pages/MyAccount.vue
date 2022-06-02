@@ -152,10 +152,9 @@ export default {
         },
         async saveProfile(){
             let loader = this.$loading.show({
-                container: this.fullPage ? null : this.$refs.formContainer,
-                canCancel: true,
-                onCancel: this.onCancel,
+                loader: 'dots'
             });
+            console.log('profile save')
             try{
                 if(this.profilePictureChanged){
                     await this.userInstance.uploadField('profile_image_url', 'profile_images/' + this.userInstance.id, this.profilePicture)
@@ -178,9 +177,7 @@ export default {
         },
         async savePassword(){
             let loader = this.$loading.show({
-                container: this.fullPage ? null : this.$refs.formContainer,
-                canCancel: true,
-                onCancel: this.onCancel,
+                loader: 'dots'
             });
             try{
                 await this.userInstance.updatePassword(this.oldPassword, this.newPassword)

@@ -11,6 +11,7 @@ import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import _ from 'lodash'
 

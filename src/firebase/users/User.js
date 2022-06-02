@@ -138,10 +138,12 @@ export default class extends Collection{
     }
 
     async updateProfileData({ email, name, full_name }){
-        await updateEmail(firebase.auth.currentUser, email)
-        return await updateDoc(this.doc.ref, {
-            email, name, full_name
-        })
+        const update = {name, full_name}
+        if(firebase.auth.currentUser.email !== email){
+            await updateEmail(firebase.auth.currentUser, email)
+            update.email = email
+        }
+        return await updateDoc(this.doc.ref, update)
     }
 
     async updatePassword(oldPassword, newPassword){
