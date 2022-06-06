@@ -105,6 +105,7 @@ export default class extends Collection{
     async getPurchasedComicStatus(id){
         const purchasedInstance = await PurchasedComic.getDocument(['users', this.id, 'purchased_comics'], id)
         if(purchasedInstance.empty){
+            console.log('purchased instance empty')
             purchasedInstance.chapters = []
         }
         return purchasedInstance
@@ -138,7 +139,13 @@ export default class extends Collection{
     }
 
     async updateProfileData({ email, name, full_name }){
-        const update = {name, full_name}
+        const update = {}
+        if(name){
+            update.name = name
+        }
+        if(full_name){
+            update.full_name = full_name
+        }
         if(firebase.auth.currentUser.email !== email){
             await updateEmail(firebase.auth.currentUser, email)
             update.email = email

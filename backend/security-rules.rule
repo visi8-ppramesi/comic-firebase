@@ -73,11 +73,13 @@ service cloud.firestore {
         }
 
         function checkIfFree(){
-          return get(/databases/$(database)/documents/comics/$(comic)/chapters/$(chapter)).data.price == 0
+          return get(/databases/$(database)/documents/comics/$(comic)/chapters/$(chapter)).data.price == 0;
         }
 
         function checkIfOwned(){
-          return request.auth.uid != null && chapter in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters
+          return request.auth.uid != null && (
+            chapter in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters ||
+            'all' in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters);
         }
       }
 
@@ -96,7 +98,7 @@ service cloud.firestore {
         }
 
         function commentFieldCheck(fieldCheck){
-          return request.resource.data.keys().hasOnly(fieldCheck)
+          return request.resource.data.keys().hasOnly(fieldCheck);
         }
       }
       

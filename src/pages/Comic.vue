@@ -83,14 +83,14 @@
                                 </div>
 
                                 <div class="w-2/5 md:w-36 lg:w-96 flex justify-end items-center pr-5" >
-                                    <div v-if="!purchasedChapterIds.includes(chapter.id)">
-                                        <button class="text-xs lg:text-md xl:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseChapter(chapter.id)">
-                                            Buy Ep. {{chapter.chapter_number}}
+                                    <div v-if="purchasedChapterIds.includes(chapter.id) || comicFullyPurchased">
+                                        <button class="text-xs lg:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="goToChapter(chapter.id)">
+                                            Read Ep. {{chapter.chapter_number}}
                                         </button>
                                     </div>
                                     <div v-else>
-                                        <button class="text-xs lg:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="goToChapter(chapter.id)">
-                                            Read Ep. {{chapter.chapter_number}}
+                                        <button class="text-xs lg:text-md xl:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseChapter(chapter.id)">
+                                            Buy Ep. {{chapter.chapter_number}}
                                         </button>
                                     </div>
                                     <!-- <button @click="openModal(preview.chapter)">Buy Episode</button> -->
@@ -137,9 +137,18 @@
             </div>
         </div>
     </div>
+    <Teleport to="#modal">
+        <payment-modal
+            ref="paymentModal"
+            :chapter="selectedChapter"
+            :comic="$route.params.id"
+            :price="selectedPrice"
+        />
+    </Teleport>
 </template>
 
 <script>
+import PaymentModal from '../components/PaymentModal.vue'
 import CommentComponent from '../components/Comment.vue'
 import Comic from '@/firebase/comics/Comic.js';
 import Comment from '@/firebase/comics/Comment.js';
@@ -155,10 +164,13 @@ export default {
     name: 'comic-show',
     inject: ['routeResolver'],
     components: {
-        CommentComponent
+        CommentComponent,
+        PaymentModal
     },
     data(){
         return {
+            selectedPrice: null,
+            selectedChapter: null,
             loading: true,
             comic: {},
             genres: [
@@ -172,7 +184,8 @@ export default {
             subscribed: false,
             purchasedChapterIds: [],
             comments: [],
-            newComment: ''
+            newComment: '',
+            comicFullyPurchased: false
             // categories: ''
         }
     },
@@ -195,14 +208,17 @@ export default {
             this.subscribed = _.includes(subComicIds, this.$route.params.id)
 
             this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
-                this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpts.chapters.map((v) => v.id)])]
+                if(cpts.chapters.includes('all')){
+                    this.comicFullyPurchased = true
+                }else{
+                    this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpts.chapters.map((v) => v.id)])]
+                }
             })
         }
     },
     watch: {
         userData(){
             if(!_.isNil(this.userData)){
-                this.userInstance.test()
                 const favComicIds = this.userData.favorites.map((comicRef) => {
                     return comicRef.id
                 })
@@ -213,8 +229,12 @@ export default {
                 })
                 this.subscribed = _.includes(subComicIds, this.$route.params.id)
 
-                this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpt) => {
-                    this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpt.chapters.map((v) => v.id)])]
+                this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
+                    if(cpts.chapters.includes('all')){
+                        this.comicFullyPurchased = true
+                    }else{
+                        this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpts.chapters.map((v) => v.id)])]
+                    }
                 })
             }
         }
@@ -249,7 +269,9 @@ export default {
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.id, chapterId: chapterId}))
         },
         async purchaseChapter(chapterId){
-            await this.userInstance.purchaseChapter(this.$route.params.id, chapterId)
+            this.selectedChapter = chapterId
+            this.selectedPrice = this.chapters.find((cpt) => cpt.id == chapterId).price
+            this.$refs.paymentModal.openModal()
         },
         async toggleSubscribeComic(){
             if(this.userInstance){

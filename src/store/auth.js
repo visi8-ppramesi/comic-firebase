@@ -17,6 +17,25 @@ export const useAuthStore = defineStore('auth', {
     getters: {},
 
     actions: {
+        async updateUserProfileData({name, email, full_name}){
+            //eslint-disable-next-line no-unused-vars
+            return await this.userInstance.updateProfileData({name, email, full_name}).then((__) => {
+                if(this.user && this.userInstance){
+                    if(name){
+                        this.user.name = name
+                        this.userInstance.name = name
+                    }
+                    if(email){
+                        this.user.email = email
+                        this.userInstance.email = email
+                    }
+                    if(full_name){
+                        this.user.full_name = full_name
+                        this.userInstance.full_name = full_name
+                    }
+                }
+            })
+        },
         async login(email, password, successFunc = () => {}, errorFunc = () => {}){
             this.status.loggingIn = true
             return User.login(email, password).then((user) => {

@@ -11,6 +11,7 @@ import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
+import { vfmPlugin } from 'vue-final-modal'
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import _ from 'lodash'
@@ -40,6 +41,17 @@ const injector = {
     }
 }
 
+app.directive('loading', (el, binding) => {
+    if (binding.value || typeof binding.value === "undefined") {
+        el.classList.add("state-loading");
+        el.setAttribute("disabled", "disabled");
+    } else {
+        el.classList.remove("state-loading");
+        el.removeAttribute("disabled");
+    }
+})
+
+app.use(vfmPlugin)
 app.use(injector)
 app.use(router)
 app.use(VueToast)

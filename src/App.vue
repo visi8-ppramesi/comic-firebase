@@ -503,6 +503,7 @@
       </div>
     </div>
   </div>
+  <div id="modal"></div>
 </template>
 
 <script>

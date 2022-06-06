@@ -1,12 +1,32 @@
 <template>
-    <div class="relative relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
+    <div>
+        <button @click="showModal = true">Open Modal</button>
+        <Teleport to="#modal">
+            <vue-final-modal 
+                v-model="showModal"
+                classes="flex justify-center items-center"
+                content-class="max-h-screen-4-y overflow-y-auto relative flex flex-col max-h-full mx-4 p-4 border dark:border-gray-800 rounded bg-white dark:bg-gray-900"
+            >
+                <stepper-component :steps="steps" :initial-state="{ name: 'Carlos', users: [] }">
+                    <template #fatal-error="{ errorMsg }">{{ errorMsg }}</template>
+                    <template #action-buttons>
+                        <button 
+                            class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                            @click="showModal = false"
+                        >Close</button>
+                    </template>
+                </stepper-component>
+            </vue-final-modal>
+        </Teleport>
+    </div>
+    <!-- <div class="relative relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
         <video @loadeddata="asdf" :src="img" ref="videoElement" class="absolute z-10" />
         <div class="z-20 w-36 h-36">
             <svg v-if="vidLoaded" :class="[vidPlaying ? 'opacity-0' : 'opacity-75']" @click="toggleVideo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
                 <polygon class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
                 <path class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
             </svg>
-        </div>
+        </div> -->
         <!-- <video-player v-for="(video, idx) in videos" :link="video" :idx="idx" :ref="'videoPlayer' + idx" :key="'video-' + idx">
         </video-player> -->
         <!-- <div v-for="(video, idx) in videos" :ref="'testVideo' + idx + 'Container'" :key="'video-' + idx" class="relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
@@ -42,25 +62,66 @@
                 </svg>
             </div>
         </div> -->
-    </div>
+    <!-- </div> -->
 </template>
 
 <script>
+// import { markRaw } from 'vue'
+import StepperComponent from '../components/stepper/StepperComponent.vue'
+import StepOne from '../components/stepper/StepOne.vue'
+import StepTwo from '../components/stepper/StepTwo.vue'
+import StepThree from '../components/stepper/StepThree.vue'
 // import utils from '../firebase/utils/index.js'
 // import _ from 'lodash'
 // import VideoPlayer from '../components/VideoPlayer.vue'
-import utils from '../firebase/utils/index.js'
+// import utils from '../firebase/utils/index.js'
 export default {
     components: {
         // VideoPlayer
+        StepperComponent
     },
     data(){
         return {
-            test: 'gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4',
-            img: '',
-            id: '',
-            vidPlaying: false,
-            vidLoaded: false,
+            showModal: false,
+            steps: [
+                {
+                    name: "Step 1",
+                    desc: "Select Payment Method",
+                    icon: "fas fa-car",
+                    disabled: false,
+                    active: false,
+                    component: StepOne,
+                },
+                {
+                    name: "Step 2",
+                    desc: "Enter Payment Info",
+                    disabled: false,
+                    active: false,
+                    component: StepTwo,
+                },
+                {
+                    name: "Step 3",
+                    desc: "Do Something",
+                    icon: "fas fa-check",
+                    disabled: true,
+                    active: false,
+                    component: StepThree,
+                },
+                {
+                    name: "Confirmar",
+                    desc: "Review Payment Info",
+                    icon: "fas fa-check",
+                    disabled: false,
+                    active: false,
+                    component: StepThree,
+                    confirm: "Confirm"
+                }
+            ]
+            // test: 'gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4',
+            // img: '',
+            // id: '',
+            // vidPlaying: false,
+            // vidLoaded: false,
             // sources: [],
             // consoleOpen: false,
             // videos: [
@@ -91,13 +152,13 @@ export default {
             // utils.revokeDataUrl(this.img, this.id)
         },
         toggleVideo(){
-            if(this.vidPlaying){
-                this.$refs.videoElement.pause()
-                this.vidPlaying = false
-            }else{
-                this.$refs.videoElement.play()
-                this.vidPlaying = true
-            }
+            // if(this.vidPlaying){
+            //     this.$refs.videoElement.pause()
+            //     this.vidPlaying = false
+            // }else{
+            //     this.$refs.videoElement.play()
+            //     this.vidPlaying = true
+            // }
         },
         hello(){
             console.log('asdfasdfasdf')
@@ -114,12 +175,12 @@ export default {
         // },
     },
     mounted(){
-        utils.getProtectedDataUrlFromStorage(this.test).then(({media, identifier}) => {
-            this.img = media
-            this.id = identifier
-            this.vidLoaded = true
-            // utils.revokeDataUrl(media, identifier)
-        })
+        // utils.getProtectedDataUrlFromStorage(this.test).then(({media, identifier}) => {
+        //     this.img = media
+        //     this.id = identifier
+        //     this.vidLoaded = true
+        //     // utils.revokeDataUrl(media, identifier)
+        // })
         // const loaders = []
         // Object.keys(this.$refs).forEach((el) => {
         //     loaders.push(this.$refs[el][0].getLoader())

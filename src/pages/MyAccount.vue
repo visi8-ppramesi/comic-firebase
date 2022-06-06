@@ -13,8 +13,8 @@
                                     <div class="text-xl p-3 lg:p-5">Profile Photo</div>
                                     <div class="px-3">
                                         <img v-if="imageDataUrl" :src="imageDataUrl" />
-                                        <input ref="profilePictureRef" type="file" style="display:none" @change="onFileChange" />
-                                        <button class="font-bold px-3 border-2 rounded" @click="selectProfile">Select Profile Picture</button>
+                                        <input ref="profilePictureRef" type="file" accept="image/*" style="display:none" @change="onFileChange" />
+                                        <button class="font-bold px-3 border-2 rounded" @click="selectProfilePicture">Select Profile Picture</button>
                                     </div>
                                 </div>
                                 <div class="px-3 mt-5 col-span-6 sm:col-span-4">
@@ -103,9 +103,11 @@ export default {
             full_name: '',
             oldPassword: '',
             newPassword: '',
+            authStore: null,
         }
     },
     created(){
+        this.authStore = useAuthStore()
         if(!_.isNil(this.userData)){
             const { name, email, full_name } = this.userData
             this.name = name
@@ -147,7 +149,7 @@ export default {
             this.imageDataUrl = URL.createObjectURL(this.profilePicture);
             this.profilePictureChanged = true
         },
-        selectProfile(){
+        selectProfilePicture(){
             this.$refs.profilePictureRef.click()
         },
         async saveProfile(){
@@ -160,7 +162,10 @@ export default {
                     await this.userInstance.uploadField('profile_image_url', 'profile_images/' + this.userInstance.id, this.profilePicture)
                 }
                 const { name, email, full_name } = this
-                await this.userInstance.updateProfileData({name, email, full_name})
+                await this.authStore.updateUserProfileData({name, email, full_name})
+                // await this.userInstance.updateProfileData({name, email, full_name}).then((__) => {
+                //     this.authStore.updateStoreUserData({ name, email, full_name })
+                // })
                 this.$toast.open({
                     message: "Profile updated!",
                     type: "success",

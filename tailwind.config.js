@@ -40,6 +40,10 @@ module.exports = {
             ...widthCalc
           }),
           //eslint-disable-next-line no-unused-vars
+          minWidth: theme => ({
+            "xl": "36rem"
+          }),
+          //eslint-disable-next-line no-unused-vars
           minHeight: theme => ({
             "screen-navbar": "calc(100vh - 64px)",
           }),
@@ -49,6 +53,7 @@ module.exports = {
             '1/4': '25vh',
             '1/2': '50vh',
             '3/4': '75vh',
+            "screen-4-y": "calc(100vh - 32px)"
             // 'full': '100vh',
           }),
           //eslint-disable-next-line no-unused-vars
