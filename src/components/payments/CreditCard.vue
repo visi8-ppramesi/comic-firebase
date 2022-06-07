@@ -14,6 +14,9 @@ export default {
             cardNumber: ''
         }
     },
+    mounted(){
+        console.log('credit card')
+    },
     methods: {
         getPaymentInfo(){
             return {

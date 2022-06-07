@@ -1,7 +1,6 @@
 <template>
-    <div>asdfasdf</div>
     <KeepAlive>
-        <!-- <component :is="paymentComponents[store.state.selectedPayment]" ref="paymentComponent"></component> -->
+        <component :is="paymentComponents[store.state.selectedPayment]" ref="paymentComponent"></component>
     </KeepAlive>
 </template>
 

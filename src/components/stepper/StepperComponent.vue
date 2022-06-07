@@ -35,7 +35,7 @@
       </div>
       <div>
         <h3>{{ step + 1 }}. {{ steps[step].name }}</h3>
-        <p class="text-slate-400">{{ steps[step].desc }}</p>
+        <!-- <p class="text-slate-400">{{ steps[step].desc }}</p> -->
 
         <div v-if="!fatalError">
           <KeepAlive>
@@ -50,6 +50,8 @@
               @fatal-error="blockStepper"
               @can-continue="nextStepAction"
               @set-step="setStep"
+              @disable-next="disableNext"
+              @enable-next="enableNext"
             />
           </KeepAlive>
         </div>
@@ -77,9 +79,9 @@
             <button
                 v-if="step < steps.length - 1"
                 variant="success"
-                class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                class="disabled:bg-purple-300 disabled:text-gray-500 text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="nextStep"
-                :disabled="loading"
+                :disabled="loading || nextDisabled"
             >
                 Next
                 <i class="fas fa-angle-double-right"></i>
@@ -111,6 +113,7 @@ export default {
   },
   data() {
     return {
+      nextDisabled: false,
       store: {
         state: this.initialState,
         setState: this.setState,
@@ -190,6 +193,12 @@ export default {
           this.nextStepAction();
         }
       }
+    },
+    disableNext(){
+      this.nextDisabled = true
+    },
+    enableNext(){
+      this.nextDisabled = false
     },
     nextStepAction() {
       this.effect = "in-out-translate-fade";

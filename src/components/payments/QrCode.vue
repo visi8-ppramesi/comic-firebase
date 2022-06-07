@@ -1,18 +1,39 @@
 <template>
-    <div>Qr Code</div>
-    <div class="flex flex-col">
-        <input type="text" placeholder="code" v-model="code">
+    <div>Scan QR Code</div>
+    <div>
+        <loading v-model:active="isLoading"
+            :can-cancel="true"
+            :on-cancel="onCancel"
+            :is-full-page="fullPage"/>
+        <img :src="qrImage">
     </div>
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
 export default {
+    components: {
+        Loading
+    },
     data(){
         return {
-            code: ''
+            code: '',
+            isLoading: true,
+            fullPage: false,
+            qrImage: null,
         }
     },
+    mounted(){
+        //eslint-disable-next-line no-unused-vars
+        this.qrCode.toDataURL('I am a pony!', { margin: 2, width: 300, height: 300 }, function (err, url) {
+            this.qrImage = url
+            this.isLoading = false
+        }.bind(this))
+    },
     methods: {
+        onCancel(){
+
+        },
         getPaymentInfo(){
             return {
                 code: this.code

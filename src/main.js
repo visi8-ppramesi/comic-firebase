@@ -12,6 +12,7 @@ import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
 import { vfmPlugin } from 'vue-final-modal'
+import QRCode from 'qrcode'
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import _ from 'lodash'
@@ -29,15 +30,27 @@ _.mixin({
     }
 })
 
+const vuePropertySetter = (app, name, instance) => {
+    app.provide(name, instance)
+    app.config.globalProperties[name] = instance
+}
+
 const app = createApp(App)
 // const emitter = mitt()
 const injector = {
     install(app){
+        vuePropertySetter(app, 'emitter', emitter)
+        vuePropertySetter(app, 'DRM', DRM)
+        vuePropertySetter(app, 'helpers', helpers)
+        vuePropertySetter(app, 'routeResolver', routeResolver)
+        vuePropertySetter(app, 'qrCode', QRCode)
         // app.provide('swal', Swal)
-        app.provide('emitter', emitter)
-        app.provide('DRM', DRM)
-        app.provide('helpers', helpers)
-        app.provide('routeResolver', routeResolver)
+        // app.provide('emitter', emitter)
+        // app.config.globalProperties.emitter = emitter
+        // app.provide('DRM', DRM)
+        // app.provide('helpers', helpers)
+        // app.provide('routeResolver', routeResolver)
+        // app.provide('qrCode', QRCode)
     }
 }
 

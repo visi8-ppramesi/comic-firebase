@@ -1,11 +1,25 @@
 <template>
     <div>
+        <div class="cc-selector">
+            <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
+                <label class="drinkcard-cc test" for="test">
+                    <img :src="image">
+                </label>
+                <input id="test" v-model="paymentType" @change="paymentChange" type="radio" name="credit-card" class="group" value="test" />
+            </div>
+            <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
+                <label class="drinkcard-cc visa" for="visa">
+                    <img :src="image">
+                </label>
+                <input id="visa" v-model="paymentType" @change="paymentChange" type="radio" name="credit-card" class="group" value="visa" />
+            </div>
+        </div>
         <button @click="showModal = true">Open Modal</button>
         <Teleport to="#modal">
             <vue-final-modal 
                 v-model="showModal"
                 classes="flex justify-center items-center"
-                content-class="max-h-screen-4-y overflow-y-auto relative flex flex-col max-h-full mx-4 p-4 border dark:border-gray-800 rounded bg-white dark:bg-gray-900"
+                content-class="max-w-2xl max-h-screen-4-y overflow-y-auto relative flex flex-col max-h-full mx-4 p-4 border dark:border-gray-800 rounded bg-white dark:bg-gray-900"
             >
                 <stepper-component :steps="steps" :initial-state="{ name: 'Carlos', users: [] }">
                     <template #fatal-error="{ errorMsg }">{{ errorMsg }}</template>
@@ -82,6 +96,8 @@ export default {
     },
     data(){
         return {
+            paymentType: null,
+            image: require('../assets/logo.png'),
             showModal: false,
             steps: [
                 {
@@ -147,6 +163,9 @@ export default {
         // this.sources = this.videos.map(() => null)
     },
     methods: {
+        paymentChange(){
+            console.log(this.paymentType)
+        },
         asdf(){
             console.log('asdfzxcv')
             // utils.revokeDataUrl(this.img, this.id)

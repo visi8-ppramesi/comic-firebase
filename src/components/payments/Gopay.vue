@@ -12,6 +12,9 @@ export default {
             something: ''
         }
     },
+    mounted(){
+        console.log('gopay')
+    },
     methods: {
         getPaymentInfo(){
             return {
