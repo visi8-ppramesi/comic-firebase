@@ -81,6 +81,8 @@
 
 <script>
 // import { markRaw } from 'vue'
+import fb from '../firebase/firebase.js'
+import { httpsCallable, connectFunctionsEmulator } from 'firebase/functions'
 import StepperComponent from '../components/stepper/StepperComponent.vue'
 import StepOne from '../components/stepper/StepOne.vue'
 import StepTwo from '../components/stepper/StepTwo.vue'
@@ -157,7 +159,6 @@ export default {
         }
     },
     created(){
-
         // this.vidLoaded = this.videos.map(() => false)
         // this.vidPlaying = this.videos.map(() => false)
         // this.sources = this.videos.map(() => null)
@@ -194,6 +195,20 @@ export default {
         // },
     },
     mounted(){
+        //eslint-disable-next-line no-unused-vars
+
+        connectFunctionsEmulator(fb.functions, "localhost", 5001);
+        const createGopayCharge = httpsCallable(fb.functions, 'createGopayCharge-createGopayCharge');
+        createGopayCharge({
+            transactionDetails: {
+                grossAmount: 12300,
+                orderId: 'test-1234'
+            },
+            customerDetails: {
+                email: 'ppramesi@visi8.com',
+                fullName: 'Priya Hayu Pramesi'
+            }
+        }).then(console.log)
         // utils.getProtectedDataUrlFromStorage(this.test).then(({media, identifier}) => {
         //     this.img = media
         //     this.id = identifier

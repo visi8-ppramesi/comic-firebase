@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore"; 
+import { getFunctions } from "firebase/functions";
 import {
     browserLocalPersistence,
     getAuth, 
@@ -42,6 +43,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 let analytics = null
 const storage = getStorage(app)
+const functions = getFunctions(app, 'asia-east2')
 let performance = null
 if(!weTesting){
     analytics = getAnalytics(app);
@@ -50,4 +52,4 @@ if(!weTesting){
 
 setPersistence(auth, browserLocalPersistence)
 
-export default {app, db, auth, storage, analytics, performance, firebaseConfig, buildGsPath};
+export default {app, db, auth, storage, analytics, performance, firebaseConfig, functions, buildGsPath};
