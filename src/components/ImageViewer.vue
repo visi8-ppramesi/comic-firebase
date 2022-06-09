@@ -1,9 +1,11 @@
 <template>
     <div ref="imageContainer" class="min-h-screen bg-black flex justify-center justify-items-center content-center items-center">
         <template v-if="isLink">
-            <router-link :to="routeResolver('Page', linkTo)">
-                <img ref="imageElement" :src="source" class="w-full">
-            </router-link>
+            <div class="glow-animation" :class="showGlow ? 'glow' : 'fill-width'">
+                <router-link :to="arLink">
+                    <img ref="imageElement" :src="source" class="lg:object-fill lg:w-full" >
+                </router-link>
+            </div>
         </template>
         <template v-else>
             <img ref="imageElement" :src="source" class="w-full">
@@ -18,6 +20,10 @@ export default {
     name: 'image-player',
     inject: ['routeResolver'],
     props: {
+        arLink: {
+            type: Object,
+            default: () => ({})
+        },
         linkType: {
             type: String,
             default: 'gspath'
@@ -31,15 +37,45 @@ export default {
     },
     computed: {
         isLink(){
-            return !_.isEmpty(this.linkTo)
+            return _.size(this.arLink) > 0
+            // return !_.isEmpty(this.linkTo)
         }
     },
     data(){
         return {
-            source: null
+            source: null,
+            showGlow: false,
+        }
+    },
+    mounted(){
+        if(this.isLink){
+            this.$nextTick(() => {
+                this.handleScroll()
+                window.addEventListener('scroll', this.handleScroll)
+            })
         }
     },
     methods: {
+        handleScroll(){
+            const imgElem = this.$refs.imageElement
+            if(this.isInViewport(imgElem)){
+                this.showGlow = true
+            }else{
+                this.showGlow = false
+            }
+        },
+        isInViewport(element){
+            const rect = element.getBoundingClientRect();
+            const bottom = rect.bottom < (window.innerHeight / 1.5) ? rect.bottom : rect.bottom / 1.5
+            const right = rect.right - 1
+            const visible = (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                right <= (window.innerWidth || document.documentElement.clientWidth)
+            )
+            return visible;
+        },
         playVideo(){
         },
         toggleVideo(){
