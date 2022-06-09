@@ -7,6 +7,7 @@ import helpers from './utils/helpers'
 import DRM from './utils/DRM.js'
 import emitter from './utils/emitter.js'
 import routeResolver from './utils/routeResolver';
+import detectMobile from './utils/detectMobile'
 import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
@@ -16,6 +17,7 @@ import QRCode from 'qrcode'
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import _ from 'lodash'
+import './registerServiceWorker'
 
 _.mixin({
     pipeline: function(){
@@ -44,6 +46,7 @@ const injector = {
         vuePropertySetter(app, 'helpers', helpers)
         vuePropertySetter(app, 'routeResolver', routeResolver)
         vuePropertySetter(app, 'qrCode', QRCode)
+        vuePropertySetter(app, 'detectMobile', detectMobile)
         // app.provide('swal', Swal)
         // app.provide('emitter', emitter)
         // app.config.globalProperties.emitter = emitter

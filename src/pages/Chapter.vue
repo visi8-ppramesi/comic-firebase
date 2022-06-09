@@ -7,7 +7,14 @@
                         <image-viewer :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
                     </div>
                     <div v-else-if="page.media_type == 'video'">
-                        <video-player :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></video-player>
+                        <video-player 
+                            :show-ar-button-timing="page.ar_button_show_time"
+                            :ar-link="getArLink(page)"
+                            :link="page.page_image_url"
+                            :idx="idx"
+                            :ref="'mediaViewer' + idx"
+                            @playClicked="playClicked"
+                        ></video-player>
                     </div>
                 </template>
             </div>
@@ -126,11 +133,9 @@ export default {
         })
     },
     mounted(){
-        console.log('mounted')
         this.selectedChapter = this.$route.params.chapterId
         this.chapterPromise.then(() => {
             const loaders = []
-            console.log(this.$refs)
             Object.keys(this.$refs).forEach((el) => {
                 loaders.push(this.$refs[el][0].getLoader())
             })
@@ -178,25 +183,46 @@ export default {
         }
     },
     methods: {
+        playClicked(idx){
+            console.log(idx)
+            this.pages.forEach((page, pIdx) => {
+                if(page.media_type == 'video' && idx !== pIdx){
+                    const containerIndex = 'mediaViewer' + pIdx
+                    this.$refs[containerIndex][0].pauseVideo()
+                }
+            })
+        },
+        getArLink(page){
+            if(_.isArray(page.scenes_data)){
+                const routeResolved = this.routeResolver('Scene', {
+                    comicId: this.$route.params.comicId,
+                    chapterId: this.$route.params.chapterId,
+                    pageId: page.id,
+                    sceneId: page.scenes_data[0]
+                })
+                return routeResolved
+            }else{
+                return {}
+            }
+        },
         changeChapter(chapterId){
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.comicId, chapterId: chapterId}))
         },
         prevChapter(){
             const findCpt = this.chapters.findIndex((cpt) => cpt.id == this.$route.params.chapterId)
             const prevCpt = this.chapters[findCpt - 1]
-            console.log(prevCpt)
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.comicId, chapterId: prevCpt.id}))
         },
         nextChapter(){
             const findCpt = this.chapters.findIndex((cpt) => cpt.id == this.$route.params.chapterId)
             const nextCpt = this.chapters[findCpt + 1]
-            console.log(nextCpt)
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.comicId, chapterId: nextCpt.id}))
         },
         async fetchChapter(){
             this.chapter = await Chapter.getDocument(['comics', this.$route.params.comicId, 'chapters'], this.$route.params.chapterId)
             this.comic = await Comic.getDocument(this.$route.params.comicId)
             this.pages = await this.chapter.getPages([orderBy('page_number')])
+            this.pages[3].getScenes().then(console.log)
             return true
         }
     }

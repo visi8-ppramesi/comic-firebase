@@ -62,6 +62,18 @@ export default class{
         this.empty = true
     }
 
+    getObjectPath(){
+        const path = this.doc.ref.path.split('/')
+        const pathObject = {}
+        const order = []
+        for(let i = 0; i < path.length; i += 2){
+            pathObject[path[i]] = path[i + 1]
+            order.push(path[i])
+        }
+
+        return { path: pathObject, order }
+    }
+
     async setData(id, data, doc = null){
         this.empty = false
         this.id = id
@@ -129,6 +141,43 @@ export default class{
             const data = doc.data()
             const instance = new this()
             await instance.setData(doc.id, data, doc)
+    
+            return instance
+        }catch(err){
+            handleError(err, 'getDocumentError')
+            throw err
+        }
+    }
+
+    static async getDocumentWithStorageResourceUrl(id, storageFields = []){
+        const eventRef = doc(firebase.db, this.collection, id)
+        try{
+            const doc = await getDoc(eventRef)
+            if(!doc.exists()){
+                const emptyInstance = new this()
+                emptyInstance.setEmpty()
+                return emptyInstance
+            }
+            let data = doc.data()
+
+            const instance = new this()
+            await instance.setData(doc.id, data, doc)
+
+            try{
+                const resources = []
+                for(let j = 0; j < storageFields.length; j++){
+                    resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
+                }
+
+                await Promise.all(resources).then((resource) => {
+                    for(let k = 0; k < resource.length; k++){
+                        instance[storageFields[k]] = resource[k]
+                    }
+                })
+            }catch(err){
+                handleError(err, 'getDocumentError')
+                throw err
+            }
     
             return instance
         }catch(err){

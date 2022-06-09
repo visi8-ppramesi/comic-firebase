@@ -43,8 +43,34 @@ export default class{
     static fields = {}
     static db = firebase.db
 
+    constructor(){
+        Object.values(this.constructor.fields).forEach((fieldType) => {
+            const isClass = fieldType.toString().substring(0, 5) === 'class'
+            if(isClass){
+                const funcs = _.remove(Object.getOwnPropertyNames(fieldType.prototype), (n) => n != 'constructor')
+                funcs.forEach((func) => {
+                    Object.assign(this, {
+                        [func]: fieldType.prototype[func]
+                    })
+                })
+            }
+        })
+    }
+
     setEmpty(){
         this.empty = true
+    }
+
+    getObjectPath(){
+        const path = this.doc.ref.path.split('/')
+        const pathObject = {}
+        const order = []
+        for(let i = 0; i < path.length; i += 2){
+            pathObject[path[i]] = path[i + 1]
+            order.push(path[i])
+        }
+
+        return { path: pathObject, order }
     }
 
     async setData(parentId, id, data, doc = null){
@@ -116,6 +142,44 @@ export default class{
             const instance = new this()
             const parentId = path[path.length - 2]
             await instance.setData(parentId, doc.id, data, doc)
+    
+            return instance
+        }catch(err){
+            handleError(err, 'getDocumentError')
+            throw err
+        }
+    }
+
+    static async getDocumentWithStorageResourceUrl(path, id, storageFields = []){
+        const eventRef = doc(firebase.db, ...path, id)
+        const parentId = path[path.length - 2]
+        try{
+            const doc = await getDoc(eventRef)
+            if(!doc.exists()){
+                const emptyInstance = new this()
+                emptyInstance.setEmpty()
+                return emptyInstance
+            }
+            let data = doc.data()
+
+            const instance = new this()
+            await instance.setData(parentId, doc.id, data, doc)
+
+            try{
+                const resources = []
+                for(let j = 0; j < storageFields.length; j++){
+                    resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
+                }
+
+                await Promise.all(resources).then((resource) => {
+                    for(let k = 0; k < resource.length; k++){
+                        instance[storageFields[k]] = resource[k]
+                    }
+                })
+            }catch(err){
+                handleError(err, 'getDocumentError')
+                throw err
+            }
     
             return instance
         }catch(err){

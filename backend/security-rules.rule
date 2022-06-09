@@ -70,6 +70,11 @@ service cloud.firestore {
         match /pages/{page}{
           allow read: if checkIfFree() || checkIfOwned() || isAdmin();
           allow write: if isAdmin();
+          
+          match /scenes/{scene}{
+            allow read: if true;
+            allow write: if isAdmin();
+          }
         }
 
         function checkIfFree(){
@@ -103,7 +108,7 @@ service cloud.firestore {
       }
       
       function increment(){
-        return isLoggedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['view_count']) && request.resource.data.view_count == (resource.data.view_count + 1);
+        return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['view_count']) && request.resource.data.view_count == (resource.data.view_count + 1);
       }
 
       function favToggle(){
