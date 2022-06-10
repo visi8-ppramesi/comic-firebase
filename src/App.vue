@@ -465,7 +465,8 @@
         class="
           md:w-96
           max-w-screen
-          min-h-screen
+          min-h-screen-navbar
+          md:min-h-full
           main-content
           flex-1
           bg-gradient-to-t

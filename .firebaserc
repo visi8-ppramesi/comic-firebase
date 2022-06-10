@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "comics-77200"
+  },
+  "targets": {
+    "comics-77200": {
+      "hosting": {
+        "main": [
+          "comics-77200"
+        ],
+        "staging": [
+          "comics-77200-staging"
+        ]
+      }
+    }
   }
 }

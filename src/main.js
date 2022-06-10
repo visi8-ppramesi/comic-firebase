@@ -13,7 +13,7 @@ import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
 import { vfmPlugin } from 'vue-final-modal'
-import QRCode from 'qrcode'
+// import QRCode from 'qrcode'
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import _ from 'lodash'
@@ -45,7 +45,7 @@ const injector = {
         vuePropertySetter(app, 'DRM', DRM)
         vuePropertySetter(app, 'helpers', helpers)
         vuePropertySetter(app, 'routeResolver', routeResolver)
-        vuePropertySetter(app, 'qrCode', QRCode)
+        // vuePropertySetter(app, 'qrCode', QRCode)
         vuePropertySetter(app, 'detectMobile', detectMobile)
         // app.provide('swal', Swal)
         // app.provide('emitter', emitter)

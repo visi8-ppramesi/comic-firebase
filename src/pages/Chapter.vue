@@ -58,6 +58,9 @@
             </div>
         </div>
     </div>
+    <div v-else class="min-h-screen-navbar min-w-screen">
+
+    </div>
 </template>
 
 <script>
@@ -131,8 +134,15 @@ export default {
             this.loading = false
             return true
         })
+        .catch((err) => {
+            console.error(err)
+            this.$router.push(this.routeResolver('NotFound'))
+        })
     },
     mounted(){
+        let loader = this.$loading.show({
+            loader: 'dots'
+        });
         this.selectedChapter = this.$route.params.chapterId
         this.chapterPromise.then(() => {
             const loaders = []
@@ -174,8 +184,12 @@ export default {
             }
 
             document.addEventListener('scroll', this.scrollFunc)
+            
+            loader.hide()
         })
-        
+        .catch(() => {
+            loader.hide()
+        })
     },
     beforeUnmount(){
         if(this.scrollFunc){
@@ -222,7 +236,6 @@ export default {
             this.chapter = await Chapter.getDocument(['comics', this.$route.params.comicId, 'chapters'], this.$route.params.chapterId)
             this.comic = await Comic.getDocument(this.$route.params.comicId)
             this.pages = await this.chapter.getPages([orderBy('page_number')])
-            this.pages[3].getScenes().then(console.log)
             return true
         }
     }

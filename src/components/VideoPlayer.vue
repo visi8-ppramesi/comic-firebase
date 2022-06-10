@@ -3,7 +3,7 @@
         <video class="video absolute z-10" ref="videoElement" playsinline :src="source" type="video/mp4">
         </video>
         <div class="z-20">
-            <div :class="[showArButton ? 'opacity-1' : 'opacity-0']" class="w-16 h-16 flex bg-gray-200 bg-opacity-75 justify-center items-center rounded-full absolute left-2 top-2">
+            <div v-if="detectMobile()" :class="[showArButton ? 'opacity-1' : 'opacity-0']" class="w-16 h-16 flex bg-gray-200 bg-opacity-75 justify-center items-center rounded-full absolute left-2 top-2">
                 <router-link :to="arLink">
                     <svg width="63" height="40" xmlns="http://www.w3.org/2000/svg">
                         <g>
@@ -27,6 +27,9 @@ import utils from '../firebase/utils/index.js'
 import _ from 'lodash'
 export default {
     name: 'video-player',
+    inject: [
+        'detectMobile'
+    ],
     props: {
         arLink: {
             type: Object,

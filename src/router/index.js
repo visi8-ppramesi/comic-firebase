@@ -204,7 +204,8 @@ export const routes = [
     ...authRoutes,
     ...infoRoutes,
     ...comicsRoutes,
-    ...mineRoutes
+    ...mineRoutes,
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import("@/pages/NotFound.vue"), meta: { showNav: true } }
 ];
 
 const router = createRouter({

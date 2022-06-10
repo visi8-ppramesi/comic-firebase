@@ -136,6 +136,9 @@
                 </div>
             </div>
         </div>
+        <div v-else class="min-h-screen-navbar min-w-screen">
+
+        </div>
     </div>
     <Teleport to="#modal">
         <payment-modal
@@ -190,11 +193,21 @@ export default {
         }
     },
     created(){
+        let loader = this.$loading.show({
+            loader: 'dots'
+        });
         const viewStore = useViewStore()
         // const authStore = useAuthStore()
         this.fetchComic().then(() => {
             viewStore.viewComic(this.comic)
+        })
+        .catch((err) => {
+            console.error(err)
+            this.$router.push(this.routeResolver('NotFound'))
+        })
+        .finally(() => {
             this.loading = false
+            loader.hide()
         })
         if(!_.isNil(this.userData)){
             const favComicIds = this.userData.favorites.map((comicRef) => {

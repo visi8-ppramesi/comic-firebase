@@ -1,6 +1,6 @@
 <template>
     <div ref="imageContainer" class="min-h-screen bg-black flex justify-center justify-items-center content-center items-center">
-        <template v-if="isLink">
+        <template v-if="isLink && detectMobile()">
             <div class="glow-animation" :class="showGlow ? 'glow' : 'fill-width'">
                 <router-link :to="arLink">
                     <img ref="imageElement" :src="source" class="lg:object-fill lg:w-full" >
@@ -18,7 +18,7 @@ import utils from '../firebase/utils/index.js'
 import _ from 'lodash'
 export default {
     name: 'image-player',
-    inject: ['routeResolver'],
+    inject: ['routeResolver', 'detectMobile'],
     props: {
         arLink: {
             type: Object,

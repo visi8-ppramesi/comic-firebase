@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <button @click="test">test</button>
+    <!-- <div>
         <div class="cc-selector">
             <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
                 <label class="drinkcard-cc test" for="test">
@@ -32,7 +33,7 @@
                 </stepper-component>
             </vue-final-modal>
         </Teleport>
-    </div>
+    </div> -->
     <!-- <div class="relative relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
         <video @loadeddata="asdf" :src="img" ref="videoElement" class="absolute z-10" />
         <div class="z-20 w-36 h-36">
@@ -81,12 +82,12 @@
 
 <script>
 // import { markRaw } from 'vue'
-import fb from '../firebase/firebase.js'
-import { httpsCallable, connectFunctionsEmulator } from 'firebase/functions'
-import StepperComponent from '../components/stepper/StepperComponent.vue'
-import StepOne from '../components/stepper/StepOne.vue'
-import StepTwo from '../components/stepper/StepTwo.vue'
-import StepThree from '../components/stepper/StepThree.vue'
+// import fb from '../firebase/firebase.js'
+// import { httpsCallable, connectFunctionsEmulator } from 'firebase/functions'
+// import StepperComponent from '../components/stepper/StepperComponent.vue'
+// import StepOne from '../components/stepper/StepOne.vue'
+// import StepTwo from '../components/stepper/StepTwo.vue'
+// import StepThree from '../components/stepper/StepThree.vue'
 // import utils from '../firebase/utils/index.js'
 // import _ from 'lodash'
 // import VideoPlayer from '../components/VideoPlayer.vue'
@@ -94,47 +95,49 @@ import StepThree from '../components/stepper/StepThree.vue'
 export default {
     components: {
         // VideoPlayer
-        StepperComponent
+        // StepperComponent
     },
+    inject: ['Viewer'],
     data(){
         return {
-            paymentType: null,
-            image: require('../assets/logo.png'),
-            showModal: false,
-            steps: [
-                {
-                    name: "Step 1",
-                    desc: "Select Payment Method",
-                    icon: "fas fa-car",
-                    disabled: false,
-                    active: false,
-                    component: StepOne,
-                },
-                {
-                    name: "Step 2",
-                    desc: "Enter Payment Info",
-                    disabled: false,
-                    active: false,
-                    component: StepTwo,
-                },
-                {
-                    name: "Step 3",
-                    desc: "Do Something",
-                    icon: "fas fa-check",
-                    disabled: true,
-                    active: false,
-                    component: StepThree,
-                },
-                {
-                    name: "Confirmar",
-                    desc: "Review Payment Info",
-                    icon: "fas fa-check",
-                    disabled: false,
-                    active: false,
-                    component: StepThree,
-                    confirm: "Confirm"
-                }
-            ]
+            imgViewer: null,
+            // paymentType: null,
+            // image: require('../assets/logo.png'),
+            // showModal: false,
+            // steps: [
+            //     {
+            //         name: "Step 1",
+            //         desc: "Select Payment Method",
+            //         icon: "fas fa-car",
+            //         disabled: false,
+            //         active: false,
+            //         component: StepOne,
+            //     },
+            //     {
+            //         name: "Step 2",
+            //         desc: "Enter Payment Info",
+            //         disabled: false,
+            //         active: false,
+            //         component: StepTwo,
+            //     },
+            //     {
+            //         name: "Step 3",
+            //         desc: "Do Something",
+            //         icon: "fas fa-check",
+            //         disabled: true,
+            //         active: false,
+            //         component: StepThree,
+            //     },
+            //     {
+            //         name: "Confirmar",
+            //         desc: "Review Payment Info",
+            //         icon: "fas fa-check",
+            //         disabled: false,
+            //         active: false,
+            //         component: StepThree,
+            //         confirm: "Confirm"
+            //     }
+            // ]
             // test: 'gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4',
             // img: '',
             // id: '',
@@ -182,7 +185,7 @@ export default {
         },
         hello(){
             console.log('asdfasdfasdf')
-        }
+        },
         // toggleVideo(idx){
         //     const strIndex = 'testVideo' + idx
         //     if(this.vidPlaying[idx]){
@@ -193,22 +196,24 @@ export default {
         //         this.vidPlaying[idx] = true
         //     }
         // },
+        test(){
+        },
     },
     mounted(){
-        //eslint-disable-next-line no-unused-vars
+        // //eslint-disable-next-line no-unused-vars
 
-        connectFunctionsEmulator(fb.functions, "localhost", 5001);
-        const createGopayCharge = httpsCallable(fb.functions, 'createGopayCharge-createGopayCharge');
-        createGopayCharge({
-            transactionDetails: {
-                grossAmount: 12300,
-                orderId: 'test-1234'
-            },
-            customerDetails: {
-                email: 'ppramesi@visi8.com',
-                fullName: 'Priya Hayu Pramesi'
-            }
-        }).then(console.log)
+        // connectFunctionsEmulator(fb.functions, "localhost", 5001);
+        // const createGopayCharge = httpsCallable(fb.functions, 'createGopayCharge-createGopayCharge');
+        // createGopayCharge({
+        //     transactionDetails: {
+        //         grossAmount: 12300,
+        //         orderId: 'test-1234'
+        //     },
+        //     customerDetails: {
+        //         email: 'ppramesi@visi8.com',
+        //         fullName: 'Priya Hayu Pramesi'
+        //     }
+        // }).then(console.log)
         // utils.getProtectedDataUrlFromStorage(this.test).then(({media, identifier}) => {
         //     this.img = media
         //     this.id = identifier

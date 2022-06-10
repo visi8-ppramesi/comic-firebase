@@ -5,7 +5,7 @@
                 :banners="banners"
             ></banner>
         </div>
-        <div class="text-white bg-gradient-to-t to-indigo-900 from-purple-900">
+        <div v-if="!karaOnly" class="text-white bg-gradient-to-t to-indigo-900 from-purple-900">
             <div class="px-5 py-5">
                 <div class="mb-3">
                     <div class="flex items-center justify-between mb-2">
@@ -267,6 +267,11 @@ export default {
             console.log(this.authors)
         }
     },
+    computed: {
+        karaOnly(){
+            return 'true' == process.env.VUE_APP_KARA_ONLY
+        }
+    },
     data(){
         return {
             comics: [],
@@ -287,9 +292,10 @@ export default {
         }
     },
     mounted(){
-        console.log(this.routeResolver('Comics', {}, {category: 'adventure'}))
-        this.fetchComics()
-        this.fetchAuthors()
+        if(!this.karaOnly){
+            this.fetchComics()
+            this.fetchAuthors()
+        }
         this.fetchBanners()
     },
     created(){
