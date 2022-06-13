@@ -3,7 +3,7 @@
 import Subcollection from '../Subcollection.js'
 import Page from './Page.js'
 import firebaseSettings from '../firebaseSettings.js'
-import { doc, increment, updateDoc, setDoc, arrayUnion } from 'firebase/firestore'
+import { doc, increment, updateDoc, setDoc, arrayUnion, writeBatch } from 'firebase/firestore'
 
 export default class extends Subcollection{
     static collection = 'chapter_number'
@@ -20,19 +20,32 @@ export default class extends Subcollection{
     async viewChapter(userId = null){
         const counterIndex = Math.floor(Math.random() * firebaseSettings.counterShardNum).toString()
         const chapterCounterRef = doc(this.constructor.db, 'comics', this.parentId, 'chapters', this.id, 'counters', counterIndex)
-        const chapterRef = doc(this.constructor.db, 'comics', this.parentId, 'chapters', this.id)
-        const readHistoryRef = doc(this.constructor.db, 'users', userId, 'read_history', this.parentId)
-        return await updateDoc(chapterCounterRef, {
+
+        const batch = writeBatch(this.constructor.db)
+
+        batch.update(chapterCounterRef, {
             view_count: increment(1)
-        }).then((res) => {
-            if(userId){
-                return setDoc(readHistoryRef, {
-                    chapters: arrayUnion(chapterRef)
-                }, { merge: true })
-            }else{
-                return res
-            }
         })
+        if(userId){
+            const readHistoryRef = doc(this.constructor.db, 'users', userId, 'read_history', this.parentId)
+            const chapterRef = doc(this.constructor.db, 'comics', this.parentId, 'chapters', this.id)
+            batch.set(readHistoryRef, {
+                chapters: arrayUnion(chapterRef)
+            }, { merge: true })
+        }
+
+        return batch.commit()
+        // return await updateDoc(chapterCounterRef, {
+        //     view_count: increment(1)
+        // }).then((res) => {
+        //     if(userId){
+        //         return setDoc(readHistoryRef, {
+        //             chapters: arrayUnion(chapterRef)
+        //         }, { merge: true })
+        //     }else{
+        //         return res
+        //     }
+        // })
     }
 
     async getPages(queries = []){
