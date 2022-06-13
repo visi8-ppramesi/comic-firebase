@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useAuthStore } from "./auth";
 import errorHandler from "./utils/errorHandler";
 import _ from 'lodash'
 
@@ -20,8 +21,9 @@ const viewHelper = (id, comic, store) => {
 }
 
 const viewChapterHelper = (id, chapter, store) => {
+    const authStore = useAuthStore()
     try{
-        return chapter.viewChapter().then(() => {
+        return chapter.viewChapter(authStore.uid).then(() => {
             store.chapters_viewed.push(id)
             localStorage.setItem('chapters_viewed', JSON.stringify(store.chapters_viewed))
         })
@@ -58,7 +60,6 @@ export const useViewStore = defineStore('comicViewed', {
                     }
                 }*/
             }else{
-                console.log(comicInstance)
                 const viewDate = new Date(this.view_date[id])
                 if(viewDate < comicInstance.last_update.toDate()){
                     return viewHelper(id, comicInstance, this)

@@ -339,7 +339,6 @@ export default {
             let firstRun = this.comments == 0
             this.comic.createNewCommentListener((newCommInstance) => {
                 if(firstRun){
-                    console.log('hello')
                     const foundId = _.findIndex(this.comments, (com) => {
                         return com.id == newCommInstance.id
                     })

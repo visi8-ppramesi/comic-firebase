@@ -84,10 +84,10 @@
               <div class="flex space-x-4">
                 <div v-if="isLoggedIn" class="px-2 py-2 space-y-1">
                   <router-link :to="routeResolver('Dashboard')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
-                  <router-link :to="routeResolver('MyAccount')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">My Account</router-link>
+                  <!-- <router-link :to="routeResolver('MyAccount')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">My Account</router-link> -->
                   <router-link :to="routeResolver('MyComics')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">My Comics</router-link>
                   <router-link :to="routeResolver('MyTransactions')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page" >My Transactions</router-link >
-                  <router-link :to="routeResolver('Logout')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Logout</router-link>
+                  <!-- <router-link :to="routeResolver('Logout')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Logout</router-link> -->
                 </div>
                 <div v-else class="px-2 py-2 space-y-1">
                   <router-link :to="routeResolver('Dashboard')" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</router-link>
@@ -195,6 +195,10 @@
                 tabindex="-1"
               >
                 <!-- Active: "bg-gray-100", Not Active: "" -->
+                <div class="block px-4 py-2 text-sm text-gray-700">
+                  {{ user.email }}
+                </div>
+                <hr />
                 <router-link
                   :to="routeResolver('MyAccount')"
                   class="block px-4 py-2 text-sm text-gray-700"
@@ -335,7 +339,7 @@
             aria-current="page"
             >Dashboard</router-link
           >
-          <router-link
+          <!-- <router-link
             :to="routeResolver('MyAccount')"
             class="
               bg-gray-900
@@ -349,7 +353,7 @@
             "
             aria-current="page"
             >My Account</router-link
-          >
+          > -->
           <router-link
             :to="routeResolver('MyComics')"
             class="
@@ -380,7 +384,7 @@
             aria-current="page"
             >My Transactions</router-link
           >
-          <router-link
+          <!-- <router-link
             :to="routeResolver('Logout')"
             class="
               bg-gray-900
@@ -394,7 +398,7 @@
             "
             aria-current="page"
             >Logout</router-link
-          >
+          > -->
           <!-- <router-link
             :to="routeResolver('web.purchasetokens')"
             class="
@@ -559,7 +563,7 @@ export default {
     showNav(){
       return this.$route.meta.showNav
     },
-    ...mapState(useAuthStore, ['isLoggedIn', 'profile_image_url'])
+    ...mapState(useAuthStore, ['user', 'isLoggedIn', 'profile_image_url'])
   },
   methods: {
     async getSocials(){

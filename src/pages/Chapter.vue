@@ -140,6 +140,7 @@ export default {
         })
     },
     mounted(){
+        console.log('mounted')
         let loader = this.$loading.show({
             loader: 'dots'
         });
@@ -198,7 +199,6 @@ export default {
     },
     methods: {
         playClicked(idx){
-            console.log(idx)
             this.pages.forEach((page, pIdx) => {
                 if(page.media_type == 'video' && idx !== pIdx){
                     const containerIndex = 'mediaViewer' + pIdx

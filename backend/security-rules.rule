@@ -9,6 +9,11 @@ service cloud.firestore {
     match /{path=**}/counters/{counter} {
       allow read: if true;
     }
+    
+    //match /{path=**}/comments/{comment} {
+    //  allow read: if true;
+    //  allow write: if true;
+    //}
 
     match /config/{config}{
       allow read: if true;
@@ -21,6 +26,14 @@ service cloud.firestore {
       allow update: if belongsTo(user) || isAdmin();
       allow delete: if belongsTo(user) || isAdmin();
       allow create: if canCreateUser() || isAdmin();
+
+      //only allowed through functions
+      match /orders/{order}{
+        allow read: if belongsTo(user) || isAdmin();
+        allow create: if isAdmin();
+        allow delete: if isAdmin()
+        allow update: if cancelOrder() || isAdmin();
+      }
 
       //only allowed through functions
       match /purchased_comics/{comic}{
@@ -37,6 +50,12 @@ service cloud.firestore {
       match /receipts/{receipt}{
         allow read: if belongsTo(user) || isAdmin();
         allow write: if isAdmin();
+      }
+
+      function cancelOrder(){
+        return request.auth.uid != null && 
+          belongsTo(user) &&
+          request.resource.data.status == 'cancelled';
       }
 
       function canCreateUser(){

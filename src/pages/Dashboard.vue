@@ -264,7 +264,6 @@ export default {
             for await(let author of authorGenerator){
                 this.authors.push(author)
             }
-            console.log(this.authors)
         }
     },
     computed: {

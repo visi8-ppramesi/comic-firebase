@@ -105,16 +105,14 @@ export default class extends Collection{
     async getPurchasedComicStatus(id){
         const purchasedInstance = await PurchasedComic.getDocument(['users', this.id, 'purchased_comics'], id)
         if(purchasedInstance.empty){
-            console.log('purchased instance empty')
             purchasedInstance.chapters = []
         }
         return purchasedInstance
     }
 
     async purchaseChapter(comicId, chapterId){
-        console.log(comicId, chapterId)
         const purchaseRef = doc(this.constructor.db, 'users', this.id, 'purchased_comics', comicId)
-        const chapterRef = doc(this.constructor.db, 'chapters', chapterId)
+        const chapterRef = doc(this.constructor.db, 'comics', comicId, 'chapters', chapterId)
         return getDoc(purchaseRef).then((snap) => {
             if(snap.exists()){
                 return updateDoc(purchaseRef, {
