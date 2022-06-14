@@ -1,6 +1,11 @@
 <template>
     <KeepAlive>
-        <component :store="store" :is="paymentComponents[store.state.selectedPayment]" ref="paymentComponent"></component>
+        <component 
+            :store="store" 
+            :is="paymentComponents[store.state.selectedPayment]" 
+            ref="paymentComponent"
+            @loading="loadingAction"
+        ></component>
     </KeepAlive>
 </template>
 
@@ -23,8 +28,12 @@ export default {
     },
     mounted(){
         console.log(this.store)
+        this.$emit('loading', true)
     },
     methods: {
+        loadingAction(status){
+            this.$emit('loading', status)
+        }
         // nextStep(){
         //     const paymentData = this.$refs.paymentComponent.getPaymentInfo()
         //     this.store.setState('paymentData', paymentData)

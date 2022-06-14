@@ -1,8 +1,14 @@
 <template>
     <div class="text-2xl font-normal leading-normal">Gopay</div>
-    <div class="text-md font-normal leading-normal">Please scan the QR code with GoPay App:</div>
+    <div v-if="detectMobile()" class="text-md font-normal leading-normal">
+        **insert instruction here**
+    </div>
+    <div v-else class="text-md font-normal leading-normal">Please scan the QR code with GoPay App:</div>
     <div class="flex flex-col">
         <img :src="midtransQrCode" class="max-h-screen">
+    </div>
+    <div class="flex w-full items-center justify-center">
+        <button @click="downloadQrCode" class="disabled:bg-purple-300 disabled:text-gray-500 text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">Download QR Code</button>
     </div>
 </template>
 
@@ -20,6 +26,7 @@ export default {
         }
     },
     props: ['store'],
+    inject: ['detectMobile'],
     computed: {
         ...mapState(useAuthStore, ['uid', 'user'])
     },
@@ -47,10 +54,14 @@ export default {
                 createGopayCharge(param).then(({data}) => {
                     console.log(data)
                     this.midtransQrCode = data.actions.find(v => v.name == 'generate-qr-code').url
+                    this.$emit('loading', false)
                 })
             })
     },
     methods: {
+        downloadQrCode(){
+            window.open(this.midtransQrCode, '_blank')
+        },
         getPaymentInfo(){
             return {
                 something: this.something
