@@ -35,17 +35,23 @@ export default {
         Comic.getDocument(this.store.state.comic)
             .then((cmc) => {
                 const cptDetails = cmc.chapters_data.find(v => v.id == this.store.state.chapter)
+                const taxRate = 0.11 //change later into settings
+                const tax = this.store.state.price * taxRate
+                const fee = 0 //change later into settings
+                const total = this.store.state.price + tax + fee
                 const param = {
                     transactionDetails: {
-                        grossAmount: this.store.state.price,
-                        userId: this.uid
+                        grossAmount: total,
+                        userId: this.uid,
+                        tax, fee
                     },
-                    chapterDetails: {
+                    itemsDetails: [{
                         chapterId: this.store.state.chapter,
                         comicId: this.store.state.comic,
                         chapterNum: cptDetails.chapter_number, 
-                        comicName: cmc.title
-                    },
+                        comicName: cmc.title,
+                        itemPrice: this.store.state.price
+                    }],
                     customerDetails: {
                         email: this.user.email,
                         fullName: this.user.full_name
