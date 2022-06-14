@@ -3,7 +3,14 @@
 import Subcollection from '../Subcollection.js'
 import Page from './Page.js'
 import firebaseSettings from '../firebaseSettings.js'
-import { doc, increment, updateDoc, setDoc, arrayUnion, writeBatch } from 'firebase/firestore'
+import { 
+    doc, 
+    increment, 
+    // updateDoc, 
+    // setDoc, 
+    arrayUnion, 
+    writeBatch 
+} from 'firebase/firestore'
 
 export default class extends Subcollection{
     static collection = 'chapter_number'

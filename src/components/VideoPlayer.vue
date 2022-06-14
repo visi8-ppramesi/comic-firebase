@@ -1,17 +1,19 @@
 <template>
     <div ref="videoContainer" class="relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
-        <video class="video absolute z-10" ref="videoElement" playsinline :src="source" type="video/mp4">
-        </video>
-        <div class="z-20">
-            <div v-if="detectMobile()" :class="[showArButton ? 'opacity-1' : 'opacity-0']" class="w-16 h-16 flex bg-gray-200 bg-opacity-75 justify-center items-center rounded-full absolute left-2 top-2">
+        <div class="absolute z-10 video-container">
+            <div v-if="detectMobile()" :class="[showArButton ? 'opacity-1' : 'opacity-0']" class="z-20 w-16 h-16 flex bg-gray-200 bg-opacity-75 justify-center items-center rounded-full absolute left-2 top-2">
                 <router-link :to="arLink">
                     <svg width="63" height="40" xmlns="http://www.w3.org/2000/svg">
                         <g>
-                            <text font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Arimo'" font-size="40" id="svg_1" y="34.5" x="2.5" stroke-width="0" stroke="#000" fill="#000000">AR</text>
+                            <text font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Arimo'" font-size="40" id="svg_1" y="32.5" x="7" stroke-width="0" stroke="#000" fill="#000000">AR</text>
                         </g>
                     </svg>
                 </router-link>
             </div>
+            <video class="video" ref="videoElement" playsinline :src="source" type="video/mp4">
+            </video>
+        </div>
+        <div class="z-20">
             <div class="w-36 h-36">
                 <svg v-if="vidLoaded" :class="[vidPlaying ? 'opacity-0' : 'opacity-75']" @click="toggleVideo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
                     <polygon class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
