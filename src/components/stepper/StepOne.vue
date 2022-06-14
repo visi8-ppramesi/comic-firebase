@@ -1,17 +1,17 @@
 <template>
     <div>Please select your payment method:</div>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <div class="group-selected:bg-slate-100 p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
+        <div class="p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
             <label class="label-container flex gopay" for="gopay">
-                <img :src="gopay" class="w-full">
+                <img :src="gopay" class="w-full h-fit">
             </label>
-            <input id="gopay" v-model="selectedPayment" @change="paymentChange" type="radio" name="credit-card" class="group mt-auto" value="gopay" />
+            <input id="gopay-selector" v-model="selectedPayment" @change="paymentChange" type="radio" name="credit-card" class="group mt-auto" value="gopay" />
         </div>
-        <div class="group-selected:bg-slate-100 p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
+        <div class="p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
             <label class="label-container flex qrcode" for="qrcode">
-                <img :src="qrcode" class="w-full">
+                <img :src="qrcodeImage" class="w-full h-fit">
             </label>
-            <input id="qrcode" v-model="selectedPayment" @change="paymentChange" type="radio" name="credit-card" class="group mt-auto" value="qrCode" />
+            <input id="qrcode-selector" v-model="selectedPayment" @change="paymentChange" type="radio" name="credit-card" class="group mt-auto" value="qrCode" />
         </div>
     </div>
 </template>
@@ -24,7 +24,7 @@ export default {
         return {
             selectedPayment: null,
             gopay: require('../../assets/icons/gopay.svg'),
-            qrcode: require('../../assets/icons/qris.png'),
+            qrcodeImage: require('../../assets/icons/qris.png'),
         }
     },
     methods: {

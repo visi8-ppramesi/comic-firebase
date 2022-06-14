@@ -53,7 +53,6 @@ export default {
     },
     mounted(){
         this.searched = false
-        this.query = this.$route.query.query
         if(!_.isNil(this.$route.query.query)){
             this.searchQuery = this.$route.query.query
             this.fetchResults()
@@ -82,6 +81,7 @@ export default {
         async fetchResults(){
             if(this.$route.name == 'Search'){
                 this.searching = true
+                this.query = this.$route.query.query
                 const whereQuery = searchQueryHelper(this.$route.query.query)
                 const comics = await Comic.getDocumentsWithStorageResourceUrl(whereQuery, ['cover_image_url'])
                 this.searching = false

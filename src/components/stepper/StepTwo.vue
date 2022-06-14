@@ -1,6 +1,6 @@
 <template>
     <KeepAlive>
-        <component :is="paymentComponents[store.state.selectedPayment]" ref="paymentComponent"></component>
+        <component :store="store" :is="paymentComponents[store.state.selectedPayment]" ref="paymentComponent"></component>
     </KeepAlive>
 </template>
 
@@ -20,6 +20,9 @@ export default {
                 qrCode: markRaw(QrCode)
             }
         }
+    },
+    mounted(){
+        console.log(this.store)
     },
     methods: {
         // nextStep(){

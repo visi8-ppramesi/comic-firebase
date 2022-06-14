@@ -32,6 +32,9 @@ export default {
         'price',
     ],
     methods: {
+        setState(key, value){
+            this.$refs.stepper.setState(key, value)
+        },
         openModal(){
             this.showModal = true
         },

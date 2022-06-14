@@ -284,6 +284,8 @@ export default {
         async purchaseChapter(chapterId){
             this.selectedChapter = chapterId
             this.selectedPrice = this.chapters.find((cpt) => cpt.id == chapterId).price
+            this.$refs.paymentModal.setState('chapter', this.selectedChapter)
+            this.$refs.paymentModal.setState('price', this.selectedPrice)
             this.$refs.paymentModal.openModal()
         },
         async toggleSubscribeComic(){
