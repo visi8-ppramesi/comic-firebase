@@ -42,7 +42,6 @@ export default {
                 const param = {
                     transactionDetails: {
                         grossAmount: total,
-                        userId: this.uid,
                         tax, fee
                     },
                     itemsDetails: [{
@@ -53,6 +52,7 @@ export default {
                         itemPrice: this.store.state.price
                     }],
                     customerDetails: {
+                        userId: this.uid,
                         email: this.user.email,
                         fullName: this.user.full_name
                     }
