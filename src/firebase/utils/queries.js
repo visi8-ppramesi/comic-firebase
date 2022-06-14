@@ -4,8 +4,8 @@ import _ from 'lodash'
 
 export const orderByDateDesc = (startAtParam = null) => 
     startAtParam ? 
-        [ orderBy('date', 'desc'), limit(10), startAfter(startAtParam) ] :
-        [ orderBy('date', 'desc'), limit(10) ]
+        [ orderBy('created_date', 'desc'), limit(10), startAfter(startAtParam) ] :
+        [ orderBy('created_date', 'desc'), limit(10) ]
 
 export const authorLimitTen = [ orderBy('name'), limit(10) ]
 

@@ -64,14 +64,16 @@ const main = async () => {
     // const NS_PER_SEC = 1e9;
     // const MS_PER_NS = 1e-6  
     // const time = process.hrtime();
-    const collGroup = collectionGroup(ComicFactory.db, 'counters')
+    const collGroup = collectionGroup(ComicFactory.db, 'comments')
     const docSnap = await getDocs(collGroup)
     const docs = Object.values(docSnap.docs)
     // const aggregated = {}
     for(let j = 0; j < docs.length; j++){
+        const data = docs[j].data()
+        updateDoc(docs[j].ref, {
+            created_date: data.date
+        })
         // docs[j].get('view_count')
-        const path = docs[j].ref.path.split('/')
-        console.log(path)
         // const comicId = path[1]
         // if(aggregated[comicId]){
         //     aggregated[comicId] += docs[j].get('view_count')

@@ -129,7 +129,7 @@
                         :allowDelete="canUserDelete(comment.user)"
                         :commentMessage="comment.message"
                         :userName="comment.user_data.name"
-                        :postDate="comment.date"
+                        :postDate="comment.created_date"
                         :profilePicture="comment.user_data.profile_image_url"
                     />
                     <!-- <img :src="comment.user_data.profile_image_url" /> -->

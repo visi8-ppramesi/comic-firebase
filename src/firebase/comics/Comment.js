@@ -11,7 +11,7 @@ export default class extends Subcollection{
         'user_data': Object,
         'message': String,
         'flag': Number,
-        'date': Date
+        'created_date': Date
     }
 
     async deleteComment(){
@@ -52,7 +52,7 @@ export default class extends Subcollection{
             user_data: userData,
             message: msg,
             flag: 0,
-            date: new Date()
+            created_date: new Date()
         })
     }
 }
