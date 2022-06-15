@@ -18,6 +18,7 @@ import Comic from '../../firebase/comics/Comic.js'
 import fb from '../../firebase/firebase.js'
 import { useAuthStore } from '../../store/auth.js'
 import { mapState } from 'pinia'
+import { getDoc, doc } from '@firebase/firestore'
 export default {
     data(){
         return {
@@ -36,9 +37,9 @@ export default {
             .then((cmc) => {
                 const cptDetails = cmc.chapters_data.find(v => v.id == this.store.state.chapter)
                 const taxRate = 0.11 //change later into settings
-                const tax = this.store.state.price * taxRate
+                const tax = Math.round(this.store.state.price * taxRate)
                 const fee = 0 //change later into settings
-                const total = this.store.state.price + tax + fee
+                const total = Math.round(this.store.state.price + tax + fee)
                 const param = {
                     transactionDetails: {
                         grossAmount: total,
@@ -58,10 +59,29 @@ export default {
                     }
                 }
                 createGopayCharge(param).then(({data}) => {
-                    console.log(data)
-                    this.midtransQrCode = data.actions.find(v => v.name == 'generate-qr-code').url
-                    this.$emit('loading', false)
+                    const docRef = doc(fb.db, ...data._path.segments)
+                    getDoc(docRef).then((snap) => {
+                        const data = snap.data()
+                        this.midtransQrCode = data.charge_response.actions.find(v => v.name == 'generate-qr-code').url
+                        this.$emit('loading', false)
+                    })
                 })
+                .catch((err) => {
+                    this.$emit('loading', false)
+                    console.error(err)
+                    this.$toast.open({
+                        message: "Create charge error",
+                        type: "error",
+                        duration: 5000,
+                        dismissible: true,
+                        position: 'bottom'
+                    })
+                })
+                // createGopayCharge(param).then(({data}) => {
+                //     console.log(data)
+                //     this.midtransQrCode = data.actions.find(v => v.name == 'generate-qr-code').url
+                //     this.$emit('loading', false)
+                // })
             })
     },
     methods: {

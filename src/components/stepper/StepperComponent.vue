@@ -34,7 +34,7 @@
         <i class="fas fa-fw fa-3x mr-4" :class="iconClasses"></i>
       </div>
       <div>
-        <h3>{{ step + 1 }}. {{ steps[step].name }}</h3>
+        <h3>{{ steps[step].name }}</h3>
         <!-- <p class="text-slate-400">{{ steps[step].desc }}</p> -->
 
         <div v-if="!fatalError">
