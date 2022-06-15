@@ -76,7 +76,7 @@ var MidtransNew3ds = function() {
     sandbox : "https://api.sandbox.midtrans.com",
     staging : "https://api.stg.veritrans.co.id"
   };
-  var request = {};
+  var opts = {};
   var options = {};
   var input = {};
   /** @type {string} */
@@ -89,17 +89,17 @@ var MidtransNew3ds = function() {
     url : "",
     callback : function(data) {
       if (data && "200" == data.status_code) {
-        if (request.onSuccess) {
-          request.onSuccess(data);
+        if (opts.onSuccess) {
+          opts.onSuccess(data);
         }
       } else {
         if (data && "201" == data.status_code) {
-          if (request.onPending) {
-            request.onPending(data);
+          if (opts.onPending) {
+            opts.onPending(data);
           }
         } else {
-          if (request.onFailure) {
-            request.onFailure(data);
+          if (opts.onFailure) {
+            opts.onFailure(data);
           }
         }
       }
@@ -111,14 +111,14 @@ var MidtransNew3ds = function() {
         window.attachEvent("onmessage", errorHandler);
       }
       /** @type {!Object} */
-      request = f;
+      opts = f;
       if (f.performAuthentication) {
         f.performAuthentication(e);
       }
     },
     getCardToken : function(cardData, cvc) {
       /** @type {!Object} */
-      request = cvc;
+      opts = cvc;
       /** @type {string} */
       (options = cardData).callback = "MidtransNew3ds.callback";
       build(MidtransNew3ds.url, "/v2/token");
@@ -140,7 +140,7 @@ var MidtransNew3ds = function() {
     },
     registerCard : function(cardData, successCallback) {
       /** @type {!Object} */
-      request = successCallback;
+      opts = successCallback;
       /** @type {string} */
       (input = cardData).callback = "MidtransNew3ds.callback";
       build(MidtransNew3ds.url, "/v2/card/register");

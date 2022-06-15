@@ -13,12 +13,10 @@
 </template>
 
 <script>
-import { httpsCallable } from 'firebase/functions'
-import Comic from '../../firebase/comics/Comic.js'
-import fb from '../../firebase/firebase.js'
+import GopayCharger from '../../midtrans/Gopay.js'
+// import Comic from '../../firebase/comics/Comic.js'
 import { useAuthStore } from '../../store/auth.js'
 import { mapState } from 'pinia'
-import { getDoc, doc } from '@firebase/firestore'
 export default {
     data(){
         return {
@@ -32,57 +30,69 @@ export default {
         ...mapState(useAuthStore, ['uid', 'user'])
     },
     mounted(){
-        const createGopayCharge = httpsCallable(fb.functions, 'createChapterGopayCharge-createChapterGopayCharge');
-        Comic.getDocument(this.store.state.comic)
-            .then((cmc) => {
-                const cptDetails = cmc.chapters_data.find(v => v.id == this.store.state.chapter)
-                const taxRate = 0.11 //change later into settings
-                const tax = Math.round(this.store.state.price * taxRate)
-                const fee = 0 //change later into settings
-                const total = Math.round(this.store.state.price + tax + fee)
-                const param = {
-                    transactionDetails: {
-                        grossAmount: total,
-                        tax, fee
-                    },
-                    itemsDetails: [{
-                        chapterId: this.store.state.chapter,
-                        comicId: this.store.state.comic,
-                        chapterNum: cptDetails.chapter_number, 
-                        comicName: cmc.title,
-                        itemPrice: this.store.state.price
-                    }],
-                    customerDetails: {
-                        userId: this.uid,
-                        email: this.user.email,
-                        fullName: this.user.full_name
-                    }
-                }
-                createGopayCharge(param).then(({data}) => {
-                    const docRef = doc(fb.db, ...data._path.segments)
-                    getDoc(docRef).then((snap) => {
-                        const data = snap.data()
-                        this.midtransQrCode = data.charge_response.actions.find(v => v.name == 'generate-qr-code').url
-                        this.$emit('loading', false)
-                    })
-                })
-                .catch((err) => {
-                    this.$emit('loading', false)
-                    console.error(err)
-                    this.$toast.open({
-                        message: "Create charge error",
-                        type: "error",
-                        duration: 5000,
-                        dismissible: true,
-                        position: 'bottom'
-                    })
-                })
-                // createGopayCharge(param).then(({data}) => {
-                //     console.log(data)
-                //     this.midtransQrCode = data.actions.find(v => v.name == 'generate-qr-code').url
-                //     this.$emit('loading', false)
-                // })
+        const gopayCharger = new GopayCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV)
+        gopayCharger.createCharge({
+            chapterData: this.store.state.chapterData,
+            comicData: this.store.state.comicData,
+            user: this.user
+        }).then(({data}) => {
+            this.midtransQrCode = data.chargeResponse.actions.find(v => v.name == 'generate-qr-code').url
+            this.$emit('loading', false)
+        }).catch((err) => {
+            this.$emit('loading', false)
+            console.error(err)
+            this.$toast.open({
+                message: "Create charge error",
+                type: "error",
+                duration: 5000,
+                dismissible: true,
+                position: 'bottom'
             })
+        })
+
+        // const createGopayCharge = httpsCallable(fb.functions, 'createChapterGopayCharge-createChapterGopayCharge');
+        // /*
+        //     chapterData
+        //     comicData
+        //     user
+        // */
+        // const cptDetails = this.store.state.chapterData//cmc.chapters_data.find(v => v.id == this.store.state.chapter)
+        // const taxRate = 0.11 //change later into settings
+        // const tax = Math.round(this.store.state.price * taxRate)
+        // const fee = 0 //change later into settings
+        // const total = Math.round(this.store.state.price + tax + fee)
+        // const param = {
+        //     transactionDetails: {
+        //         grossAmount: total,
+        //         tax, fee
+        //     },
+        //     itemsDetails: [{
+        //         chapterId: this.store.state.chapter,
+        //         comicId: this.store.state.comic,
+        //         chapterNum: cptDetails.chapter_number, 
+        //         comicName: this.store.state.comicData.title,
+        //         itemPrice: this.store.state.price
+        //     }],
+        //     customerDetails: {
+        //         userId: this.uid,
+        //         email: this.user.email,
+        //         fullName: this.user.full_name
+        //     }
+        // }
+        // createGopayCharge(param).then(({data}) => {
+        //     this.midtransQrCode = data.chargeResponse.actions.find(v => v.name == 'generate-qr-code').url
+        //     this.$emit('loading', false)
+        // }).catch((err) => {
+        //     this.$emit('loading', false)
+        //     console.error(err)
+        //     this.$toast.open({
+        //         message: "Create charge error",
+        //         type: "error",
+        //         duration: 5000,
+        //         dismissible: true,
+        //         position: 'bottom'
+        //     })
+        // })
     },
     methods: {
         downloadQrCode(){

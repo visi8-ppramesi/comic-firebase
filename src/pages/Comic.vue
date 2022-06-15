@@ -143,9 +143,8 @@
     <Teleport to="#modal">
         <payment-modal
             ref="paymentModal"
-            :chapter="selectedChapter"
-            :comic="$route.params.id"
-            :price="selectedPrice"
+            :chapter-data="selectedChapterData"
+            :comic-data="comic"
         />
     </Teleport>
 </template>
@@ -188,7 +187,8 @@ export default {
             purchasedChapterIds: [],
             comments: [],
             newComment: '',
-            comicFullyPurchased: false
+            comicFullyPurchased: false,
+            selectedChapterData: null,
             // categories: ''
         }
     },
@@ -282,10 +282,9 @@ export default {
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.id, chapterId: chapterId}))
         },
         async purchaseChapter(chapterId){
-            this.selectedChapter = chapterId
-            this.selectedPrice = this.chapters.find((cpt) => cpt.id == chapterId).price
-            this.$refs.paymentModal.setState('chapter', this.selectedChapter)
-            this.$refs.paymentModal.setState('price', this.selectedPrice)
+            this.selectedChapterData = this.chapters.find(c => c.id == chapterId)
+            this.$refs.paymentModal.setState('chapterData', this.selectedChapterData)
+            this.$refs.paymentModal.setState('comicData', this.comic)
             this.$refs.paymentModal.openModal()
         },
         async toggleSubscribeComic(){
