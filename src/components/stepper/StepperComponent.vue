@@ -52,6 +52,7 @@
               @set-step="setStep"
               @disable-next="disableNext"
               @enable-next="enableNext"
+              @rename-next-button="renameNextButton"
             />
           </KeepAlive>
         </div>
@@ -83,7 +84,7 @@
                 @click="nextStep"
                 :disabled="loading || nextDisabled"
             >
-                Next
+                {{nextButtonText}}
                 <i class="fas fa-angle-double-right"></i>
             </button>
 
@@ -126,6 +127,7 @@ export default {
       fatalErrorMsg: "",
       effect: "in-out-translate-fade",
       shake: false,
+      nextButtonText: 'Next'
     };
   },
   computed: {
@@ -142,6 +144,9 @@ export default {
     },
   },
   methods: {
+    renameNextButton(rename){
+      this.nextButtonText = rename
+    },
     test(){
       console.log(this.stepComponent)
     },

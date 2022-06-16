@@ -17,7 +17,7 @@ export default class{
         if(!clientKey){
             throw 'Invalid client key'
         }
-        if(!envType in this.constructor.environment){
+        if(!(envType in this.constructor.environment)){
             throw 'Environment type invalid'
         }
         this.clientKey = clientKey

@@ -6,6 +6,7 @@ import {
     collection, 
     getDocs, 
     getDoc,
+    collectionGroup,
     // orderBy,
     // limit
 } from "firebase/firestore";
@@ -435,6 +436,126 @@ export default class{
 
             yield instance
         }
+    }
+
+    static async getDocumentsCollection(queries = []){
+        const eventRef = collectionGroup(firebase.db, this.collection)
+        let q;
+        if(queries.length > 0){
+            q = query(eventRef, ...queries)
+        }else{
+            q = eventRef
+        }
+        
+        try{
+            const snap = await getDocs(q)
+            return await Promise.all(utils.parseDocs(snap.docs).map(async (datum, idx) => {
+                const path = datum.doc.ref.path.split('/')
+                const parentId = path[path.length - 3]
+                const instance = new this()
+                await instance.setData(parentId, datum.id, datum, snap.docs[idx])
+                return instance
+            }))
+        }catch(err){
+            handleError(err, 'getDocumentsError')
+            throw err
+        }
+    }
+
+    static async getDocumentsCollectionWithStorageResource(queries = [], storageFields = []){
+        const eventRef = collectionGroup(firebase.db, this.collection)
+        let q;
+        if(queries.length > 0){
+            q = query(eventRef, ...queries)
+        }else{
+            q = eventRef
+        }
+        
+        let snap
+        try {
+            snap = await getDocs(q)
+        } catch (err) {
+            handleError(err, 'getDocumentsError')
+            throw err
+        }
+        const docs = Object.values(snap.docs)
+        const results = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            const path = docs[i].ref.path.split('/')
+            const parentId = path[path.length - 3]
+            const resources = []
+
+            const instance = new this()
+            await instance.setData(parentId, docs[i].id, data, docs[i])
+            for(let j = 0; j < storageFields.length; j++){
+                resources.push(utils.getDataUrlFromStorage(instance[storageFields[j]]))
+            }
+
+            try {
+                await Promise.all(resources).then((res) => {
+                    for(let k = 0; k < res.length; k++){
+                        instance[storageFields[k]] = res[k]
+                    }
+                })
+            } catch (err) {
+                handleError(err, 'getDocumentsError')
+                throw err
+            }
+
+            results.push(instance)
+        }
+        return results
+    }
+
+    static async getDocumentsCollectionWithStorageResourceUrl(queries = [], storageFields = []){
+        const eventRef = collectionGroup(firebase.db, this.collection)
+        let q;
+        if(queries.length > 0){
+            q = query(eventRef, ...queries)
+        }else{
+            q = eventRef
+        }
+        let snap
+        try {
+            snap = await getDocs(q)
+        } catch (err) {
+            handleError(err, 'getDocumentsError')
+            throw err
+        }
+        const docs = Object.values(snap.docs)
+        const events = []
+        for(let i = 0; i < docs.length; i++){
+            const data = docs[i].data()
+            const path = docs[i].ref.path.split('/')
+            const parentId = path[path.length - 3]
+            const resources = []
+
+            data.doc = docs[i]
+            data.id = docs[i].id
+
+            const instance = new this()
+            await instance.setData(parentId, data.id, data, data.doc)
+
+            for(let j = 0; j < storageFields.length; j++){
+                resources.push(utils.getResourceUrlFromStorage(instance[storageFields[j]]))
+            }
+
+            try {
+                await Promise.all(resources).then((resource) => {
+                    for(let k = 0; k < resource.length; k++){
+                        instance[storageFields[k]] = resource[k]
+                    }
+                })
+            } catch (err) {
+                handleError(err, 'getDocumentsError')
+                throw err
+            }
+            // data.doc = docs[i]
+            // data.id = docs[i].id
+            events.push(instance)
+        }
+        return events
     }
 
     static resolve(collectionPath){

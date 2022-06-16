@@ -6,14 +6,6 @@ service cloud.firestore {
     //  allow read, write: if
     //      request.time < timestamp.date(2022, 6, 11);
     // }
-    match /{path=**}/counters/{counter} {
-      allow read: if true;
-    }
-    
-    //match /{path=**}/comments/{comment} {
-    //  allow read: if true;
-    //  allow write: if true;
-    //}
 
     match /config/{config}{
       allow read: if true;
@@ -167,6 +159,15 @@ service cloud.firestore {
     match /settings/{setting}{
       allow read: if true;
       allow write: if isAdmin();
+    }
+    
+    match /{path=**}/counters/{counter} {
+      allow read: if true;
+    }
+    
+    match /{path=**}/comments/{comment} {
+     allow read: if isAdmin();
+     allow write: if isAdmin();
     }
 
     function isLoggedIn(){

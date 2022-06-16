@@ -27,6 +27,17 @@ export default {
         }
     },
     mounted(){
+        switch(this.store.state.selectedPayment){
+            case 'creditCard':
+                this.$emit('renameNextButton', 'Charge')
+                break;
+            case 'gopay':
+                this.$emit('renameNextButton', 'Confirm')
+                break;
+            case 'qrCode':
+                this.$emit('renameNextButton', 'Confirm')
+                break;
+        }
         console.log(this.store)
         this.$emit('loading', true)
     },

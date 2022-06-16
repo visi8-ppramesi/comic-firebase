@@ -56,9 +56,16 @@ export default class extends Midtrans{
             })
         })
 
+        const createCreditCardCharge = httpsCallable(fb.functions, 'createChapterCreditCardCharge-createChapterCreditCardCharge');
         const { total, tax, fee } = await this.constructor.calculateTax(chapterData.price)
-        const param = this.constructor.buildParam(chapterData, comicData, user, total, tax, fee, { creditCard: token })
 
-        return param
+        const creditCardDetails = {
+            statusCode: token.status_code,
+            statusMessage: token.status_message,
+            tokenId: token.token_id,
+            hash: token.hash
+        }
+        const param = this.constructor.buildParam(chapterData, comicData, user, total, tax, fee, { creditCardDetails })
+        return createCreditCardCharge(param)
     }
 }

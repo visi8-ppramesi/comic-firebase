@@ -69,10 +69,8 @@ const main = async () => {
     const docs = Object.values(docSnap.docs)
     // const aggregated = {}
     for(let j = 0; j < docs.length; j++){
-        const data = docs[j].data()
-        updateDoc(docs[j].ref, {
-            created_date: data.date
-        })
+        const data = docs[j].ref.path.split('/')
+        console.log(data)
         // docs[j].get('view_count')
         // const comicId = path[1]
         // if(aggregated[comicId]){
