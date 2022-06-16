@@ -37,6 +37,7 @@ export default {
             user: this.user
         }).then(({data}) => {
             this.midtransQrCode = data.chargeResponse.actions.find(v => v.name == 'generate-qr-code').url
+            this.store.setState('responseData', data)
             this.$emit('loading', false)
         }).catch((err) => {
             this.$emit('loading', false)

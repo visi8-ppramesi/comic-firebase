@@ -94,7 +94,7 @@ service cloud.firestore {
 
         function checkIfOwned(){
           return request.auth.uid != null && (
-            chapter in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters ||
+            /databases/$(database)/documents/comics/$(comic)/chapters/$(chapter) in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters ||
             'all' in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters);
         }
       }

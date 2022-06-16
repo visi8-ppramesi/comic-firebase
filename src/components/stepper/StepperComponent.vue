@@ -93,6 +93,7 @@
                 variant="success"
                 class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="$emit('confirm')"
+                :disabled="loading || nextDisabled"
                 >{{ steps[step].confirm }}</button
             >
         </div>

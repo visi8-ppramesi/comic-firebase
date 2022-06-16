@@ -193,6 +193,10 @@ export default {
         }
     },
     created(){
+        this.emitter.on('chapterPurchased', (chapters) => {
+            console.log(chapters)
+            this.purchasedChapterIds.push(...chapters)
+        })
         let loader = this.$loading.show({
             loader: 'dots'
         });
@@ -221,6 +225,7 @@ export default {
             this.subscribed = _.includes(subComicIds, this.$route.params.id)
 
             this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
+                console.log(cpts)
                 if(cpts.chapters.includes('all')){
                     this.comicFullyPurchased = true
                 }else{
@@ -243,6 +248,7 @@ export default {
                 this.subscribed = _.includes(subComicIds, this.$route.params.id)
 
                 this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
+                    console.log(cpts)
                     if(cpts.chapters.includes('all')){
                         this.comicFullyPurchased = true
                     }else{
@@ -267,6 +273,9 @@ export default {
         })
     },
     methods: {
+        insertPurchase(cptId){
+            this.purchasedChapterIds.push(cptId)
+        },
         onCommentDelete(id){
             this.comments = _.remove(this.comments, (comment) => {
                 return comment.id != id

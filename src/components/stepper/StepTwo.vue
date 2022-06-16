@@ -10,10 +10,11 @@
 </template>
 
 <script>
-import CreditCard from '../payments/CreditCard.vue'
-import Gopay from '../payments/Gopay.vue'
+import CreditCard from '../payments/CreditCardInput.vue'
+import Gopay from '../payments/GopayCharger.vue'
 import QrCode from '../payments/QrCode.vue'
 import { markRaw } from 'vue'
+
 export default {
     name: 'step-two',
     props: ['store'],
@@ -32,7 +33,7 @@ export default {
                 this.$emit('renameNextButton', 'Charge')
                 break;
             case 'gopay':
-                this.$emit('renameNextButton', 'Confirm')
+                this.$emit('renameNextButton', 'Check Status')
                 break;
             case 'qrCode':
                 this.$emit('renameNextButton', 'Confirm')

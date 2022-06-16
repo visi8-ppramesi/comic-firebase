@@ -4,7 +4,7 @@
         classes="flex justify-center items-center"
         content-class="max-w-2xl max-h-screen-4-y overflow-y-auto relative flex flex-col max-h-full mx-4 p-4 border dark:border-gray-800 rounded bg-white dark:bg-gray-900"
     >
-        <stepper-component ref="stepper" :steps="steps" :initial-state="{ comicData, chapterData, selectedPayment: null }">
+        <stepper-component ref="stepper" @confirm="confirm" :steps="steps" :initial-state="{ comicData, chapterData, selectedPayment: null }">
             <template #fatal-error="{ errorMsg }">{{ errorMsg }}</template>
             <template #action-buttons>
                 <button 
@@ -31,6 +31,9 @@ export default {
         'comicData'
     ],
     methods: {
+        confirm(){
+            this.$router.push(this.routeResolver('Chapter', {comicId: this.comicData.id, chapterId: this.chapterData.id}))
+        },
         setState(key, value){
             this.$refs.stepper.setState(key, value)
         },

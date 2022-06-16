@@ -8,6 +8,8 @@
 
 <script>
 export default {
+    name: 'credit-card-input',
+    props: ['store'],
     data(){
         return {
             name: '',

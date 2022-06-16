@@ -34,6 +34,7 @@ export default class extends Collection{
         'full_name': String,
         'purchased_comics': Subcollection.resolve('./PurchasedComic.js'),
         'read_history': Subcollection.resolve('./ReadHistory.js'),
+        'orders': Subcollection.resolve('./Order.js'),
         'favorites': Array,
         'bookmarks': Array,
         'receipts': Subcollection.resolve('./Receipt.js'),
