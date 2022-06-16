@@ -1,7 +1,11 @@
 <template>
-    <div>Payment Status:</div>
-    <div>{{status}}</div>
-    <button @click="checkStatus" class="disabled:bg-purple-300 disabled:text-gray-500 text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">Check Status</button>
+    <div class="text-2xl font-normal leading-normal">Payment Status</div>
+    <div class="w-10 h-10 flex justify-center items-center">
+        <div class="text-xl">{{status}}</div>
+    </div>
+    <div class="flex w-full justify-center items-center">
+        <button @click="checkStatus" class="disabled:bg-purple-300 disabled:text-gray-500 text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">Check Status</button>
+    </div>
 </template>
 
 <script>

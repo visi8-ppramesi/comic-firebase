@@ -26,6 +26,7 @@ export default {
     components: {
         StepperComponent
     },
+    inject: ['routeResolver'],
     props: [
         'chapterData',
         'comicData'
