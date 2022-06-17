@@ -1,5 +1,11 @@
 <template>
     <button @click="test">test</button>
+    <video
+        controls="true"
+        playsinline autoplay muted loop
+        :src="shit"
+        type='video/mp4'
+    ></video>
     <!-- <div>
         <div class="cc-selector">
             <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
@@ -82,7 +88,7 @@
 
 <script>
 // import { markRaw } from 'vue'
-// import fb from '../firebase/firebase.js'
+import fb from '../firebase/firebase.js'
 // import { httpsCallable, connectFunctionsEmulator } from 'firebase/functions'
 // import StepperComponent from '../components/stepper/StepperComponent.vue'
 // import StepOne from '../components/stepper/StepOne.vue'
@@ -92,6 +98,7 @@
 // import _ from 'lodash'
 // import VideoPlayer from '../components/VideoPlayer.vue'
 // import utils from '../firebase/utils/index.js'
+import { getBlob as getStorageBlob, ref } from 'firebase/storage'
 export default {
     components: {
         // VideoPlayer
@@ -100,6 +107,7 @@ export default {
     inject: ['Viewer'],
     data(){
         return {
+            shit: null,
             imgViewer: null,
             // paymentType: null,
             // image: require('../assets/logo.png'),
@@ -162,11 +170,39 @@ export default {
         }
     },
     created(){
+        this.shitshit('gs://comics-77200.appspot.com/videos/test/PAGE_18.mp4').then((dataurl) => {
+            this.shit = dataurl
+        })
         // this.vidLoaded = this.videos.map(() => false)
         // this.vidPlaying = this.videos.map(() => false)
         // this.sources = this.videos.map(() => null)
     },
     methods: {
+        async getBlob(gsPath){
+            return await getStorageBlob(ref(fb.storage, gsPath))
+        },
+        async shitshit(gsPath){
+            const blob = await this.getBlob(gsPath)
+            // return URL.createObjectURL(blob)
+            // var img = document.createElement('img');
+            // let url = URL.createObjectURL(blob)
+            // img.src = url
+            // document.getElementById('app').appendChild(img);
+            // img.onload = () => {
+            //     URL.revokeObjectURL(url)
+            // }
+            
+            return await new Promise((resolve, reject) => {
+                var a = new FileReader();
+                a.onload = function(e) {
+                    resolve(e.target.result);
+                }
+                a.onerror = function(e){
+                    reject(e);
+                }
+                a.readAsDataURL(blob);
+            })
+        },
         paymentChange(){
             console.log(this.paymentType)
         },

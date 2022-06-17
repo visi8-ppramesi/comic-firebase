@@ -4,14 +4,6 @@ export default class{
         sandbox : "https://api.sandbox.midtrans.com",
         staging : "https://api.stg.veritrans.co.id"
     };
-    static cardFields = [
-        "card_number",
-        "card_exp_month",
-        "card_exp_year",
-        "card_cvv",
-        "OTP",
-        "3DS"
-    ]
 
     constructor(clientKey, envType){
         if(!clientKey){

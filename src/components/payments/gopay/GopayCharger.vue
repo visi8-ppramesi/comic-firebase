@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import GopayCharger from '../../midtrans/Gopay.js'
+import GopayCharger from '../../../midtrans/Gopay.js'
 // import Comic from '../../firebase/comics/Comic.js'
-import { useAuthStore } from '../../store/auth.js'
+import { useAuthStore } from '../../../store/auth.js'
 import { mapState } from 'pinia'
 export default {
     data(){
@@ -30,6 +30,7 @@ export default {
         ...mapState(useAuthStore, ['uid', 'user'])
     },
     mounted(){
+        console.log('testestest')
         const gopayCharger = new GopayCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV)
         gopayCharger.createCharge({
             chapterData: this.store.state.chapterData,

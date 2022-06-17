@@ -66,7 +66,6 @@
         </slot>
         <div class="footer flex justify-end" v-if="!fatalError">
             <button
-                v-if="step > 0"
                 variant="light"
                 :disabled="loading"
                 class="flex text-xs lg:text-lg items-center p-2 rounded-lg text-gray-700"
@@ -78,7 +77,7 @@
             </button>
 
             <button
-                v-if="step < steps.length - 1"
+                v-if="!steps[step].confirm"
                 variant="success"
                 class="disabled:bg-purple-300 disabled:text-gray-500 text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="nextStep"
@@ -87,9 +86,8 @@
                 {{nextButtonText}}
                 <i class="fas fa-angle-double-right"></i>
             </button>
-
             <button
-                v-if="steps[step].confirm"
+                v-else
                 variant="success"
                 class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 @click="$emit('confirm')"
@@ -191,10 +189,12 @@ export default {
         "bg-sky-100 text-primary": this.step < i,
       };
     },
-    nextStep() {
+    async nextStep() {
       if (!this.$refs.step.nextStep) return this.nextStepAction();
 
-      if (this.$refs.step.nextStep()) {
+      const myNextStep = await this.$refs.step.nextStep()
+
+      if (myNextStep) {
         if (!this.loading) {
           this.nextStepAction();
         }
@@ -212,6 +212,7 @@ export default {
       if (this.step < this.steps.length - 1) this.step++;
     },
     backStep() {
+      this.$emit('backStep', this.step)
       this.effect = "out-in-translate-fade";
       this.resetParams();
       if (this.step > 0) this.step--;

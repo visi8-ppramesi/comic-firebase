@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Order from '../../firebase/users/Order.js'
-import { useAuthStore } from '../../store/auth.js'
+import Order from '../../../firebase/users/Order.js'
+import { useAuthStore } from '../../../store/auth.js'
 import { mapState } from 'pinia'
 
 export default{

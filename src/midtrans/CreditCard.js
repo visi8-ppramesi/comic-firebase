@@ -4,6 +4,15 @@ import { httpsCallable } from 'firebase/functions'
 import fb from '../firebase/firebase.js'
 
 export default class extends Midtrans{
+    static cardFields = [
+        "card_number",
+        "card_exp_month",
+        "card_exp_year",
+        "card_cvv",
+        "OTP",
+        "3DS"
+    ]
+    
     setTokenData(tokenData){
         if(tokenData.status_code == '200'){
             this.tokenData = tokenData
