@@ -205,7 +205,7 @@
                   >My Account</router-link
                 >
                 <div
-                  @click="routeResolver('Logout')"
+                  @click="goTo(routeResolver('Logout'))"
                   class="block px-4 py-2 text-sm text-gray-700"
                 >
                   Logout
@@ -566,6 +566,9 @@ export default {
     ...mapState(useAuthStore, ['user', 'isLoggedIn', 'profile_image_url'])
   },
   methods: {
+    goTo(url){
+      this.$router.push(url)
+    },
     async getSocials(){
       this.socials = (await Settings.getSocials()).value
     },
