@@ -205,7 +205,7 @@
                   >My Account</router-link
                 >
                 <div
-                  @click="post(routeResolver('Logout'))"
+                  @click="routeResolver('Logout')"
                   class="block px-4 py-2 text-sm text-gray-700"
                 >
                   Logout
