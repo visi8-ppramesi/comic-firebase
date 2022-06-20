@@ -1,6 +1,6 @@
 <template>
     <div ref="videoContainer" class="relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
-        <div class="absolute z-10 video-container">
+        <div :class="[vidPlaying ? '' : 'vid-paused']" class="absolute z-10 video-container">
             <div v-if="detectMobile()" :class="[showArButton ? 'opacity-1' : 'opacity-0']" class="z-20 w-16 h-16 flex bg-gray-200 bg-opacity-75 justify-center items-center rounded-full absolute left-2 top-2">
                 <router-link :to="arLink">
                     <svg width="63" height="40" xmlns="http://www.w3.org/2000/svg">
@@ -20,9 +20,9 @@
         </div>
         <div class="z-20">
             <div class="w-36 h-36">
-                <svg v-if="vidLoaded" :class="[vidPlaying ? 'opacity-0' : 'opacity-75']" @click="toggleVideo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
-                    <polygon fill="#858585" class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
-                    <path fill="#858585" class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
+                <svg v-if="vidLoaded" :class="[vidPlaying ? 'opacity-0' : 'opacity-90']" @click="toggleVideo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
+                    <polygon fill="#ffffff" class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
+                    <path fill="#ffffff" class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
                 </svg>
             </div>
         </div>
@@ -119,5 +119,14 @@ export default {
 </script>
 
 <style scoped>
-
+.vid-paused::before{
+    content:"";
+    position: absolute;
+    top:0;
+    right:0;
+    left:0;
+    bottom:0;
+    z-index:1;
+    background:rgba(0, 0, 0, 0.4);
+}
 </style>

@@ -1,8 +1,8 @@
 <template>
     <button @click="test">test</button>
     <video
-        controls="true"
-        playsinline autoplay muted loop
+        controls
+        playsinline autoplay loop
         :src="shit"
         type='video/mp4'
     ></video>
@@ -170,7 +170,7 @@ export default {
         }
     },
     created(){
-        this.shitshit('gs://comics-77200.appspot.com/videos/test/PAGE_18.mp4').then((dataurl) => {
+        this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
             this.shit = dataurl
         })
         // this.vidLoaded = this.videos.map(() => false)
@@ -178,7 +178,7 @@ export default {
         // this.sources = this.videos.map(() => null)
     },
     methods: {
-        async getBlob(gsPath){
+        async getBlob(gsPath){gs://comics-77200.appspot.com/videos/test/PAGE_18.mp4
             return await getStorageBlob(ref(fb.storage, gsPath))
         },
         async shitshit(gsPath){
