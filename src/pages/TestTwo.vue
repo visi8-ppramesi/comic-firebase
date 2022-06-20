@@ -233,10 +233,7 @@ export default {
         //     }
         // },
         test(){
-            const win = window.open("/test-two", "", "width=200,height=100");
-            win.onmessage = (data) => {
-                console.log(data)
-            }
+            window.postMessage('hello')
         },
     },
     mounted(){

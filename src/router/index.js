@@ -185,6 +185,14 @@ export const routes = [
         }
     },
     {
+        path: "/test-two",
+        name: "TestTwo",
+        component: () => import("@/pages/TestTwo.vue"),
+        meta: {
+            showNav: true
+        }
+    },
+    {
         path: "/search",
         name: "Search",
         component: () => import("@/pages/Search.vue"),

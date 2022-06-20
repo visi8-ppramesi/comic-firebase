@@ -1,5 +1,6 @@
-import axios from 'axios'
+// import axios from 'axios'
 import Midtrans from './MidtransCharger.js'
+// import emitter from '@/utils/emitter.js'
 import { httpsCallable } from 'firebase/functions'
 import fb from '../firebase/firebase.js'
 
@@ -12,6 +13,12 @@ export default class extends Midtrans{
         "OTP",
         "3DS"
     ]
+
+    constructor(clientKey, envType){
+        super(clientKey, envType)
+        this.tokenData = null
+        this.tokenError = null
+    }
     
     setTokenData(tokenData){
         if(tokenData.status_code == '200'){
@@ -43,29 +50,91 @@ export default class extends Midtrans{
     }
 
     async getCardToken(cardData){
-        const url = this.buildUrl(cardData, 'this.setTokenData', '/v2/token')
-        const tokenCode = "'use strict';" + (await axios.get(url).then(v => v.data))
-        return eval(tokenCode)
+        const globalSetTokenDataName = 'globalSetTokenData_' + (Math.random() + 1).toString(36).substring(2)
+
+        window[globalSetTokenDataName] = (tokenData) => {
+            if(tokenData.status_code == '200'){
+                this.tokenData = tokenData
+                return tokenData
+            }else{
+                this.tokenError = tokenData
+                throw 'Credit card token error ' + tokenData.status_code + ': ' + tokenData.status_message
+            }
+        }
+
+        const url = this.buildUrl(cardData, globalSetTokenDataName, '/v2/token')
+
+        var embedscript = document.createElement("script");
+        /** @type {string} */
+        embedscript.src = url;
+        document.getElementsByTagName("head")[0].appendChild(embedscript);
+
+        return new Promise((resolve, reject) => {
+            let i = 0
+            const interval = setInterval(() => {
+                if(this.tokenData){
+                    clearInterval(interval)
+                    resolve(this.tokenData)
+                }else if(i == 100){
+                    clearInterval(interval)
+                    reject(this.tokenError)
+                }
+                i++
+            }, 10)
+        })
+
+        // const tokenCode = "'use strict';" + (await axios.get(url).then(v => v.data))
+        // return eval(tokenCode)
     }
 
     async registerCard(cardData){
-        const url = this.buildUrl(cardData, 'this.setTokenData', '/v2/card/register')
-        const tokenCode = "'use strict';" + (await axios.get(url).then(v => v.data))
-        return eval(tokenCode)
+        const globalSetTokenDataName = 'globalSetTokenData_' + (Math.random() + 1).toString(36).substring(2)
+
+        window[globalSetTokenDataName] = (tokenData) => {
+            if(tokenData.status_code == '200'){
+                this.tokenData = tokenData
+                return tokenData
+            }else{
+                this.tokenError = tokenData
+                throw 'Credit card token error ' + tokenData.status_code + ': ' + tokenData.status_message
+            }
+        }
+
+        const url = this.buildUrl(cardData, globalSetTokenDataName, '/v2/card/register')
+
+        var embedscript = document.createElement("script");
+        /** @type {string} */
+        embedscript.src = url;
+        document.getElementsByTagName("head")[0].appendChild(embedscript);
+
+        return new Promise((resolve, reject) => {
+            let i = 0
+            const interval = setInterval(() => {
+                if(this.tokenData){
+                    clearInterval(interval)
+                    resolve(this.tokenData)
+                }else if(i == 100){
+                    clearInterval(interval)
+                    reject(this.tokenError)
+                }
+                i++
+            }, 10)
+        })
     }
 
     async createCharge({chapterData, comicData, user}, cardData){
-        const token = await this.getCardToken(cardData).then((token) => {
-            return token
-        }).catch(() => {
-            return this.registerCard(cardData).then((token) => {
-                return token
-            }).catch((err) => {
-                throw err
+        const token = await this.getCardToken(cardData)
+            .then((response) => {
+                return response
+            }).catch(() => {
+                return this.registerCard(cardData).then((response) => {
+                    return response
+                }).catch((err) => {
+                    throw err
+                })
             })
-        })
-
-        const createCreditCardCharge = httpsCallable(fb.functions, 'createChapterCreditCardCharge-createChapterCreditCardCharge');
+        
+        const createCreditCardCharge = httpsCallable(fb.functions, 'createChapterCreditCardCharge-createChapterCreditCardCharge')
         const { total, tax, fee } = await this.constructor.calculateTax(chapterData.price)
 
         const creditCardDetails = {
@@ -76,5 +145,25 @@ export default class extends Midtrans{
         }
         const param = this.constructor.buildParam(chapterData, comicData, user, total, tax, fee, { creditCardDetails })
         return createCreditCardCharge(param)
+
+        // .catch(() => {
+        //     return this.registerCard(cardData).then((token) => {
+        //         return token
+        //     }).catch((err) => {
+        //         throw err
+        //     })
+        // })
+
+        // const createCreditCardCharge = httpsCallable(fb.functions, 'createChapterCreditCardCharge-createChapterCreditCardCharge');
+        // const { total, tax, fee } = await this.constructor.calculateTax(chapterData.price)
+
+        // const creditCardDetails = {
+        //     statusCode: token.status_code,
+        //     statusMessage: token.status_message,
+        //     tokenId: token.token_id,
+        //     hash: token.hash
+        // }
+        // const param = this.constructor.buildParam(chapterData, comicData, user, total, tax, fee, { creditCardDetails })
+        // return createCreditCardCharge(param)
     }
 }

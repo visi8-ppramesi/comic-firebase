@@ -53,6 +53,7 @@
               @disable-next="disableNext"
               @enable-next="enableNext"
               @rename-next-button="renameNextButton"
+              @next-step="nextStep"
             />
           </KeepAlive>
         </div>
@@ -80,7 +81,7 @@
                 v-if="!steps[step].confirm"
                 variant="success"
                 class="disabled:bg-purple-300 disabled:text-gray-500 text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                @click="nextStep"
+                @click="nextStep()"
                 :disabled="loading || nextDisabled"
             >
                 {{nextButtonText}}
@@ -189,10 +190,10 @@ export default {
         "bg-sky-100 text-primary": this.step < i,
       };
     },
-    async nextStep() {
+    async nextStep(pass = false) {
       if (!this.$refs.step.nextStep) return this.nextStepAction();
 
-      const myNextStep = await this.$refs.step.nextStep()
+      const myNextStep = await this.$refs.step.nextStep(pass)
 
       if (myNextStep) {
         if (!this.loading) {
