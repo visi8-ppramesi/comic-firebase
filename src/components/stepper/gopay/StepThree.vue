@@ -1,12 +1,10 @@
 <template>
-    <KeepAlive>
-        <payment-checker 
-            :store="store" 
-            ref="paymentComponent"
-            @loading="loadingAction"
-            @set-next-button-status="setNextButtonStatus"
-        ></payment-checker>
-    </KeepAlive>
+    <payment-checker 
+        :store="store" 
+        ref="paymentComponent"
+        @loading="loadingAction"
+        @set-next-button-status="setNextButtonStatus"
+    ></payment-checker>
 </template>
 
 <script>
