@@ -59,6 +59,7 @@
         </div>
         <div v-else>{{ fatalErrorMsg }}</div>
       </div>
+      <div v-if="error" class="text-red-400">{{ errorMessage }}</div>
     </card>
     
     <div class="flex flex-row w-full justify-between">
@@ -123,6 +124,7 @@ export default {
       step: 0,
       loading: false,
       error: false,
+      errorMessage: '',
       fatalError: false,
       fatalErrorMsg: "",
       effect: "in-out-translate-fade",
@@ -154,6 +156,9 @@ export default {
       if (step >= 1 && step <= this.steps.length) this.step = step - 1;
     },
     resetState() {
+      this.step = 0
+      this.error = false
+      this.errorMessage = ''
       this.store.state = {
         ...this.initialState,
       };
@@ -165,10 +170,11 @@ export default {
       };
     },
     errorHandler(payload) {
-      this.error = payload;
-      this.shake = payload;
+      this.errorMessage = payload.message
+      this.error = payload.status;
+      this.shake = payload.status;
       setTimeout(() => {
-        this.shake = !payload;
+        this.shake = !payload.status;
       }, 750);
     },
     blockStepper(msg) {

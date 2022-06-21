@@ -496,7 +496,7 @@
       <div class="h-12 py-2 flex justify-center content-center items-center">
         <router-link :to="routeResolver('FAQ')">FAQ</router-link>
       </div>
-      <div>
+      <div class="pb-3">
         <div class="h-12 py-2 flex justify-center content-center items-center">
           <router-link :to="routeResolver('PrivacyPolicy')">Follow Us On</router-link>
         </div>

@@ -29,6 +29,8 @@ export default {
         // }
         // console.log(this.store)
         this.$emit('loading', false)
+        this.$emit('enableNext')
+        this.$emit('renameNextButton', 'Next')
     },
     methods: {
         loadingAction(status){

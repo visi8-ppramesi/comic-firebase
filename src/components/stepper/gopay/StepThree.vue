@@ -1,42 +1,46 @@
 <template>
     <KeepAlive>
-        <gopay 
+        <payment-checker 
             :store="store" 
             ref="paymentComponent"
             @loading="loadingAction"
-        ></gopay>
+            @set-next-button-status="setNextButtonStatus"
+        ></payment-checker>
     </KeepAlive>
 </template>
 
 <script>
-import Gopay from '../../payments/gopay/GopayChecker.vue'
+import PaymentChecker from '../../payments/PaymentChecker.vue'
 
 export default {
     name: 'step-three',
     props: ['store'],
+    inject: ['routeResolver'],
     components: {
-        Gopay
+        PaymentChecker
     },
     data(){
         return {
         }
     },
     mounted(){
-        // switch(this.store.state.selectedPayment){
-        //     case 'creditCard':
-        //         this.$emit('renameNextButton', 'Charge')
-        //         break;
-        //     case 'gopay':
-        //         this.$emit('renameNextButton', 'Check Status')
-        //         break;
-        //     case 'qrCode':
-        //         this.$emit('renameNextButton', 'Confirm')
-        //         break;
-        // }
-        // console.log(this.store)
+        this.$emit('renameNextButton', 'Read Chapter')
         this.$emit('loading', true)
     },
     methods: {
+        setNextButtonStatus(enabled){
+            if(enabled){
+                this.$emit('enableNext')
+            }else{
+                this.$emit('disableNext')
+            }
+        },
+        nextStep(){
+            this.$router.push(this.routeResolver('Chapter', {
+                comicId: this.store.state.comicData.id, 
+                chapterId: this.store.state.chapterData.id 
+            }))
+        },
         loadingAction(status){
             this.$emit('loading', status)
         }

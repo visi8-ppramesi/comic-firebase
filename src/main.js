@@ -36,6 +36,9 @@ const vuePropertySetter = (app, name, instance) => {
     app.provide(name, instance)
     app.config.globalProperties[name] = instance
 }
+if(detectMobile() && screen && screen.orientation){
+    screen.orientation.lock('portrait')
+}
 
 const app = createApp(App)
 // const emitter = mitt()

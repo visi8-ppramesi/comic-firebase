@@ -41,6 +41,7 @@ export default {
     mounted(){
         this.$emit('loading', false)
         this.$emit('renameNextButton', 'Purchase')
+        this.$emit('enableNext')
     },
     methods: {
         // onMessageCallback(data){
@@ -59,7 +60,7 @@ export default {
         //     }
         // },
         async createCharge(){
-            const onMessageCallback = function(data){
+            const onMessageCallback = function({ data }){
                 console.log(['message callback', data])
                 if (data && "200" == data.status_code) {
                     this.showCardAuthentication = false
@@ -106,10 +107,13 @@ export default {
                 }else if(data.chargeResponse.status_code == '200'){
                     return true
                 }else{
+                    this.$emit('loading', false)
+                    this.$emit('error', { status: true, message: 'Credit card rejected' })
                     return false
                 }
             }catch(err){
                 this.$emit('loading', false)
+                this.$emit('error', { status: true, message: 'Credit card rejected' })
                 return false
             }
         },

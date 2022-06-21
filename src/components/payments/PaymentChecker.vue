@@ -1,6 +1,6 @@
 <template>
-    <div class="text-2xl font-normal leading-normal">Payment Status</div>
-    <div class="w-10 h-10 flex justify-center items-center">
+    <div class="mb-4 text-2xl font-normal leading-normal">Payment Status</div>
+    <div class="mb-4 w-full h-10 flex justify-center items-center">
         <div class="text-xl">{{status}}</div>
     </div>
     <div class="flex w-full justify-center items-center">
@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Order from '../../../firebase/users/Order.js'
-import { useAuthStore } from '../../../store/auth.js'
+import Order from '@/firebase/users/Order.js'
+import { useAuthStore } from '@/store/auth.js'
 import { mapState } from 'pinia'
 
 export default{
@@ -25,17 +25,19 @@ export default{
         }
     },
     mounted(){
-        this.$emit('disableNext')
+        this.$emit('setNextButtonStatus', false)
+        this.$emit('loading', true)
         this.checkStatus()
     },
     methods: {
         async checkStatus(){
             const order = await Order.getDocument(['users', this.user.id, 'orders'], this.store.state.responseData.chargeResponse.order_id)
+            this.$emit('loading', false)
             if(!order.empty){
                 switch(order.status){
                     case 'closed':
                         this.emitter.emit('chapterPurchased', [this.store.state.chapterData.id])
-                        this.$emit('enableNext')
+                        this.$emit('setNextButtonStatus', true)
                         this.status = 'Payment successful'
                         break;
                     case 'open':

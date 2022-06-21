@@ -34,6 +34,8 @@ export default {
         //         break;
         // }
         // console.log(this.store)
+        this.$emit('enableNext')
+        this.$emit('renameNextButton', 'Next')
         this.$emit('loading', true)
     },
     methods: {

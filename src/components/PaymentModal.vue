@@ -20,7 +20,7 @@
                 <div class="flex flex-row w-full justify-between">
                     <button 
                         class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                        @click="showModal = false"
+                        @click="closeModal"
                     >Close</button>
                     <div class="footer flex justify-end" v-if="!fatalError">
                         <button
@@ -42,7 +42,7 @@
                 <template #action-buttons>
                     <button 
                         class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                        @click="showModal = false"
+                        @click="closeModal"
                     >Close</button>
                 </template>
             </stepper-component>
@@ -51,7 +51,7 @@
                 <template #action-buttons>
                     <button 
                         class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                        @click="showModal = false"
+                        @click="closeModal"
                     >Close</button>
                 </template>
             </stepper-component>
@@ -60,7 +60,7 @@
                 <template #action-buttons>
                     <button 
                         class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                        @click="showModal = false"
+                        @click="closeModal"
                     >Close</button>
                 </template>
             </stepper-component> -->
@@ -146,7 +146,15 @@ export default {
             this.showModal = true
         },
         closeModal(){
-            this.$refs.stepper.resetState()
+            if(this.page == 1){
+                if(this.selectedPayment == 'gopay'){
+                    this.$refs.stepperGopay.resetState()
+                }else if(this.selectedPayment == 'cc'){
+                    this.$refs.stepperCreditCard.resetState()
+                }
+            }
+            this.page = 0
+            this.selectedPayment = 'gopay'
             this.showModal = false
         }
     },
@@ -174,7 +182,6 @@ export default {
                     disabled: false,
                     active: false,
                     component: GopayStepThree,
-                    confirm: "Confirm"
                 },
             ],
             stepsCreditCard: [
@@ -195,7 +202,6 @@ export default {
                     disabled: false,
                     active: false,
                     component: CcStepThree,
-                    confirm: "Confirm"
                 }
             ],
             // stepsQrCode: [

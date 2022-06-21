@@ -16,17 +16,23 @@
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="cardNumber" type="text" placeholder="Card Number" v-model="cardNumber">
             </div>
             <div class="flex flex-row items-end">
-                <div class="mb-4 h-full basis-1/4">
+                <div class="mb-4 h-full basis-1/4 mr-2">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="expMonth">
                         Expiration Month
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expMonth" type="text" placeholder="Expiration Month" v-model="expMonth">
+                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expMonth" type="text" v-model="expMonth">
+                        <option v-for="i in 12" :value="i" :key="'date-' + i">{{ i }}</option>
+                    </select>
+                    <!-- <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expMonth" type="text" placeholder="Expiration Month" v-model="expMonth"> -->
                 </div>
-                <div class="mb-4 h-full basis-1/4">
+                <div class="mb-4 h-full basis-1/4 mr-2">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="expYear">
                         Expiration Year
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expYear" type="text" placeholder="Expiration Year" v-model="expYear">
+                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expYear" type="text" v-model="expYear">
+                        <option v-for="i in 11" :value="currentYear + i - 1" :key="'year-' + i">{{ currentYear + i - 1 }}</option>
+                    </select>
+                    <!-- <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expYear" type="text" placeholder="Expiration Year" v-model="expYear"> -->
                 </div>
                 <div class="mb-4 h-full basis-2/4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="ccv">
@@ -47,8 +53,9 @@ export default {
         return {
             name: '',
             cardNumber: '',
-            expMonth: '',
-            expYear: '',
+            expMonth: 1,
+            expYear: (new Date()).getFullYear(),
+            currentYear: (new Date()).getFullYear(),
             ccv: '',
         }
     },
