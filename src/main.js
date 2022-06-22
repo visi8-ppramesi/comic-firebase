@@ -8,6 +8,7 @@ import DRM from './utils/DRM.js'
 import emitter from './utils/emitter.js'
 import routeResolver from './utils/routeResolver';
 import detectMobile from './utils/detectMobile'
+import fbAnalytics from './utils/analytics.js'
 import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
@@ -36,9 +37,6 @@ const vuePropertySetter = (app, name, instance) => {
     app.provide(name, instance)
     app.config.globalProperties[name] = instance
 }
-if(detectMobile() && screen && screen.orientation){
-    screen.orientation.lock('portrait')
-}
 
 const app = createApp(App)
 // const emitter = mitt()
@@ -50,6 +48,7 @@ const injector = {
         vuePropertySetter(app, 'routeResolver', routeResolver)
         // vuePropertySetter(app, 'qrCode', QRCode)
         vuePropertySetter(app, 'detectMobile', detectMobile)
+        vuePropertySetter(app, 'fbAnalytics', fbAnalytics)
         // app.provide('swal', Swal)
         // app.provide('emitter', emitter)
         // app.config.globalProperties.emitter = emitter

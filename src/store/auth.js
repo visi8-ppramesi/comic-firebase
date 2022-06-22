@@ -92,6 +92,28 @@ export const useAuthStore = defineStore('auth', {
                 errorFunc(error)
             })
         },
+        async loginWithGoogle(successFunc = () => {}, errorFunc = () => {}){
+            this.status.loggingIn = true
+            return User.loginWithGoogle().then((user) => {
+                this.uid = user.id
+                user.getProfileImage().then((imageUrl) => {
+                    console.log('profile')
+                    this.profile_image_url = imageUrl
+                })
+                this.userInstance = user
+                this.user = user.toJSON()
+                localStorage.setItem('uid', this.uid)
+                this.status.loggingIn = false
+                this.isLoggedIn = true
+                successFunc()
+            })
+            .catch((error) => {
+                // handleError(error, 'loginError')
+                this.status.loggingIn = false
+                this.error = error.message
+                errorFunc(error)
+            })
+        },
         authAction(){
             User.onAuthStateChanged(user => {
                 if (user) {

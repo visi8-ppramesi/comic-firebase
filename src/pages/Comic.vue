@@ -204,6 +204,7 @@ export default {
         // const authStore = useAuthStore()
         this.fetchComic().then(() => {
             viewStore.viewComic(this.comic)
+            this.fbAnalytics.logEvent('comic_viewed', { comic_id: this.$route.params.id })
         })
         .catch((err) => {
             console.error(err)
@@ -314,8 +315,10 @@ export default {
                 if(this.favorited){
                     await this.userInstance.unfavoriteComic(this.$route.params.id)
                     this.favorited = false
+                    this.fbAnalytics.logEvent('comic_unfavorited', { comic_id: this.$route.params.id })
                 }else{
                     await this.userInstance.favoriteComic(this.$route.params.id)
+                    this.fbAnalytics.logEvent('comic_favorited', { comic_id: this.$route.params.id })
                     this.favorited = true
                 }
             }else{

@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-import emitter from "@/utils/emitter";
+import emitter from "@/utils/emitter.js";
+import fbAnalytics from '@/utils/analytics.js'
 
 const authorRoutes = [
     {
@@ -7,7 +8,8 @@ const authorRoutes = [
         name: "Author",
         component: () => import("@/pages/Author.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Author"
         }
     },
     {
@@ -15,7 +17,8 @@ const authorRoutes = [
         name: "Authors",
         component: () => import("@/pages/Authors.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Author"
         }
     }
 ]
@@ -27,7 +30,8 @@ const authRoutes = [
         component: () => import("@/pages/Login.vue"),
         meta: {
             showNav: false,
-            requiresLoggedOut: true
+            requiresLoggedOut: true,
+            class: "Auth"
         }
     },
     {
@@ -36,7 +40,8 @@ const authRoutes = [
         component: () => import("@/pages/Logout.vue"),
         meta: {
             showNav: false,
-            requiresAuth: true
+            requiresAuth: true,
+            class: "Auth"
         }
     },
     {
@@ -45,7 +50,8 @@ const authRoutes = [
         component: () => import("@/pages/Register.vue"),
         meta: {
             showNav: false,
-            requiresLoggedOut: true
+            requiresLoggedOut: true,
+            class: "Auth"
         }
     },
 ]
@@ -57,7 +63,8 @@ const mineRoutes = [
         component: () => import("@/pages/MyAccount.vue"),
         meta: {
             showNav: true,
-            requiresAuth: true
+            requiresAuth: true,
+            class: "User"
         }
     },
     {
@@ -66,7 +73,8 @@ const mineRoutes = [
         component: () => import("@/pages/MyComics.vue"),
         meta: {
             showNav: true,
-            requiresAuth: true
+            requiresAuth: true,
+            class: "User"
         }
     },
     {
@@ -75,7 +83,8 @@ const mineRoutes = [
         component: () => import("@/pages/MyProfile.vue"),
         meta: {
             showNav: true,
-            requiresAuth: true
+            requiresAuth: true,
+            class: "User"
         }
     },
     {
@@ -84,7 +93,8 @@ const mineRoutes = [
         component: () => import("@/pages/MyTransactions.vue"),
         meta: {
             showNav: true,
-            requiresAuth: true
+            requiresAuth: true,
+            class: "User"
         }
     },
     {
@@ -92,7 +102,8 @@ const mineRoutes = [
         name: "User",
         component: () => import("@/pages/User.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "User"
         }
     },
 ]
@@ -103,7 +114,8 @@ const infoRoutes = [
         name: "AboutUs",
         component: () => import("@/pages/AboutUs.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "WebAppInfo"
         }
     },
     {
@@ -111,7 +123,8 @@ const infoRoutes = [
         name: "PrivacyPolicy",
         component: () => import("@/pages/PrivacyPolicy.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "WebAppInfo"
         }
     },
     {
@@ -119,7 +132,17 @@ const infoRoutes = [
         name: "TermsOfService",
         component: () => import("@/pages/TermsOfService.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "WebAppInfo"
+        }
+    },
+    {
+        path: "/faq",
+        name: "FAQ",
+        component: () => import("@/pages/FAQ.vue"),
+        meta: {
+            showNav: true,
+            class: "WebAppInfo"
         }
     },
 ]
@@ -130,7 +153,8 @@ const comicsRoutes = [
         name: "Comic",
         component: () => import("@/pages/Comic.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Comic"
         }
     },
     {
@@ -138,7 +162,8 @@ const comicsRoutes = [
         name: "Comics",
         component: () => import("@/pages/Comics.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Comic"
         }
     },
     {
@@ -146,7 +171,8 @@ const comicsRoutes = [
         name: "Chapter",
         component: () => import("@/pages/Chapter.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Comic"
         }
     },
     {
@@ -154,7 +180,8 @@ const comicsRoutes = [
         name: "Page",
         component: () => import("@/pages/Scene.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Comic"
         }
     },
     {
@@ -162,7 +189,8 @@ const comicsRoutes = [
         name: "Scene",
         component: () => import("@/pages/ArScene.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Comic"
         }
     }
 ]
@@ -173,7 +201,8 @@ export const routes = [
         name: "Dashboard",
         component: () => import("@/pages/Dashboard.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Home"
         }
     },
     {
@@ -181,7 +210,8 @@ export const routes = [
         name: "Test",
         component: () => import("@/pages/Test.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Dev"
         }
     },
     {
@@ -189,7 +219,8 @@ export const routes = [
         name: "TestTwo",
         component: () => import("@/pages/TestTwo.vue"),
         meta: {
-            showNav: true
+            showNav: true,
+            class: "Dev"
         }
     },
     {
@@ -197,15 +228,8 @@ export const routes = [
         name: "Search",
         component: () => import("@/pages/Search.vue"),
         meta: {
-            showNav: true
-        }
-    },
-    {
-        path: "/faq",
-        name: "FAQ",
-        component: () => import("@/pages/FAQ.vue"),
-        meta: {
-            showNav: true
+            showNav: true,
+            class: "Search"
         }
     },
     ...authorRoutes,
@@ -213,7 +237,7 @@ export const routes = [
     ...infoRoutes,
     ...comicsRoutes,
     ...mineRoutes,
-    { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import("@/pages/NotFound.vue"), meta: { showNav: true } }
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import("@/pages/NotFound.vue"), meta: { showNav: true, class: "WebAppInfo" } }
 ];
 
 const router = createRouter({
@@ -227,6 +251,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    const screenViewParams = {
+        firebase_screen: to.name, 
+        firebase_screen_class: routes.find(v => v.name == to.name).meta.class,
+    }
+    if(to.params){
+        screenViewParams.params = to.params
+    }
+    fbAnalytics.logEvent('screen_view', screenViewParams)
     if(from.name && from.name !== 'Logout' && from.name !== 'Login' && from.name !== 'Register'){
         const fromRoute = {
             name: from.name,

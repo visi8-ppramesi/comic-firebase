@@ -36,7 +36,7 @@ export default class extends Subcollection{
             }
         }
         const collRef = collection(this.db, 'comics', comicId, 'comments')
-        return onSnapshot(query(collRef, orderBy('date', 'desc'), limit(1)), commentConstructor)
+        return onSnapshot(query(collRef, orderBy('created_date', 'desc'), limit(1)), commentConstructor)
     }
 
     static async addComment(comicId, msg, user){

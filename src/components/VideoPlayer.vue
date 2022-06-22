@@ -1,5 +1,5 @@
 <template>
-    <div ref="videoContainer" class="relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
+    <div ref="videoContainer" class="relative min-h-screen bg-black flex justify-center justify-items-center content-center items-center">
         <div :class="[vidPlaying ? '' : 'vid-paused']" class="absolute z-10 video-container">
             <div v-if="detectMobile()" :class="[showArButton ? 'opacity-1' : 'opacity-0']" class="z-20 w-16 h-16 flex bg-gray-200 bg-opacity-75 justify-center items-center rounded-full absolute left-2 top-2">
                 <router-link :to="arLink">
@@ -19,7 +19,7 @@
             </video>
         </div>
         <div class="z-20">
-            <div class="w-36 h-36">
+            <div class="w-28 h-28">
                 <svg v-if="vidLoaded" :class="[vidPlaying ? 'opacity-0' : 'opacity-90']" @click="toggleVideo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
                     <polygon fill="#ffffff" class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
                     <path fill="#ffffff" class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
@@ -71,6 +71,9 @@ export default {
                     this.showArButton = false
                 }
             }
+        }
+        this.$refs.videoElement.onloadeddata = () => {
+            this.$refs.videoContainer.style.height = `${this.$refs.videoElement.offsetHeight}px`
         }
     },
     methods: {

@@ -133,6 +133,22 @@ signInPromise.then(() => {
             const newPageDoc = await addDoc(pgRef, pageData[k])
             result.push(newPageDoc)
         }
+
+        for(let i = 0; i < 10; i++){
+            const comicCountRef = doc(db, 'comics', comicId, 'counters', i.toString())
+            const comicCounter = await setDoc(comicCountRef, {
+                view_count: 0
+            })
+            result.push(comicCounter)
+        }
+
+        for(let i = 0; i < 10; i++){
+            const chapterCountRef = doc(db, 'comics', comicId, 'chapters', newChapterDoc.id, 'counters', i.toString())
+            const chapterCounter = await setDoc(chapterCountRef, {
+                view_count: 0
+            })
+            result.push(chapterCounter)
+        }
     
         return result
     }

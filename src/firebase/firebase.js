@@ -12,7 +12,7 @@ import { getPerformance } from "firebase/performance";
 // import _ from 'lodash'
 // import dotenv from 'dotenv'
 
-const weTesting = process.env.TEST == 'true'
+// const weTesting = process.env.TEST == 'true'
 
 let envVar
 // if(weTesting){
@@ -41,14 +41,12 @@ const buildGsPath = (fullPath) => {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-let analytics = null
+const analytics = getAnalytics(app);
 const storage = getStorage(app)
 const functions = getFunctions(app, 'asia-east2')
-let performance = null
-if(!weTesting){
-    analytics = getAnalytics(app);
-    performance = getPerformance(app)
-}
+const performance = getPerformance(app)
+// if(!weTesting){
+// }
 
 setPersistence(auth, browserLocalPersistence)
 

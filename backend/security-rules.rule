@@ -94,14 +94,14 @@ service cloud.firestore {
 
         function checkIfOwned(){
           return request.auth.uid != null && (
-            chapter in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters ||
+            /databases/$(database)/documents/comics/$(comic)/chapters/$(chapter) in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters ||
             'all' in get(/databases/$(database)/documents/users/$(request.auth.uid)/purchased_comics/$(comic)).data.chapters);
         }
       }
 
       match /comments/{comment}{
         allow read: if true;
-        allow create: if isAdmin() || (isLoggedIn() && commentFieldCheck(['user', 'user_data', 'message', 'flag', 'date']) && commentRequestCurrentUser());
+        allow create: if isAdmin() || (isLoggedIn() && commentFieldCheck(['user', 'user_data', 'message', 'flag', 'created_date']) && commentRequestCurrentUser());
         allow update: if isAdmin() || (isLoggedIn() && commentFieldCheck(['message']) && commentResourceCurrentUser());
         allow delete: if isAdmin() || (isLoggedIn() && commentResourceCurrentUser());
 

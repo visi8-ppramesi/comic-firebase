@@ -64,6 +64,22 @@ export default {
         }
     },
     methods:{
+        loginWithGoogle(){
+            this.authStore.loginWithGoogle(
+                () => {
+                    const fromRouteStr = localStorage.getItem('fromRoute')
+                    const fromRoute = fromRouteStr ? JSON.parse(fromRouteStr) : { name: 'Dashboard' }
+                    this.$router.push(fromRoute)
+                },
+                (err) => {
+                    //error function
+                    console.error(err)
+                    this.loginFailed = true
+                    this.email = ''
+                    this.password = ''
+                }
+            )
+        },
         login(){
             this.authStore.login(this.email, this.password, 
                 () => {

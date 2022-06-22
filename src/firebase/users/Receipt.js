@@ -3,7 +3,7 @@ import Subcollection from "../Subcollection";
 export default class extends Subcollection{
     static collection = 'receipts'
     static fields = {
-        'date': Date,
+        'created_date': Date,
         'total_amount': Number,
         'tax': Number,
         'discount': Number,

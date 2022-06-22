@@ -4,7 +4,7 @@
             <div class="bg-black w-full">
                 <template v-for="(page, idx) in pages" :key="'item-' + idx">
                     <div v-if="page.media_type == 'image'">
-                        <image-viewer :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
+                        <image-viewer :ar-link="getArLink(page)" :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
                     </div>
                     <div v-else-if="page.media_type == 'video'">
                         <video-player 
@@ -131,6 +131,7 @@ export default {
         const viewStore = useViewStore()
         this.chapterPromise = this.fetchChapter().then(() => {
             viewStore.viewChapter(this.chapter)
+            this.fbAnalytics.logEvent('chapter_viewed', { comic_id: this.$route.params.comicId, chapter_id: this.$route.params.chapterId })
             this.loading = false
             return true
         })

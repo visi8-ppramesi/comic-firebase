@@ -11,21 +11,28 @@ const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collecti
 //     soul: true,
 // }
 
-const genres = {
-    'folk': 'horror',
-    'latin': 'scifi',
-    'hip hop': 'superhero',
-    'stage and screen': 'fantasy',
-    'blues': 'horror',
-    'metal': 'scifi',
-    'classical': 'superhero',
-    'children': 'children',
-    'scifi': 'scifi',
-    'fantasy': 'fantasy'
-}
-
+// const genres = {
+//     'folk': 'horror',
+//     'latin': 'scifi',
+//     'hip hop': 'superhero',
+//     'stage and screen': 'fantasy',
+//     'blues': 'horror',
+//     'metal': 'scifi',
+//     'classical': 'superhero',
+//     'children': 'children',
+//     'scifi': 'scifi',
+//     'fantasy': 'fantasy'
+// }
+///comics/SSb0da8HXyie7DbcAEve/chapters/gJH0dBqsv28Xl9IStvcm
 const main = async () => {
     await fb.signInPromise
+
+    for(let i = 0; i < 10; i++){
+        const chapterCountRef = doc(fb.db, 'comics', 'SSb0da8HXyie7DbcAEve', 'chapters', 'gJH0dBqsv28Xl9IStvcm', 'counters', i.toString())
+        const chapterCounter = await setDoc(chapterCountRef, {
+            view_count: 0
+        })
+    }
     // const comicColl = collection(ComicFactory.db, 'comics')
     // const comicSnap = await getDocs(comicColl)
     // const comicDocs = Object.values(comicSnap.docs)
@@ -64,21 +71,21 @@ const main = async () => {
     // const NS_PER_SEC = 1e9;
     // const MS_PER_NS = 1e-6  
     // const time = process.hrtime();
-    const collGroup = collectionGroup(ComicFactory.db, 'comments')
-    const docSnap = await getDocs(collGroup)
-    const docs = Object.values(docSnap.docs)
-    // const aggregated = {}
-    for(let j = 0; j < docs.length; j++){
-        const data = docs[j].ref.path.split('/')
-        console.log(data)
-        // docs[j].get('view_count')
-        // const comicId = path[1]
-        // if(aggregated[comicId]){
-        //     aggregated[comicId] += docs[j].get('view_count')
-        // }else{
-        //     aggregated[comicId] = docs[j].get('view_count')
-        // }
-    }
+    // const collGroup = collectionGroup(ComicFactory.db, 'comments')
+    // const docSnap = await getDocs(collGroup)
+    // const docs = Object.values(docSnap.docs)
+    // // const aggregated = {}
+    // for(let j = 0; j < docs.length; j++){
+    //     const data = docs[j].ref.path.split('/')
+    //     console.log(data)
+    //     // docs[j].get('view_count')
+    //     // const comicId = path[1]
+    //     // if(aggregated[comicId]){
+    //     //     aggregated[comicId] += docs[j].get('view_count')
+    //     // }else{
+    //     //     aggregated[comicId] = docs[j].get('view_count')
+    //     // }
+    // }
     // const comicIds = Object.keys(aggregated)
     // for(let i = 0; i < comicIds.length; i++){
     //     const comicRef = doc(ComicFactory.db, 'comics', comicIds[i])

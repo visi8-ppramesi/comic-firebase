@@ -1,11 +1,25 @@
 <template>
-    <button @click="test">test</button>
-    <!-- <video
+    original
+    <video
         controls
-        playsinline autoplay loop
-        :src="shit"
+        playsinline loop
+        :src="testVid1"
         type='video/mp4'
-    ></video> -->
+    ></video>
+    orig crf 30
+    <video
+        controls
+        playsinline loop
+        :src="testVid5"
+        type='video/mp4'
+    ></video>
+    Compressed
+    <video
+        controls
+        playsinline loop
+        :src="testVid6"
+        type='video/mp4'
+    ></video>
     <!-- <div>
         <div class="cc-selector">
             <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
@@ -109,6 +123,18 @@ export default {
         return {
             shit: null,
             imgViewer: null,
+            testVid1: '',
+            testVid2: '',
+            testVid3: '',
+            testVid4: '',
+            testVid5: '',
+            testVid6: '',
+            gsPath1: 'gs://comics-77200.appspot.com/test/web_comic_9_orig.mp4',
+            gsPath2: 'gs://comics-77200.appspot.com/test/web_comic_9_1080_20.mp4',
+            gsPath3: 'gs://comics-77200.appspot.com/test/web_comic_9_1280_25.mp4',
+            gsPath4: 'gs://comics-77200.appspot.com/test/web_comic_9_720_22.mp4',
+            gsPath5: 'gs://comics-77200.appspot.com/test/web_comic_9_orig_30.mp4',
+            gsPath6: 'gs://comics-77200.appspot.com/test/web_comic_9_compressed.mp4',
             // paymentType: null,
             // image: require('../assets/logo.png'),
             // showModal: false,
@@ -170,9 +196,15 @@ export default {
         }
     },
     created(){
-        this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
-            this.shit = dataurl
-        })
+        // this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
+        //     this.shit = dataurl
+        // })
+        this.shitshit(this.gsPath1).then((dataUrl) => {this.testVid1 = dataUrl})
+        this.shitshit(this.gsPath2).then((dataUrl) => {this.testVid2 = dataUrl})
+        this.shitshit(this.gsPath3).then((dataUrl) => {this.testVid3 = dataUrl})
+        this.shitshit(this.gsPath4).then((dataUrl) => {this.testVid4 = dataUrl})
+        this.shitshit(this.gsPath5).then((dataUrl) => {this.testVid5 = dataUrl})
+        this.shitshit(this.gsPath6).then((dataUrl) => {this.testVid6 = dataUrl})
         // this.vidLoaded = this.videos.map(() => false)
         // this.vidPlaying = this.videos.map(() => false)
         // this.sources = this.videos.map(() => null)
