@@ -1,4 +1,6 @@
 <template>
+    <div></div>
+    <!-- <button :disabled="true" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="test">test</button>
     original
     <video
         controls
@@ -19,7 +21,7 @@
         playsinline loop
         :src="testVid6"
         type='video/mp4'
-    ></video>
+    ></video> -->
     <!-- <div>
         <div class="cc-selector">
             <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
@@ -199,17 +201,20 @@ export default {
         // this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
         //     this.shit = dataurl
         // })
-        this.shitshit(this.gsPath1).then((dataUrl) => {this.testVid1 = dataUrl})
-        this.shitshit(this.gsPath2).then((dataUrl) => {this.testVid2 = dataUrl})
-        this.shitshit(this.gsPath3).then((dataUrl) => {this.testVid3 = dataUrl})
-        this.shitshit(this.gsPath4).then((dataUrl) => {this.testVid4 = dataUrl})
-        this.shitshit(this.gsPath5).then((dataUrl) => {this.testVid5 = dataUrl})
-        this.shitshit(this.gsPath6).then((dataUrl) => {this.testVid6 = dataUrl})
+        // this.shitshit(this.gsPath1).then((dataUrl) => {this.testVid1 = dataUrl})
+        // this.shitshit(this.gsPath2).then((dataUrl) => {this.testVid2 = dataUrl})
+        // this.shitshit(this.gsPath3).then((dataUrl) => {this.testVid3 = dataUrl})
+        // this.shitshit(this.gsPath4).then((dataUrl) => {this.testVid4 = dataUrl})
+        // this.shitshit(this.gsPath5).then((dataUrl) => {this.testVid5 = dataUrl})
+        // this.shitshit(this.gsPath6).then((dataUrl) => {this.testVid6 = dataUrl})
         // this.vidLoaded = this.videos.map(() => false)
         // this.vidPlaying = this.videos.map(() => false)
         // this.sources = this.videos.map(() => null)
     },
     methods: {
+        test(){
+            console.log('test')
+        },
         async getBlob(gsPath){//gs://comics-77200.appspot.com/videos/test/PAGE_18.mp4
             return await getStorageBlob(ref(fb.storage, gsPath))
         },
@@ -264,12 +269,6 @@ export default {
         //         this.vidPlaying[idx] = true
         //     }
         // },
-        test(){
-            const win = window.open("/test-two", "", "width=200,height=100");
-            win.onmessage = (data) => {
-                console.log(data)
-            }
-        },
     },
     mounted(){
         // //eslint-disable-next-line no-unused-vars

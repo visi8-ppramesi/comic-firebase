@@ -17,7 +17,9 @@
 
                         <div>
                             <template v-for="(author, idx) in comic.authors_data" :key="'author-' + idx">
-                                <div  class="lg:text-md xl:text-lg">{{author.name}}</div>
+                                <router-link :to="routeResolver('Author', {id: author.id.id})">
+                                    <div  class="lg:text-lg xl:text-xl font-semibold">{{author.name}}</div>
+                                </router-link>
                             </template>
                         </div>
 
@@ -35,7 +37,7 @@
                         </div>
 
                         <div class="flex flex-row content-center justify-between">
-                            <button class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
+                            <button :disabled="subscribeDisabled" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
                             <!-- <template v-if="purchased">
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="continueReading(true)">View with AR</button>
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" v-if="isEmpty(bookmark)" @click="startReading">Start Reading</button>
@@ -44,7 +46,7 @@
                             <template>
                                 <button class="mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="openModal">Buy Comic</button>
                             </template>
-                            <button class="mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleFavoriteComic">
+                            <button :disabled="favoriteDisabled" class="mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleFavoriteComic">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path class="animated" :class="favorited ? 'fill-white' : 'fill-none'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                 </svg>
@@ -101,8 +103,8 @@
                 </div>
             </div>
             <div class="p-5" :class="comments.length > 0 ? 'pb-3' : 'pb-0'">
-                <div v-if="isLoggedIn" class="flex mx-auto items-center shadow-lg mb-5 max-w-xl">
-                    <div class="w-full bg-white rounded-md px-4 pt-2">
+                <div v-if="isLoggedIn" class="flex mx-auto items-center mb-5 max-w-xl">
+                    <div class="w-full bg-white rounded-md px-4 pt-2 drop-shadow-md">
                         <div class="flex flex-wrap -mx-3 mb-6">
                             <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">Add a new comment</h2>
                             <div class="w-full md:w-full px-3 mb-2 mt-2">
@@ -142,6 +144,7 @@
     </div>
     <Teleport to="#modal">
         <payment-modal
+            v-if="enablePaymentModal"
             ref="paymentModal"
             :chapter-data="selectedChapterData"
             :comic-data="comic"
@@ -171,6 +174,7 @@ export default {
     },
     data(){
         return {
+            enablePaymentModal: false,
             selectedPrice: null,
             selectedChapter: null,
             loading: true,
@@ -189,13 +193,15 @@ export default {
             newComment: '',
             comicFullyPurchased: false,
             selectedChapterData: null,
+            subscribeDisabled: false,
+            favoriteDisabled: false
             // categories: ''
         }
     },
     created(){
         this.emitter.on('chapterPurchased', (chapters) => {
-            console.log(chapters)
-            this.purchasedChapterIds.push(...chapters)
+            this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...chapters])]
+            this.enablePaymentModal = this.purchasedChapterIds.length != this.chapters.length
         })
         let loader = this.$loading.show({
             loader: 'dots'
@@ -226,11 +232,12 @@ export default {
             this.subscribed = _.includes(subComicIds, this.$route.params.id)
 
             this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
-                console.log(cpts)
                 if(cpts.chapters.includes('all')){
                     this.comicFullyPurchased = true
+                    this.enablePaymentModal = false
                 }else{
                     this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpts.chapters.map((v) => v.id)])]
+                    this.enablePaymentModal = this.purchasedChapterIds.length != this.chapters.length
                 }
             })
         }
@@ -249,11 +256,12 @@ export default {
                 this.subscribed = _.includes(subComicIds, this.$route.params.id)
 
                 this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
-                    console.log(cpts)
                     if(cpts.chapters.includes('all')){
                         this.comicFullyPurchased = true
+                        this.enablePaymentModal = false
                     }else{
                         this.purchasedChapterIds = [...new Set([...this.purchasedChapterIds, ...cpts.chapters.map((v) => v.id)])]
+                        this.enablePaymentModal = this.purchasedChapterIds.length != this.chapters.length
                     }
                 })
             }
@@ -298,26 +306,33 @@ export default {
             this.$refs.paymentModal.openModal()
         },
         async toggleSubscribeComic(){
+            this.subscribeDisabled = true
             if(this.userInstance){
                 if(this.subscribed){
                     await this.userInstance.unsubscribeComic(this.$route.params.id)
                     this.subscribed = false
+                    this.subscribeDisabled = true
                 }else{
                     await this.userInstance.subscribeComic(this.$route.params.id)
                     this.subscribed = true
+                    this.subscribeDisabled = true
                 }
             }else{
+                this.subscribeDisabled = true
                 this.$router.push({name: 'Login'})
             }
         },
         async toggleFavoriteComic(){
+            this.favoriteDisabled = true
             if(this.userInstance){
                 if(this.favorited){
                     await this.userInstance.unfavoriteComic(this.$route.params.id)
+                    this.favoriteDisabled = false
                     this.favorited = false
                     this.fbAnalytics.logEvent('comic_unfavorited', { comic_id: this.$route.params.id })
                 }else{
                     await this.userInstance.favoriteComic(this.$route.params.id)
+                    this.favoriteDisabled = false
                     this.fbAnalytics.logEvent('comic_favorited', { comic_id: this.$route.params.id })
                     this.favorited = true
                 }

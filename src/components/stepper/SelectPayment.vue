@@ -26,6 +26,7 @@
 export default {
     name: 'step-one',
     props: ['store'],
+    emits: ['changePayment'],
     data(){
         return {
             selectedPayment: 'gopay',

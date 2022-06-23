@@ -20,10 +20,11 @@
                 <div class="text-m text-center mt-6 text-white">
                     <p>Dont have an account yet? <router-link :to="routeResolver('Register')" class="text-blue-200">Sign up</router-link></p>
                 </div>
+                <div class="strike mt-4">
+                    <span class="text-m text-white">Or Login With</span>
+                </div>
                 <div class="flex flex-row items-center justify-center pt-5">
-                    <img class="w-10" :src="facebookIcon" />
-                    <img class="w-10" :src="instagramIcon" />
-                    <img class="w-10" :src="twitterIcon" />
+                    <img class="w-10" :src="googleIcon" @click="loginWithGoogle" />
                 </div>
             </div>
         </div>
@@ -42,6 +43,7 @@ export default {
             facebookIcon: require('../assets/icons/facebook.png'),
             instagramIcon: require('../assets/icons/instagram.png'),
             twitterIcon: require('../assets/icons/twitter.png'),
+            googleIcon: require('../assets/icons/google.png'),
             karaBackground: require('../assets/kara_bg.jpg'),
         }
     },
@@ -111,5 +113,35 @@ export default {
 </script>
 
 <style scoped>
+.strike {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap; 
+}
 
+.strike > span {
+    position: relative;
+    display: inline-block;
+}
+
+.strike > span:before,
+.strike > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: white;
+}
+
+.strike > span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.strike > span:after {
+    left: 100%;
+    margin-left: 15px;
+}
 </style>

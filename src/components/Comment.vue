@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-xl w-full mx-auto flex text-black mb-2">
-        <div class="rounded-md bg-white lg:text-md xl:text-lg flex-1 shadow-lg px-4 py-4 sm:px-6 sm:py-4 leading-relaxed">
+        <div class="rounded-md bg-white lg:text-md xl:text-lg flex-1 shadow-lg px-4 py-4 sm:px-6 sm:py-4 leading-relaxed drop-shadow-md">
             <div class="flex flex-row">
                 <img class="flex items-center justify-center rounded-full w-12 h-12 sm:w-16 sm:h-16" :src="profilePicture" alt="">
                 <div class="flex flex-col w-full">

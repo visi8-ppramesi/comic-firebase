@@ -27,12 +27,17 @@ const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collecti
 const main = async () => {
     await fb.signInPromise
 
-    for(let i = 0; i < 10; i++){
-        const chapterCountRef = doc(fb.db, 'comics', 'SSb0da8HXyie7DbcAEve', 'chapters', 'gJH0dBqsv28Xl9IStvcm', 'counters', i.toString())
-        const chapterCounter = await setDoc(chapterCountRef, {
-            view_count: 0
-        })
-    }
+    const col = doc(fb.db, 'test', '123', 'asdf', '234')
+    const set = await setDoc(col, {
+        test: 'test'
+    })
+
+    // for(let i = 0; i < 10; i++){
+    //     const chapterCountRef = doc(fb.db, 'comics', 'SSb0da8HXyie7DbcAEve', 'chapters', 'gJH0dBqsv28Xl9IStvcm', 'counters', i.toString())
+    //     const chapterCounter = await setDoc(chapterCountRef, {
+    //         view_count: 0
+    //     })
+    // }
     // const comicColl = collection(ComicFactory.db, 'comics')
     // const comicSnap = await getDocs(comicColl)
     // const comicDocs = Object.values(comicSnap.docs)

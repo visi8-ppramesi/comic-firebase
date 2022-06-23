@@ -41,7 +41,6 @@ export const useAuthStore = defineStore('auth', {
             return User.login(email, password).then((user) => {
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
-                    console.log('profile')
                     this.profile_image_url = imageUrl
                 })
                 this.userInstance = user
@@ -117,11 +116,12 @@ export const useAuthStore = defineStore('auth', {
         authAction(){
             User.onAuthStateChanged(user => {
                 if (user) {
+                    const authProvider = user.providerData.find(p => p.providerId == 'google.com') ? 'google' : 'email'
                     const newUserDocRef = doc(User.db, 'users', user.uid)
                     getDoc(newUserDocRef).then((doc) => {
                         const newUser = new User()
                         //eslint-disable-next-line no-unused-vars
-                        newUser.setData(user.uid, doc.data(), doc).then((__) => {
+                        newUser.setData(user.uid, doc.data(), doc, authProvider).then((__) => {
                             this.uid = newUser.id
                             newUser.getProfileImage().then((imageUrl) => {
                                 this.profile_image_url = imageUrl

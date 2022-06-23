@@ -2,7 +2,7 @@ import Collection from "../Collection.js"
 import Subcollection from "../Subcollection.js"
 import firebase from '../firebase.js';
 import utils from "../utils/index.js";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, updateEmail, updatePassword as authUpdatePassword, reauthenticateWithCredential, EmailAuthCredential, GoogleAuthProvider, signInWithPopup, getAdditionalUserInfo } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, updateEmail, updatePassword as authUpdatePassword, reauthenticateWithCredential, EmailAuthCredential, GoogleAuthProvider, signInWithPopup, getAdditionalUserInfo, linkWithPopup } from "firebase/auth";
 import { runTransaction, updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove, increment } from "firebase/firestore";
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
@@ -41,6 +41,11 @@ export default class extends Collection {
         'comic_subscriptions': Array,
         'email_verified_at': Date,
         'profile_image_url': ProfilePicture,
+    }
+
+    async setData(id, data, doc = null, authProvider = 'email'){
+        await super.setData(id, data, doc)
+        this.authProvider = authProvider
     }
 
     async unsubscribeComic(id) {
@@ -179,7 +184,7 @@ export default class extends Collection {
         })
 
         const instance = new this()
-        await instance.setData(data.id, data.profile, data.doc)
+        await instance.setData(data.id, data.profile, data.doc, 'email')
         return instance
     }
 
@@ -217,7 +222,7 @@ export default class extends Collection {
         console.log('after user create')
 
         const instance = new this()
-        await instance.setData(data.id, data.profile, data.doc)
+        await instance.setData(data.id, data.profile, data.doc, 'email')
         return instance
 
         // .then((userDoc) => {
@@ -277,7 +282,20 @@ export default class extends Collection {
         }
 
         const instance = new this()
-        await instance.setData(data.id, data.profile, data.doc)
+        await instance.setData(data.id, data.profile, data.doc, 'google')
         return instance
+    }
+
+    async linkToGoogle(){
+        const gAuthProvider = new GoogleAuthProvider()
+        try{
+            const result = await linkWithPopup(firebase.auth.currentUser, gAuthProvider)
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const user = result.user;
+            this.authProvider = 'google'
+            return { credential, user }
+        }catch(error){
+            throw error
+        }
     }
 }
