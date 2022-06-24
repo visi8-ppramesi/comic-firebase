@@ -16,7 +16,7 @@ service cloud.firestore {
       match /comics/{notification}{
         allow read: if belongsTo(user) || isAdmin();
         allow create: if belongsTo(user) || isAdmin();
-        allow update: if isAdmin();
+        allow update: if belongsTo(user) || isAdmin();
         allow delete: if isAdmin();
       }
     }

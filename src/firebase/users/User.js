@@ -18,7 +18,8 @@ import {
     increment, 
     // query, 
     orderBy, 
-    limit 
+    limit, 
+    writeBatch
 } from "firebase/firestore";
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
@@ -154,7 +155,7 @@ export default class extends Collection {
         if (!firebase.auth.currentUser) {
             return null
         }
-        const noteNotificationRef = doc(firebase.db, 'notifications', this.id)
+        const noteNotificationRef = doc(this.constructor.db, 'notifications', this.id)
         return onSnapshot(noteNotificationRef, listenerFunc)
     }
 
@@ -162,27 +163,32 @@ export default class extends Collection {
         if (!firebase.auth.currentUser) {
             return null
         }
-        const promises = []
-        const countNotificationRef = doc(firebase.db, 'notifications', this.id)
-        const update = updateDoc(countNotificationRef, {
+        // const promises = []
+        const batch = writeBatch(this.constructor.db)
+        const countNotificationRef = doc(this.constructor.db, 'notifications', this.id)
+        batch.update(countNotificationRef, {
             unread_count: 0
         })
-        promises.push(update)
-
+        // const update = updateDoc(countNotificationRef, {
+        //     unread_count: 0
+        // })
+        // promises.push(update)
         notifications.forEach((notification) => {
             if(notification.unread){
-                promises.push(notification.setRead())
+                // promises.push(notification.setRead())
+                notification.setReadBatched(batch)
             }
         })
+        return await batch.commit()
 
-        return Promise.allSettled(promises)
+        // return Promise.allSettled(promises)
     }
 
     async getNotificationUnreadCount(){
         if (!firebase.auth.currentUser) {
             return 0
         }
-        const noteNotificationRef = doc(firebase.db, 'notifications', this.id)
+        const noteNotificationRef = doc(this.constructor.db, 'notifications', this.id)
         const noteDoc = await getDoc(noteNotificationRef)
         if(noteDoc.exists()){
             return noteDoc.data().unread_count ?? 0
@@ -199,7 +205,7 @@ export default class extends Collection {
             queryObj = [orderBy('created_date', 'desc'), limit(limitParam)]
         }
 
-        return (await ComicNotification.getDocuments(['notifications', this.id, type], queryObj)).map((ins) => {
+        return (await ComicNotification.getDocuments(type, ['notifications', this.id, type], queryObj)).map((ins) => {
             ins.type = type
             return ins
         })
@@ -247,7 +253,7 @@ export default class extends Collection {
 
     static async login(email, password) {
         const data = await signInWithEmailAndPassword(firebase.auth, email, password).then(async (cred) => {
-            const newUserDocRef = doc(firebase.db, 'users', cred.user.uid)
+            const newUserDocRef = doc(this.db, 'users', cred.user.uid)
             const newProfile = await getDoc(newUserDocRef)
             return { profile: newProfile.data(), cred: cred, id: cred.user.uid, doc: newProfile }
         }).catch((err) => {
@@ -272,7 +278,7 @@ export default class extends Collection {
                 displayName: userData.name
             })
             newUser = promisedNewUser
-            newUserDocRef = doc(firebase.db, 'users', promisedNewUser.user.uid)
+            newUserDocRef = doc(this.db, 'users', promisedNewUser.user.uid)
             return setDoc(newUserDocRef, validatedUserData)
             // try{
             //     const newProfile = await setDoc(newUserDocRef, validatedUserData)
@@ -342,12 +348,12 @@ export default class extends Collection {
                 name, full_name: name
             }
             fillData(userData, email)
-            const newUserDocRef = doc(firebase.db, 'users', result.user.uid)
+            const newUserDocRef = doc(this.db, 'users', result.user.uid)
             data = await setDoc(newUserDocRef, userData).then((newProfile) => {
                 return { profile: userData, cred: result, id: result.user.uid, doc: newProfile }
             })
         } else {
-            const newUserDocRef = doc(firebase.db, 'users', result.user.uid)
+            const newUserDocRef = doc(this.db, 'users', result.user.uid)
             data = await getDoc(newUserDocRef).then((newProfile) => {
                 return { profile: newProfile.data(), cred: result, id: result.user.uid, doc: newProfile }
             })

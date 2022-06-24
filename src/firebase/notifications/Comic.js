@@ -25,4 +25,12 @@ export default class extends Subcollection{
             unread: false
         })
     }
+
+    setReadBatched(batch){
+        console.log([this.constructor.db, 'notifications', this.parentId, this.type, this.id])
+        const noteNotificationRef = doc(this.constructor.db, 'notifications', this.parentId, this.type, this.id)
+        batch.update(noteNotificationRef, {
+            unread: false
+        })
+    }
 }
