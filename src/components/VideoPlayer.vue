@@ -3,11 +3,12 @@
         <div :class="[vidPlaying ? '' : 'vid-paused']" class="absolute z-10 video-container">
             <div v-if="detectMobile()" :class="[showArButton ? 'opacity-1' : 'opacity-0']" class="z-20 w-16 h-16 flex bg-gray-200 bg-opacity-75 justify-center items-center rounded-full absolute left-2 top-2">
                 <router-link :to="arLink">
-                    <svg width="63" height="40" xmlns="http://www.w3.org/2000/svg">
+                    <img :src="arLogo" />
+                    <!-- <svg width="63" height="40" xmlns="http://www.w3.org/2000/svg">
                         <g>
                             <text font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Arimo'" font-size="40" id="svg_1" y="32.5" x="7" stroke-width="0" stroke="#000" fill="#000000">AR</text>
                         </g>
-                    </svg>
+                    </svg> -->
                 </router-link>
             </div>
             <video
@@ -55,6 +56,7 @@ export default {
     },
     data(){
         return {
+            arLogo: require('@/assets/icons/ar_icon.svg'),
             showArButton: false,
             vidPlaying: false,
             vidLoaded: false,

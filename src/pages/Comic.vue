@@ -17,7 +17,7 @@
 
                         <div>
                             <template v-for="(author, idx) in comic.authors_data" :key="'author-' + idx">
-                                <router-link :to="routeResolver('Author', {id: author.id.id})">
+                                <router-link :to="routeResolver('Author', {id: author.id.id ?? author.id})">
                                     <div  class="lg:text-lg xl:text-xl font-semibold">{{author.name}}</div>
                                 </router-link>
                             </template>

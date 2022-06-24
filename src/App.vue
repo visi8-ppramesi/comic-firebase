@@ -150,27 +150,30 @@
                   aria-haspopup="true"
                 >
                   <span class="sr-only">Open user menu</span>
-                  <img
-                    v-if="isLoggedIn && profile_image_url"
-                    class="h-8 w-8 rounded-full"
-                    :src="profile_image_url"
-                    alt=""
-                  />
-                  <svg
-                    v-else-if="isLoggedIn"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-8 w-8"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="{2}"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  <span>
+                    <img
+                      v-if="isLoggedIn && profile_image_url"
+                      class="h-8 w-8 rounded-full"
+                      :src="profile_image_url"
+                      alt=""
                     />
-                  </svg>
+                    <svg
+                      v-else-if="isLoggedIn"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-8 w-8"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="{2}"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    <span v-if="unreadCount > 0" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">{{ unreadCount }}</span>
+                  </span>
                 </button>
               </div>
               <div
@@ -199,6 +202,11 @@
                   {{ user.email }}
                 </div>
                 <hr />
+                <router-link
+                  :to="routeResolver('MyNotifications')"
+                  class="block px-4 py-2 text-sm text-gray-700"
+                  >My Notifications</router-link
+                >
                 <router-link
                   :to="routeResolver('MyAccount')"
                   class="block px-4 py-2 text-sm text-gray-700"
@@ -563,7 +571,7 @@ export default {
     showNav(){
       return this.$route.meta.showNav
     },
-    ...mapState(useAuthStore, ['user', 'isLoggedIn', 'profile_image_url'])
+    ...mapState(useAuthStore, ['user', 'isLoggedIn', 'profile_image_url', 'unreadCount'])
   },
   methods: {
     goTo(url){

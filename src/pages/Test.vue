@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <img :src="arLogo" alt="">
     <!-- <button :disabled="true" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="test">test</button>
     original
     <video
@@ -123,6 +123,7 @@ export default {
     inject: ['Viewer'],
     data(){
         return {
+            arLogo: require('@/assets/icons/ar_icon.svg'),
             shit: null,
             imgViewer: null,
             testVid1: '',

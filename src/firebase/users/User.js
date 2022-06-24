@@ -3,11 +3,28 @@ import Subcollection from "../Subcollection.js"
 import firebase from '../firebase.js';
 import utils from "../utils/index.js";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, updateEmail, updatePassword as authUpdatePassword, reauthenticateWithCredential, EmailAuthCredential, GoogleAuthProvider, signInWithPopup, getAdditionalUserInfo, linkWithPopup } from "firebase/auth";
-import { runTransaction, updateDoc, getDoc, doc, query, orderBy, startAt, endAt, collection, getDocs, setDoc, onSnapshot, where, arrayUnion, arrayRemove, increment } from "firebase/firestore";
+import { 
+    // collection, 
+    startAfter, 
+    // getDocs, 
+    runTransaction, 
+    updateDoc, 
+    getDoc, 
+    doc, 
+    setDoc, 
+    onSnapshot, 
+    arrayUnion, 
+    arrayRemove, 
+    increment, 
+    // query, 
+    orderBy, 
+    limit 
+} from "firebase/firestore";
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
 import _ from 'lodash';
 import handleError from "@/utils/handleError.js";
+import ComicNotification from '../notifications/Comic.js'
 
 const validateUserProfileData = (data) => {
     const acceptedFields = ['name', 'full_name']
@@ -133,6 +150,61 @@ export default class extends Collection {
         })
     }
 
+    async createNotificationListener(listenerFunc){
+        if (!firebase.auth.currentUser) {
+            return null
+        }
+        const noteNotificationRef = doc(firebase.db, 'notifications', this.id)
+        return onSnapshot(noteNotificationRef, listenerFunc)
+    }
+
+    async clearNotificationCount(notifications){
+        if (!firebase.auth.currentUser) {
+            return null
+        }
+        const promises = []
+        const countNotificationRef = doc(firebase.db, 'notifications', this.id)
+        const update = updateDoc(countNotificationRef, {
+            unread_count: 0
+        })
+        promises.push(update)
+
+        notifications.forEach((notification) => {
+            if(notification.unread){
+                promises.push(notification.setRead())
+            }
+        })
+
+        return Promise.allSettled(promises)
+    }
+
+    async getNotificationUnreadCount(){
+        if (!firebase.auth.currentUser) {
+            return 0
+        }
+        const noteNotificationRef = doc(firebase.db, 'notifications', this.id)
+        const noteDoc = await getDoc(noteNotificationRef)
+        if(noteDoc.exists()){
+            return noteDoc.data().unread_count ?? 0
+        }else{
+            return 0
+        }
+    }
+
+    async getNotifications(type = 'comics', limitParam = 10, startAfterParam = null){
+        let queryObj
+        if(startAfterParam){
+            queryObj = [orderBy('created_date', 'desc'), limit(limitParam), startAfter(startAfterParam)]
+        }else{
+            queryObj = [orderBy('created_date', 'desc'), limit(limitParam)]
+        }
+
+        return (await ComicNotification.getDocuments(['notifications', this.id, type], queryObj)).map((ins) => {
+            ins.type = type
+            return ins
+        })
+    }
+
     async getProfileImage() {
         if (this.profile_image_url) {
             this.profile_image_url = await utils.getResourceUrlFromStorage(this.profile_image_url)
@@ -239,23 +311,23 @@ export default class extends Collection {
         }
     }
 
-    static async getNotification(followingParents, startAtParam = 0, endAtParam = 10) {
-        if (!firebase.auth.currentUser) {
-            return []
-        }
-        const feedRef = collection(firebase.db, 'feed')
-        const queriedFeedRef = query(feedRef, where('parent', 'in', followingParents), startAt(startAtParam), endAt(endAtParam), orderBy('created_date', 'asc'))
-        return await getDocs(queriedFeedRef)
-    }
+    // static async getNotification(followingParents, startAtParam = 0, endAtParam = 10) {
+    //     if (!firebase.auth.currentUser) {
+    //         return []
+    //     }
+    //     const feedRef = collection(firebase.db, 'feed')
+    //     const queriedFeedRef = query(feedRef, where('parent', 'in', followingParents), startAt(startAtParam), endAt(endAtParam), orderBy('created_date', 'asc'))
+    //     return await getDocs(queriedFeedRef)
+    // }
 
-    static async createNotificationListener(followingParents, func) {
-        if (!firebase.auth.currentUser) {
-            return () => { }
-        }
-        const feedRef = collection(firebase.db, 'feed')
-        const queriedFeedRef = query(feedRef, where('parent', 'in', followingParents))
-        return onSnapshot(queriedFeedRef, func)
-    }
+    // static async createNotificationListener(followingParents, func) {
+    //     if (!firebase.auth.currentUser) {
+    //         return () => { }
+    //     }
+    //     const feedRef = collection(firebase.db, 'feed')
+    //     const queriedFeedRef = query(feedRef, where('parent', 'in', followingParents))
+    //     return onSnapshot(queriedFeedRef, func)
+    // }
 
     static async loginWithGoogle() {
         const gAuthProvider = new GoogleAuthProvider()
@@ -295,6 +367,7 @@ export default class extends Collection {
             this.authProvider = 'google'
             return { credential, user }
         }catch(error){
+            handleError(error, 'linkError')
             throw error
         }
     }

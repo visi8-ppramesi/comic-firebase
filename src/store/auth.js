@@ -12,6 +12,8 @@ export const useAuthStore = defineStore('auth', {
         status: {loggingIn: false},
         profile_image_url: null,
         isLoggedIn: false,
+        unreadCount: 0,
+        notificationListener: null
     }),
 
     getters: {},
@@ -42,6 +44,12 @@ export const useAuthStore = defineStore('auth', {
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
                     this.profile_image_url = imageUrl
+                })
+                user.getNotificationUnreadCount().then((count) => {
+                    this.unreadCount = count
+                })
+                this.notificationListener = user.createNotificationListener((snapshot) => {
+                    this.unreadCount = snapshot.get('unread_count') ?? 0
                 })
                 this.userInstance = user
                 this.user = user.toJSON()
@@ -77,6 +85,12 @@ export const useAuthStore = defineStore('auth', {
                 user.getProfileImage().then((imageUrl) => {
                     this.profile_image_url = imageUrl
                 })
+                user.getNotificationUnreadCount().then((count) => {
+                    this.unreadCount = count
+                })
+                this.notificationListener = user.createNotificationListener((snapshot) => {
+                    this.unreadCount = snapshot.get('unread_count') ?? 0
+                })
                 this.userInstance = user
                 this.user = user.toJSON()
                 localStorage.setItem('uid', this.uid)
@@ -98,6 +112,12 @@ export const useAuthStore = defineStore('auth', {
                 user.getProfileImage().then((imageUrl) => {
                     console.log('profile')
                     this.profile_image_url = imageUrl
+                })
+                user.getNotificationUnreadCount().then((count) => {
+                    this.unreadCount = count
+                })
+                this.notificationListener = user.createNotificationListener((snapshot) => {
+                    this.unreadCount = snapshot.get('unread_count') ?? 0
                 })
                 this.userInstance = user
                 this.user = user.toJSON()
@@ -125,6 +145,12 @@ export const useAuthStore = defineStore('auth', {
                             this.uid = newUser.id
                             newUser.getProfileImage().then((imageUrl) => {
                                 this.profile_image_url = imageUrl
+                            })
+                            newUser.getNotificationUnreadCount().then((count) => {
+                                this.unreadCount = count
+                            })
+                            this.notificationListener = newUser.createNotificationListener((snapshot) => {
+                                this.unreadCount = snapshot.get('unread_count') ?? 0     
                             })
                             this.userInstance = newUser
                             this.user = newUser.toJSON()

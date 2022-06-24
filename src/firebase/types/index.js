@@ -1,6 +1,6 @@
 import firebase from '../firebase.js'
 import { ref, uploadBytes } from "firebase/storage";
-import { updateDoc } from 'firebase/firestore'
+import { setDoc } from 'firebase/firestore'
 
 export class Subdoc{}
 
@@ -15,9 +15,9 @@ export class ProfilePicture{
         const fileRef = ref(firebase.storage, pathArray.join('/'))
         try{
             const { ref } = await uploadBytes(fileRef, file, { cacheControl: 'public,max-age=86400' })
-            return await updateDoc(this.doc.ref, {
+            return await setDoc(this.doc.ref, {
                 [fieldName]: firebase.buildGsPath(ref.fullPath)
-            })            
+            }, {merge: true})      
         }catch(err){
             console.error(err)
             throw err

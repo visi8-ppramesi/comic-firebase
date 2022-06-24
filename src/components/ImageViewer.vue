@@ -1,15 +1,22 @@
 <template>
     <div ref="imageContainer" class="min-h-screen bg-black flex justify-center justify-items-center content-center items-center">
-        <template v-if="isLink && detectMobile()">
+        <!-- <template v-if="isLink && detectMobile()">
             <div class="glow-animation" :class="showGlow ? 'glow' : 'fill-width'">
                 <router-link :to="arLink">
                     <img ref="imageElement" :src="source" class="lg:object-fill lg:w-full" >
                 </router-link>
             </div>
         </template>
-        <template v-else>
-            <img ref="imageElement" :src="source" class="w-full">
-        </template>
+        <template v-else> -->
+            <div class="relative">
+                <div v-if="isLink && detectMobile()" class="z-20 w-14 h-10 border-2 border-black bg-gray-200 bg-opacity-75 flex justify-center items-center rounded-md absolute left-2 top-2">
+                    <router-link :to="arLink">
+                        <img class="w-full" :src="arLogo" />
+                    </router-link>
+                </div>
+                <img ref="imageElement" :src="source" class="w-full">
+            </div>
+        <!-- </template> -->
     </div>
 </template>
 
@@ -43,6 +50,7 @@ export default {
     },
     data(){
         return {
+            arLogo: require('@/assets/icons/ar_icon.svg'),
             source: null,
             showGlow: false,
         }

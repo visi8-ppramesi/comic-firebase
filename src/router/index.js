@@ -98,6 +98,16 @@ const mineRoutes = [
         }
     },
     {
+        path: "/my-notifications",
+        name: "MyNotifications",
+        component: () => import("@/pages/MyNotifications.vue"),
+        meta: {
+            showNav: true,
+            requiresAuth: true,
+            class: "User"
+        }
+    },
+    {
         path: "/user/:id",
         name: "User",
         component: () => import("@/pages/User.vue"),

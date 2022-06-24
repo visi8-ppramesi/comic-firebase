@@ -27,10 +27,16 @@ const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collecti
 const main = async () => {
     await fb.signInPromise
 
-    const col = doc(fb.db, 'test', '123', 'asdf', '234')
-    const set = await setDoc(col, {
-        test: 'test'
-    })
+    const noteDoc = doc(fb.db, 'notifications', 'VOibHVLCulhx3eSHeuFSx9aDqQj2')
+    const stuff = await setDoc(noteDoc, {
+        unread_count: increment(1)
+    }, { merge: true })
+    console.log(stuff)
+
+    // const col = doc(fb.db, 'test', '123', 'asdf', '234')
+    // const set = await setDoc(col, {
+    //     test: 'test'
+    // })
 
     // for(let i = 0; i < 10; i++){
     //     const chapterCountRef = doc(fb.db, 'comics', 'SSb0da8HXyie7DbcAEve', 'chapters', 'gJH0dBqsv28Xl9IStvcm', 'counters', i.toString())
