@@ -135,7 +135,7 @@ service cloud.firestore {
         let favCheck = /databases/$(database)/documents/comics/$(comic) in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.favorites;
         return isLoggedIn() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['favorite_count']) && (
           (request.resource.data.favorite_count == (resource.data.favorite_count + 1) && !favCheck) ||
-          (request.resource.data.favorite_count == (resource.data.favorite_count - 1) && favCheck)
+          (request.resource.data.favorite_count == (resource.data.favorite_count - 1) && favCheck && resource.data.favorite_count > 0)
         );
       }
     }

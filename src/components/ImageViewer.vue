@@ -1,5 +1,5 @@
 <template>
-    <div ref="imageContainer" class="min-h-screen bg-black flex justify-center justify-items-center content-center items-center">
+    <div ref="imageContainer" class="bg-black flex justify-center justify-items-center content-center items-center">
         <!-- <template v-if="isLink && detectMobile()">
             <div class="glow-animation" :class="showGlow ? 'glow' : 'fill-width'">
                 <router-link :to="arLink">

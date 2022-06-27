@@ -17,6 +17,9 @@ module.exports = {
           margin: {
             'xl': '25%',
           },
+          colors: {
+            'off-purple': '#9f85d7'
+          },
           //eslint-disable-next-line no-unused-vars
           height: theme => ({
             "screen-navbar": "calc(100vh - 64px)",
