@@ -61,6 +61,13 @@ export default class extends Collection {
         'profile_image_url': ProfilePicture,
     }
 
+    async getRoles(){
+        const roleRef = doc(this.constructor.db, 'user_roles', this.id)
+        const roleDoc = await getDoc(roleRef)
+
+        return roleDoc.get('roles')
+    }
+
     async setData(id, data, doc = null, authProvider = 'email'){
         await super.setData(id, data, doc)
         this.authProvider = authProvider

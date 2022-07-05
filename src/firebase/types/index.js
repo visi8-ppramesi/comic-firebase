@@ -25,7 +25,24 @@ export class ProfilePicture{
     }
 }
 
-export class StorageLink{}
+export class StorageLink{
+    //eslint-disable-next-line no-unused-vars
+    async uploadField(fieldName, path, file){
+        const pathArray = path.split('/')
+        pathArray.push(file.name)
+        pathArray.unshift('uploads')
+        const fileRef = ref(firebase.storage, pathArray.join('/'))
+        try{
+            const { ref } = await uploadBytes(fileRef, file, { cacheControl: 'public,max-age=86400' })
+            return await setDoc(this.doc.ref, {
+                [fieldName]: firebase.buildGsPath(ref.fullPath)
+            }, {merge: true})      
+        }catch(err){
+            console.error(err)
+            throw err
+        }
+    }
+}
 
 export class InstanceData{
     constructor(fields){
@@ -36,3 +53,5 @@ export class InstanceData{
         return Object.keys(this.fields)
     }
 }
+
+export default {Subdoc, LongText, ProfilePicture, StorageLink, InstanceData}

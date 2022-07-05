@@ -30,7 +30,7 @@ export default class extends Collection{
         'chapters':	Subcollection.resolve('./Chapter.js'),
         'tags':	Array,
         'categories': Array,
-        'cover_image_url': String,
+        'cover_image_url': StorageLink,
         'is_draft':	Boolean,
         // 'chapters_data': Array,
         'last_update': Date,
@@ -73,6 +73,11 @@ export default class extends Collection{
             return doc
         }))
         return this.comments
+    }
+
+    static async getComics(){
+        const comics = await this.getDocuments()
+        return comics
     }
 
     createNewCommentListener(callback){

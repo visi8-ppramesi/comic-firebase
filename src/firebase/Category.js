@@ -5,4 +5,9 @@ export default class extends Collection{
     static fields = {
         'name': String
     }
+
+    static async getCategories(){
+        const categories = await this.getDocuments()
+        return categories
+    }
 }

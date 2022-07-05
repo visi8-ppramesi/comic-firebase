@@ -18,4 +18,9 @@ export default class extends Collection{
         this.comics = Comic.getDocuments(['comics'], queries)
         return this.comics
     }
+
+    static async getAuthors(){
+        const authors = await this.getDocuments()
+        return authors
+    }
 }

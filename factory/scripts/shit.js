@@ -26,12 +26,36 @@ const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collecti
 ///comics/SSb0da8HXyie7DbcAEve/chapters/gJH0dBqsv28Xl9IStvcm
 const main = async () => {
     await fb.signInPromise
+    const comicCollection = collection(ComicFactory.db, 'comics')
+    await getDocs(comicCollection).then((snap) => {
+        snap.forEach((docRes) => {
+            const data = docRes.data()
+            const authors = data['authors_data'].map(v => v.name).reduce((acc, v) => {
+                const authArray = v.split(' ')
+                acc.push(...authArray)
+                return acc
+            }, [])
+            const tags = data['tags']
+            const categories = data['categories']
+            const title = data['title'].split(' ')
 
-    const noteDoc = doc(fb.db, 'notifications', 'VOibHVLCulhx3eSHeuFSx9aDqQj2')
-    const stuff = await setDoc(noteDoc, {
-        unread_count: increment(1)
-    }, { merge: true })
-    console.log(stuff)
+            const keywords = [...new Set([...authors, ...tags, ...categories, ...title].map(_.toLower))]
+            // console.log(keywords)
+            updateDoc(docRes.ref, {
+                keywords
+            })
+        })
+    })
+    console.log('done')
+    // const comicColl = collection(fb.db, 'comics')
+    // const comicDocs = await getDocs(comicColl)
+    // console.log(comicDocs.size)
+
+    // const noteDoc = doc(fb.db, 'notifications', 'VOibHVLCulhx3eSHeuFSx9aDqQj2')
+    // const stuff = await setDoc(noteDoc, {
+    //     unread_count: increment(1)
+    // }, { merge: true })
+    // console.log(stuff)
 
     // const col = doc(fb.db, 'test', '123', 'asdf', '234')
     // const set = await setDoc(col, {
@@ -258,25 +282,6 @@ main()
     //             console.log(docRes.data())
     //         })
     //     }
-    // })
-    // getDocs(comicCollection).then((snap) => {
-    //     snap.forEach((docRes) => {
-    //         const data = docRes.data()
-    //         const authors = data['authors_data'].map(v => v.name).reduce((acc, v) => {
-    //             const authArray = v.split(' ')
-    //             acc.push(...authArray)
-    //             return acc
-    //         }, [])
-    //         const tags = data['tags']
-    //         const categories = data['categories']
-    //         const title = data['title'].split(' ')
-
-    //         const keywords = [...new Set([...authors, ...tags, ...categories, ...title].map(_.toLower))]
-    //         // console.log(keywords)
-    //         updateDoc(docRes.ref, {
-    //             keywords
-    //         })
-    //     })
     // })
     // getDoc(doc(ComicFactory.db, 'authors', 'EZ7uQtb2V3wU4asdfasdfasdfzxcvzxczxcvrQ1fG9J')).then((snap) => {
     //     console.log(snap.exists())
