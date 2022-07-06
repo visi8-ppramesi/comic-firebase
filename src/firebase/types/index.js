@@ -1,6 +1,7 @@
 import firebase from '../firebase.js'
 import { ref, uploadBytes } from "firebase/storage";
-import { setDoc } from 'firebase/firestore'
+import { collection, setDoc, addDoc } from 'firebase/firestore';
+import { httpsCallable } from 'firebase/functions';
 
 export class Subdoc{}
 
