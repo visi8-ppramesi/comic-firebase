@@ -26,30 +26,30 @@ const { getDocs, getDoc, doc, updateDoc, collection, increment, addDoc, collecti
 ///comics/SSb0da8HXyie7DbcAEve/chapters/gJH0dBqsv28Xl9IStvcm
 const main = async () => {
     await fb.signInPromise
-    const comicCollection = collection(ComicFactory.db, 'comics')
-    await getDocs(comicCollection).then((snap) => {
-        snap.forEach((docRes) => {
-            const data = docRes.data()
-            const authors = data['authors_data'].map(v => v.name).reduce((acc, v) => {
-                const authArray = v.split(' ')
-                acc.push(...authArray)
-                return acc
-            }, [])
-            const tags = data['tags']
-            const categories = data['categories']
-            const title = data['title'].split(' ')
+    // const comicCollection = collection(ComicFactory.db, 'comics')
+    // await getDocs(comicCollection).then((snap) => {
+    //     snap.forEach((docRes) => {
+    //         const data = docRes.data()
+    //         const authors = data['authors_data'].map(v => v.name).reduce((acc, v) => {
+    //             const authArray = v.split(' ')
+    //             acc.push(...authArray)
+    //             return acc
+    //         }, [])
+    //         const tags = data['tags']
+    //         const categories = data['categories']
+    //         const title = data['title'].split(' ')
 
-            const keywords = [...new Set([...authors, ...tags, ...categories, ...title].map(_.toLower))]
-            // console.log(keywords)
-            updateDoc(docRes.ref, {
-                keywords
-            })
-        })
-    })
-    console.log('done')
-    // const comicColl = collection(fb.db, 'comics')
-    // const comicDocs = await getDocs(comicColl)
-    // console.log(comicDocs.size)
+    //         const keywords = [...new Set([...authors, ...tags, ...categories, ...title].map(_.toLower))]
+    //         // console.log(keywords)
+    //         updateDoc(docRes.ref, {
+    //             keywords
+    //         })
+    //     })
+    // })
+    // console.log('done')
+    const comicColl = collection(fb.db, 'comics')
+    const comicDocs = await getDocs(comicColl)
+    console.log(comicDocs.size)
 
     // const noteDoc = doc(fb.db, 'notifications', 'VOibHVLCulhx3eSHeuFSx9aDqQj2')
     // const stuff = await setDoc(noteDoc, {

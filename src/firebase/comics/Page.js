@@ -4,7 +4,7 @@ import Subcollection from '../Subcollection.js'
 import { collection, getDocs } from 'firebase/firestore'
 
 export default class extends Subcollection{
-    static collection = 'page'
+    static collection = 'pages'
     static fields = {
         'page_number': Number,
         'page_image_url': String,

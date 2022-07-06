@@ -345,7 +345,7 @@ export default {
             return cpt
         },
         async fetchComic(){
-            this.comic = await Comic.getDocumentWithStorageResource(this.$route.params.id, ['cover_image_url'])
+            this.comic = await Comic.getDocumentWithStorageResource(this.$route.params.id, ['cover_image_url'], true)
             this.comments = await this.comic.getComments(orderByDateDesc())
             this.chapters = this.comic.chapters_data.map(this.formatChapter)//(await this.comic.getChaptersWithStorageResource()).map(this.formatChapter)
                 .sort((a, b) => {

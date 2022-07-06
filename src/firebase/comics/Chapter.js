@@ -13,7 +13,7 @@ import {
 } from 'firebase/firestore'
 
 export default class extends Subcollection{
-    static collection = 'chapter_number'
+    static collection = 'chapters'
     static fields = {
         'chapter_number': Number,
         'release_date': Date,

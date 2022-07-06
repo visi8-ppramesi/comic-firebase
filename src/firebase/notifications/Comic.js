@@ -3,7 +3,7 @@ import Subcollection from "../Subcollection.js"
 import { updateDoc, doc } from "firebase/firestore";
 
 export default class extends Subcollection{
-    static collection = 'orders'
+    static collection = 'comics'
     static fields = {
         'comic': Collection.resolve('../comics/Comic.js'),
         'chapter': Subcollection.resolve('../comics/Chapter.js'),
