@@ -11,6 +11,7 @@ import {
     arrayUnion, 
     writeBatch 
 } from 'firebase/firestore'
+import { StorageLink } from '../types/index.js';
 
 export default class extends Subcollection{
     static collection = 'chapters'
@@ -21,7 +22,7 @@ export default class extends Subcollection{
         'price': Number,
         'ar_price': Number,
         'pages': Subcollection.resolve('./Page.js'),
-        'chapter_preview_url': String
+        'chapter_preview_url': StorageLink
     }
 
     async viewChapter(userId = null){
