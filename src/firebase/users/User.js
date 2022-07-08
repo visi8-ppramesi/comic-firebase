@@ -23,13 +23,14 @@ import {
 } from "firebase/firestore";
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
-import _ from 'lodash';
+// import _ from 'lodash';
+import isEqual from 'lodash/isEqual';
 import handleError from "@/utils/handleError.js";
 import ComicNotification from '../notifications/Comic.js'
 
 const validateUserProfileData = (data) => {
     const acceptedFields = ['name', 'full_name']
-    if (!_.isEqual(Object.keys(data).sort(), acceptedFields.sort())) {
+    if (!isEqual(Object.keys(data).sort(), acceptedFields.sort())) {
         return false
     }
     return data

@@ -46,7 +46,9 @@
 <script>
 import Author from '../firebase/Author.js'
 import { categoryQueryPaginated } from '../firebase/utils/queries.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import startCase from 'lodash/startCase'
+import toLower from 'lodash/toLower'
 import Grid from '../components/Grid.vue'
 export default {
     name: 'authors',
@@ -74,7 +76,7 @@ export default {
     },
     mounted(){
         this.query = this.$route.query.category ? this.$route.query.category : 'all'
-        this.title = _.startCase(_.toLower(this.query + ' authors'))
+        this.title = startCase(toLower(this.query + ' authors'))
         this.loadAuthors()
         // Author.getDocumentsWithStorageResource(categoryQueryPaginated(this.query, this.sortByParam), ['profile_picture_url']).then((authors) => {
         //     this.authors.push(...authors)

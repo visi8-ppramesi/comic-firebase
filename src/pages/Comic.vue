@@ -160,7 +160,13 @@ import Comment from '@/firebase/comics/Comment.js';
 import { orderByDateDesc } from '@/firebase/utils/queries.js'
 // import Comment from '@/firebase/comics/Comment.js';
 // import comic from "../assets/comic.jpeg";
-import _ from 'lodash'
+// import _ from 'lodash'
+import isNil from 'lodash/isNil'
+import includes from 'lodash/includes'
+import isEmpty from 'lodash/isEmpty'
+import capitalize from 'lodash/capitalize'
+import remove from 'lodash/remove'
+import findIndex from 'lodash/findIndex'
 import { useViewStore } from '../store/view.js'
 import { useAuthStore } from '../store/auth.js'
 import { mapState } from 'pinia'
@@ -220,16 +226,16 @@ export default {
             this.loading = false
             loader.hide()
         })
-        if(!_.isNil(this.userData)){
+        if(!isNil(this.userData)){
             const favComicIds = this.userData.favorites.map((comicRef) => {
                 return comicRef.id
             })
-            this.favorited = _.includes(favComicIds, this.$route.params.id)
+            this.favorited = includes(favComicIds, this.$route.params.id)
 
             const subComicIds = this.userData.comic_subscriptions.map((comicRef) => {
                 return comicRef.id
             })
-            this.subscribed = _.includes(subComicIds, this.$route.params.id)
+            this.subscribed = includes(subComicIds, this.$route.params.id)
 
             this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
                 if(cpts.chapters.includes('all')){
@@ -244,16 +250,16 @@ export default {
     },
     watch: {
         userData(){
-            if(!_.isNil(this.userData)){
+            if(!isNil(this.userData)){
                 const favComicIds = this.userData.favorites.map((comicRef) => {
                     return comicRef.id
                 })
-                this.favorited = _.includes(favComicIds, this.$route.params.id)
+                this.favorited = includes(favComicIds, this.$route.params.id)
 
                 const subComicIds = this.userData.comic_subscriptions.map((comicRef) => {
                     return comicRef.id
                 })
-                this.subscribed = _.includes(subComicIds, this.$route.params.id)
+                this.subscribed = includes(subComicIds, this.$route.params.id)
 
                 this.userInstance.getPurchasedComicStatus(this.$route.params.id).then((cpts) => {
                     if(cpts.chapters.includes('all')){
@@ -269,8 +275,8 @@ export default {
     },
     computed:{
         categories(){
-            if(!_.isEmpty(this.comic)){
-                return this.comic.categories.map(_.capitalize).join(', ')
+            if(!isEmpty(this.comic)){
+                return this.comic.categories.map(capitalize).join(', ')
             }else{
                 return ''
             }
@@ -286,7 +292,7 @@ export default {
             this.purchasedChapterIds.push(cptId)
         },
         onCommentDelete(id){
-            this.comments = _.remove(this.comments, (comment) => {
+            this.comments = remove(this.comments, (comment) => {
                 return comment.id != id
             })
         },
@@ -367,7 +373,7 @@ export default {
             let firstRun = this.comments == 0
             this.comic.createNewCommentListener((newCommInstance) => {
                 if(firstRun){
-                    const foundId = _.findIndex(this.comments, (com) => {
+                    const foundId = findIndex(this.comments, (com) => {
                         return com.id == newCommInstance.id
                     })
                     if(foundId < 0){

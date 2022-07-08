@@ -127,7 +127,8 @@ import { useAuthStore } from '../store/auth.js'
 import { mapState } from 'pinia'
 // import { doc } from 'firebase/firestore'
 // import firebase from '../firebase/firebase.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import isNil from 'lodash/isNil'
 export default {
     name: 'my-account',
     data() {
@@ -146,7 +147,7 @@ export default {
     },
     created() {
         this.authStore = useAuthStore()
-        if (!_.isNil(this.userData)) {
+        if (!isNil(this.userData)) {
             const { name, email, full_name } = this.userData
             this.name = name
             this.email = email
@@ -154,18 +155,18 @@ export default {
             console.log(this.profileImageUrl)
             this.imageDataUrl = this.profileImageUrl
         }
-        if (!_.isNil(this.profileImageUrl)) {
+        if (!isNil(this.profileImageUrl)) {
             this.imageDataUrl = this.profileImageUrl
         }
     },
     watch: {
         profileImageUrl() {
-            if (!_.isNil(this.profileImageUrl)) {
+            if (!isNil(this.profileImageUrl)) {
                 this.imageDataUrl = this.profileImageUrl
             }
         },
         userData() {
-            if (!_.isNil(this.userData)) {
+            if (!isNil(this.userData)) {
                 const { name, email, full_name, authProvider } = this.userData
                 this.name = name
                 this.email = email

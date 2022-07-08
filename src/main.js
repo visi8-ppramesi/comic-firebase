@@ -17,21 +17,21 @@ import { vfmPlugin } from 'vue-final-modal'
 // import QRCode from 'qrcode'
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
-import _ from 'lodash'
+// import _ from 'lodash'
 import './registerServiceWorker'
 
-_.mixin({
-    pipeline: function(){
-        const args = (_.isArray(arguments[0])) ? arguments[0] : arguments;
-        return function(seed){
-            return _.reduce(
-                args,
-                function(l,r) { return r(l); },
-                seed
-            )
-        }
-    }
-})
+// _.mixin({
+//     pipeline: function(){
+//         const args = (_.isArray(arguments[0])) ? arguments[0] : arguments;
+//         return function(seed){
+//             return _.reduce(
+//                 args,
+//                 function(l,r) { return r(l); },
+//                 seed
+//             )
+//         }
+//     }
+// })
 
 const vuePropertySetter = (app, name, instance) => {
     app.provide(name, instance)

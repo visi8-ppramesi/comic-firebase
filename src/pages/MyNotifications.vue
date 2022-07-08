@@ -26,7 +26,8 @@
 import { useAuthStore } from '@/store/auth'
 import { mapState } from 'pinia'
 import Comic from '@/firebase/comics/Comic.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import over from 'lodash/over'
 export default{
     name: 'my-notifications',
     inject: ['routeResolver'],
@@ -36,12 +37,12 @@ export default{
         });
 
         if(this.userInstance){
-            this.getNotifications().then(_.over([this.processNotifs, this.clearUnread]))
+            this.getNotifications().then(over([this.processNotifs, this.clearUnread]))
         }
     },
     watch: {
         userInstance(){
-            this.getNotifications().then(_.over([this.processNotifs, this.clearUnread]))
+            this.getNotifications().then(over([this.processNotifs, this.clearUnread]))
         }
     },
     data(){

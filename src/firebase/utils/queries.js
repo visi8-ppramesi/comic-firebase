@@ -1,6 +1,8 @@
 import { where, limit, orderBy, startAfter, doc, FieldPath } from 'firebase/firestore'
 import firebase from '../firebase.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import isObject from 'lodash/isObject'
+import toLower from 'lodash/toLower'
 
 export const orderByDateDesc = (startAtParam = null) => 
     startAtParam ? 
@@ -45,11 +47,11 @@ export const authorComicsQuery = (authorId) => {
 export const searchQueryArray = (searchQ, orderByParam = 'title', startAtParam = null) => {
     if(typeof searchQ == 'string'){
         searchQ = [...new Set([...searchQ.split(' ')])]
-    }else if(_.isObject(searchQ)){
+    }else if(isObject(searchQ)){
         searchQ = Object.keys(searchQ)
     }
 
-    searchQ = searchQ.map(_.toLower)
+    searchQ = searchQ.map(toLower)
 
     if(startAtParam){
         return [where('keywords', 'array-contains-any', searchQ), orderBy(orderByParam), limit(10), startAfter(startAtParam)]
@@ -61,11 +63,11 @@ export const searchQueryArray = (searchQ, orderByParam = 'title', startAtParam =
 export const searchQueryMap = (searchQ) => {//, orderByParam = 'title', startAtParam = null) => {
     if(typeof searchQ == 'string'){
         searchQ = [...new Set([...searchQ.split(' ')])]
-    }else if(_.isObject(searchQ)){
+    }else if(isObject(searchQ)){
         searchQ = Object.keys(searchQ)
     }
 
-    searchQ = searchQ.map(_.toLower)
+    searchQ = searchQ.map(toLower)
     
     const whereQueries = searchQ.map((key) => {
         return where(new FieldPath('keywords', key), '==', true)

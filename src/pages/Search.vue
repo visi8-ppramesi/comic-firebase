@@ -43,7 +43,8 @@
 
 <script>
 import Grid from '../components/Grid.vue'
-import _ from 'lodash'
+// import _ from 'lodash'
+import isNil from 'lodash/isNil'
 import { searchQueryArray as searchQueryHelper } from '../firebase/utils/queries.js'
 import Comic from '@/firebase/comics/Comic'
 export default {
@@ -53,7 +54,7 @@ export default {
     },
     mounted(){
         this.searched = false
-        if(!_.isNil(this.$route.query.query)){
+        if(!isNil(this.$route.query.query)){
             this.searchQuery = this.$route.query.query
             this.fetchResults()
         }else{

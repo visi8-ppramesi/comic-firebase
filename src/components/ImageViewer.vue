@@ -22,7 +22,9 @@
 
 <script>
 import utils from '../firebase/utils/index.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import size from 'lodash/size'
+import once from 'lodash/once'
 export default {
     name: 'image-player',
     inject: ['routeResolver', 'detectMobile'],
@@ -44,8 +46,8 @@ export default {
     },
     computed: {
         isLink(){
-            return _.size(this.arLink) > 0
-            // return !_.isEmpty(this.linkTo)
+            return size(this.arLink) > 0
+            // return !isEmpty(this.linkTo)
         }
     },
     data(){
@@ -89,7 +91,7 @@ export default {
         toggleVideo(){
         },
         getLoader(){
-            const loader = _.once(() => {
+            const loader = once(() => {
                 utils.getDataUrlFromStorage(this.link).then((dataUrl) => {
                     this.source = dataUrl
                     console.log(this.idx + ' loaded')
@@ -98,7 +100,7 @@ export default {
                     console.error(err)
                 })
             })
-            const scroller = _.once(() => {
+            const scroller = once(() => {
                 this.$refs.imageContainer.scrollIntoView({
                     behavior: 'smooth'
                 });

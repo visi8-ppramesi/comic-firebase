@@ -1,4 +1,3 @@
-/* eslint-disable */
 import firebase from './firebase.js'
 import {
     doc,
@@ -15,9 +14,14 @@ import {
     // limit
 } from "firebase/firestore";
 import utils from './utils/index.js'
-import _ from 'lodash'
+// import _ from 'lodash'
 import types, { LongText, ProfilePicture, InstanceData, StorageLink } from './types/index.js';
 import handleError from '@/utils/handleError.js';
+
+import isNil from 'lodash/isNil'
+import isEmpty from 'lodash/isEmpty'
+import remove from 'lodash/remove'
+import pick from 'lodash/pick'
 
 //eslint-disable-next-line no-unused-vars
 const setDataHelper = async (fields, instance, key, data, extraConditional = true, fetchStorageLink = true) => {
@@ -25,11 +29,11 @@ const setDataHelper = async (fields, instance, key, data, extraConditional = tru
     const isProfilePicture = fields[key] == ProfilePicture
     const isStorageLink = fields[key] == StorageLink
 
-    if(!_.isNil(data[key]) && extraConditional){
+    if(!isNil(data[key]) && extraConditional){
         if(isLongText){
             instance[key] = data[key].replace(/\\n/g, "<br />").replace(/\n/g, "<br />")
         }else if(isProfilePicture){
-            if(_.isEmpty(data[key])){
+            if(isEmpty(data[key])){
                 instance[key] = firebase.firebaseConfig.defaultProfilePicture
             }else{
                 instance[key] = data[key]
@@ -53,7 +57,7 @@ export default class{
             const isClass = fieldType.toString().substring(0, 5) === 'class'
             const isFuckyFunction = typeof fieldType === 'function' ? fieldType.name in types : false
             if(isClass){
-                const funcs = _.remove(Object.getOwnPropertyNames(fieldType.prototype), (n) => n != 'constructor')
+                const funcs = remove(Object.getOwnPropertyNames(fieldType.prototype), (n) => n != 'constructor')
                 funcs.forEach((func) => {
                     Object.assign(this, {
                         [func]: fieldType.prototype[func]
@@ -61,7 +65,7 @@ export default class{
                 })
             }else if(isFuckyFunction){
                 const fName = fieldType.name
-                const funcs = _.remove(Object.getOwnPropertyNames(types[fName].prototype), (n) => n != 'constructor')
+                const funcs = remove(Object.getOwnPropertyNames(types[fName].prototype), (n) => n != 'constructor')
                 funcs.forEach((func) => {
                     Object.assign(this, {
                         [func]: types[fName].prototype[func]
@@ -95,6 +99,13 @@ export default class{
         handleError(err, 'deleteDocumentError')
         throw err
       }
+    }
+
+    async saveDocument(){
+        const data = this.toDataJSON()
+        const fields = Object.keys(this.constructor.fields)
+        await this.updateDocument(pick(data, fields))
+        return this
     }
 
     async updateDocument(data){
@@ -158,8 +169,8 @@ export default class{
         const fields = Object.keys(this.constructor.fields)
         for(let p = 0; p < fields.length; p++){
             const field = fields[p]
-            if(_.isNil(data[field])){
-                if(_.isNil(this[field])){
+            if(isNil(data[field])){
+                if(isNil(this[field])){
                     this[field] = null
                 }
                 continue
@@ -181,9 +192,9 @@ export default class{
                         thisMyData.push(instanceData)
                     }
                     this[field] = thisMyData
-                }else if(!_.isNil(data[field])){
+                }else if(!isNil(data[field])){
                     await setDataHelper(this.constructor.fields, this, field, data, true, fetchStorageLink)
-                }else if(_.isNil(data[field])){
+                }else if(isNil(data[field])){
                     if(isProfilePicture){
                         this[field] = firebase.firebaseConfig.defaultProfilePicture
                     }

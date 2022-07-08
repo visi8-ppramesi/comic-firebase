@@ -75,7 +75,10 @@ import VideoPlayer from '../components/VideoPlayer.vue'
 import ImageViewer from '../components/ImageViewer.vue'
 import { orderBy } from 'firebase/firestore'
 import { useViewStore } from '../store/view.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import once from 'lodash/once'
+import debounce from 'lodash/debounce'
+import isArray from 'lodash/isArray'
 import Comic from '@/firebase/comics/Comic';
 
 export default {
@@ -159,7 +162,7 @@ export default {
             pagesDupe.forEach((page, idx) => {
                 if(page.media_type == 'video'){
                     const containerIndex = 'mediaViewer' + (idx + 1)
-                    const play = _.once(this.$refs[containerIndex][0].playVideo)
+                    const play = once(this.$refs[containerIndex][0].playVideo)
                     loaders[idx].elem.addEventListener('ended', () => {
                         loaders[idx + 1].loader()
                         loaders[idx + 1].scroller()
@@ -172,14 +175,14 @@ export default {
             loaders[0].scroller()
 
             this.scrollFunc = () => {
-                _.debounce(() => {
+                debounce(() => {
                     for(let i = 1; i < this.pages.length; i++){
                         const containerIndex = 'mediaViewer' + i
                         const myRect = this.$refs[containerIndex][0].$el.getBoundingClientRect()
                         if(myRect.top - window.innerHeight < 1){
                             loaders[i].loader()
                         }
-                        // if(!_.isEmpty(this.$refs[containerIndex][0])){
+                        // if(!isEmpty(this.$refs[containerIndex][0])){
                         // }
                     }
                 }, 100)()
@@ -208,7 +211,7 @@ export default {
             })
         },
         getArLink(page){
-            if(_.isArray(page.scenes_data)){
+            if(isArray(page.scenes_data)){
                 const routeResolved = this.routeResolver('Scene', {
                     comicId: this.$route.params.comicId,
                     chapterId: this.$route.params.chapterId,

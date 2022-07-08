@@ -32,7 +32,9 @@
 
 <script>
 import utils from '../firebase/utils/index.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import size from 'lodash/size'
+import once from 'lodash/once'
 export default {
     name: 'video-player',
     inject: [
@@ -64,7 +66,7 @@ export default {
         }
     },
     mounted(){
-        if(_.size(this.showArButtonTiming) == 2){
+        if(size(this.showArButtonTiming) == 2){
             this.$refs.videoElement.ontimeupdate = () => {
                 const time = this.$refs.videoElement.currentTime
                 if(this.showArButtonTiming.start < time && time < this.showArButtonTiming.end){
@@ -99,7 +101,7 @@ export default {
             }
         },
         getLoader(){
-            const loader = _.once(() => {
+            const loader = once(() => {
                 utils.getDataUrlFromStorage(this.link).then((dataUrl) => {
                     this.vidLoaded = true
                     this.source = dataUrl
@@ -109,7 +111,7 @@ export default {
                     console.error(err)
                 })
             })
-            const scroller = _.once(() => {
+            const scroller = once(() => {
                 this.$refs.videoContainer.scrollIntoView({
                     behavior: 'smooth'
                 });

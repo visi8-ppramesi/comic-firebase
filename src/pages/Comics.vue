@@ -46,7 +46,9 @@
 <script>
 import Comic from '../firebase/comics/Comic.js'
 import { categoryQueryPaginated } from '../firebase/utils/queries.js'
-import _ from 'lodash'
+// import _ from 'lodash'
+import startCase from 'lodash/startCase'
+import toLower from 'lodash/toLower'
 import Grid from '../components/Grid.vue'
 export default {
     name: 'comics',
@@ -74,7 +76,7 @@ export default {
     },
     mounted(){
         this.query = this.$route.query.category ? this.$route.query.category : 'all'
-        this.title = _.startCase(_.toLower(this.query + ' comics'))
+        this.title = startCase(toLower(this.query + ' comics'))
         this.loadComics(false)
         // Comic.getDocumentsWithStorageResource(categoryQueryPaginated(this.query, this.sortByParam), ['cover_image_url']).then((comics) => {
         //     this.comics.push(...comics)
