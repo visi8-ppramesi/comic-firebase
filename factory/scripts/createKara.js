@@ -42,33 +42,48 @@ signInPromise.then(() => {
         // 'authors_data': authorData
     }
     
-    const chapterData = {
-        'chapter_number': 0,
+    const chapterData = (cpt) => ({
+        'chapter_number': cpt,
         'release_date': new Date(),
         'chapter_preview_url': 'gs://comics-77200.appspot.com/previews/cpt1_preview.jpeg',
         'view_count': 0,
         'price': 0,
         'ar_price': false,
-    }
+    })
 
     const comicId = 'SSb0da8HXyie7DbcAEve'
 
     const pages = [
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_1.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_2_AR.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_3.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_4.mp4',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_5.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_6.mp4',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_7.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_8.mp4',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_9.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_10.mp4',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_11.mp4',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_12.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_13_AR.jpg',
-        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_14.mp4',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_1.jpg',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_2.mp4',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_3.jpg',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_4.jpg',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_5_video.jpg',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_6.jpg',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_7.mp4',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_8.jpg',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_9.mp4',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_10.jpg',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_11.mp4',
+        'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/chapter_2/web_comic_12.jpg',
     ]
+
+    // const pages = [
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_1.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_2_AR.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_3.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_4.mp4',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_5.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_6.mp4',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_7.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_8.mp4',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_9.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_10.mp4',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_11.mp4',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_12.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_13_AR.jpg',
+    //     'gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_14.mp4',
+    // ]
     
 
     // const pages = [
@@ -112,12 +127,12 @@ signInPromise.then(() => {
         comicData.authors = authorRefs
         comicData.authors_data = authorData
     
-        const comicRef = doc(db, 'comics', comicId)
-        const newComicDoc = await setDoc(comicRef, comicData)
-        result.push(newComicDoc)
+        // const comicRef = doc(db, 'comics', comicId)
+        // const newComicDoc = await setDoc(comicRef, comicData)
+        // result.push(newComicDoc)
     
         const cptRef = collection(db, 'comics', comicId, 'chapters')
-        const newChapterDoc = await addDoc(cptRef, chapterData)
+        const newChapterDoc = await addDoc(cptRef, chapterData(2))
         result.push(newChapterDoc)
     
         const mp4Test = /\.mp4/
@@ -139,13 +154,13 @@ signInPromise.then(() => {
             result.push(newPageDoc)
         }
 
-        for(let i = 0; i < 10; i++){
-            const comicCountRef = doc(db, 'comics', comicId, 'counters', i.toString())
-            const comicCounter = await setDoc(comicCountRef, {
-                view_count: 0
-            })
-            result.push(comicCounter)
-        }
+        // for(let i = 0; i < 10; i++){
+        //     const comicCountRef = doc(db, 'comics', comicId, 'counters', i.toString())
+        //     const comicCounter = await setDoc(comicCountRef, {
+        //         view_count: 0
+        //     })
+        //     result.push(comicCounter)
+        // }
 
         for(let i = 0; i < 10; i++){
             const chapterCountRef = doc(db, 'comics', comicId, 'chapters', newChapterDoc.id, 'counters', i.toString())

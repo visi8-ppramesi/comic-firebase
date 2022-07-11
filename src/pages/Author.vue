@@ -17,9 +17,17 @@
                         </div>
                         <div class="flex w-8">
                             <div class="w-10"></div>
-                            <img class="" :src="facebookIcon" />
-                            <img class="ml-5" :src="instagramIcon" />
-                            <img class="ml-5" :src="twitterIcon" />
+                            <div class="flex socials-container">
+                                <a v-if="socExists.facebook" :href="author.social_media_links.facebook">
+                                    <img :src="facebookIcon" />
+                                </a>
+                                <a v-if="socExists.instagram" :href="author.social_media_links.instagram">
+                                    <img :src="instagramIcon" />
+                                </a>
+                                <a v-if="socExists.twitter" :href="author.social_media_links.twitter">
+                                    <img :src="twitterIcon" />
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,6 +79,11 @@ export default {
                 linkName: 'Comic',
                 title: 'title',
                 image: 'cover_image_url',
+            },
+            socExists: {
+                twitter: false,
+                facebook: false,
+                instagram: false
             }
         }
     },
@@ -139,6 +152,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .socials-container :not(:first-child){
+        margin-left: 20px;
+    }
+</style>
 
 <style>
 </style>

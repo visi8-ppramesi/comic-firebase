@@ -42,6 +42,10 @@ const setDataHelper = async (fields, instance, key, data, extraConditional = tru
         }else{
             instance[key] = data[key]
         }
+    }else{
+        if(isProfilePicture){
+            instance[key] = firebase.firebaseConfig.defaultProfilePicture
+        }
     }
 }
 
@@ -167,16 +171,17 @@ export default class{
         const fields = Object.keys(this.constructor.fields)
         for(let p = 0; p < fields.length; p++){
             const field = fields[p]
-            if(isNil(data[field])){
+
+            const isSubcollection = this.constructor.fields[field] == Subcollection
+            const isProfilePicture = this.constructor.fields[field] == ProfilePicture
+            const isInstanceData = this.constructor.fields[field] instanceof InstanceData
+
+            if(isNil(data[field]) && !isProfilePicture){
                 if(isNil(this[field])){
                     this[field] = null
                 }
                 continue
             }
-
-            const isSubcollection = this.constructor.fields[field] == Subcollection
-            const isProfilePicture = this.constructor.fields[field] == ProfilePicture
-            const isInstanceData = this.constructor.fields[field] instanceof InstanceData
             if(!isSubcollection){
                 if(isInstanceData){
                     const fieldKeys = this.constructor.fields[field].keys
