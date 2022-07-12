@@ -83,7 +83,7 @@ export default {
             const ccData = this.$refs.creditCardInput.getPaymentInfo()
             const ccCharger = new CreditCardCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV)
             try{
-                const { data } = await ccCharger.createCharge({
+                const { data } = await ccCharger.createChapterCharge({
                     chapterData: this.store.state.chapterData,
                     comicData: this.store.state.comicData,
                     user: this.user

@@ -1,12 +1,15 @@
 import Collection from "../Collection.js"
 import Subcollection from "../Subcollection.js"
+// import Comic from "../comics/Comic.js";
+// import Chapter from "../comics/Chapter.js";
+import Order from "./Order.js";
 import firebase from '../firebase.js';
 import utils from "../utils/index.js";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, updateEmail, updatePassword as authUpdatePassword, reauthenticateWithCredential, EmailAuthCredential, GoogleAuthProvider, signInWithPopup, getAdditionalUserInfo, linkWithPopup } from "firebase/auth";
 import { 
     // collection, 
     startAfter, 
-    // getDocs, 
+    getDocs, 
     runTransaction, 
     updateDoc, 
     getDoc, 
@@ -19,7 +22,9 @@ import {
     // query, 
     orderBy, 
     limit, 
-    writeBatch
+    writeBatch,
+    collection,
+    query
 } from "firebase/firestore";
 import PurchasedComic from "./PurchasedComic.js";
 import { ProfilePicture } from "../types/index.js";
@@ -60,6 +65,58 @@ export default class extends Collection {
         'comic_subscriptions': Array,
         'email_verified_at': Date,
         'profile_image_url': ProfilePicture,
+    }
+
+    async getOrders(){
+        return Order.getDocuments(['users', this.id, 'orders'], [orderBy('created_date', 'desc')])
+    }
+
+    async getPurchasedComics(startAfterParam = null){
+        const comicsColl = collection(this.constructor.db, 'users', this.id, 'purchased_comics')
+        let comicsQuery
+        if(startAfterParam){
+            comicsQuery = query(comicsColl, orderBy('chapters'), limit(10), startAfter(startAfterParam))
+        }else{
+            comicsQuery = query(comicsColl, orderBy('chapters'), limit(10))
+        }
+        
+        return getDocs(comicsQuery).then((snap) => {
+            const docs = Object.values(snap.docs)
+            return docs.reduce((acc, v) => {
+                acc[v.id] = v.get('chapters')
+                return acc
+            }, {})
+        })
+
+        // const promises = Object.values(comics.docs).map((comicDoc) => {
+        //     const comicPromise = Comic.getDocumentWithStorageResourceUrl(comicDoc.id, ['cover_image_url'])
+        //     const chaptersPromises = comicDoc.get('chapters').map((cpt) => {
+        //         return Chapter.getDocument(['comics', comicDoc.id, 'chapters'], cpt.id)
+        //     })
+        //     return Promise.all([comicPromise, Promise.all(chaptersPromises)])
+        // })
+
+        // return Promise.all(promises)
+    }
+
+    async bestowComic(comicId, chapterIds){
+      const chaptersPurchased = await this.getPurchasedComicStatus(comicId)
+      if(chaptersPurchased.chapters.includes('all')){
+        return
+      }
+      if(chapterIds.includes('all')){
+        chaptersPurchased.chapters.push('all')
+      }else{
+        const allChapters = [...new Set([...chapterIds, ...chaptersPurchased.chapters.map(v => v.id)])]
+        chaptersPurchased.chapters = allChapters.map((c) => {
+          return doc(this.constructor.db, 'comics', comicId, 'chapters', c)
+        })
+      }
+
+      if(chaptersPurchased.empty){
+        chaptersPurchased.setDocumentReference(['users', this.id, 'purchased_comics', comicId])
+      }
+      return chaptersPurchased.saveDocument()
     }
 
     async getRoles(){

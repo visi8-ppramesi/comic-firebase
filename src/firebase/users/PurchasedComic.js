@@ -4,6 +4,6 @@ import Subcollection from "../Subcollection";
 export default class extends Subcollection{
     static collection = 'purchased_comics'
     static fields = {
-        'chapters': Number
+        'chapters': Array
     }
 }

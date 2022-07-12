@@ -16,7 +16,27 @@ export default class{
         this.baseUrl = this.constructor.environment[envType]
     }
 
-    static buildParam(chapterData, comicData, user, total, tax, fee, extraParams = {}){
+    static buildParamComic(comicData, user, total, tax, fee, extraParams = {}){
+        return {
+            transactionDetails: {
+                grossAmount: total,
+                tax, fee
+            },
+            itemsDetails: [{
+                comicId: comicData.id,
+                comicName: comicData.title,
+                itemPrice: comicData.price
+            }],
+            customerDetails: {
+                userId: user.id,
+                email: user.email,
+                fullName: user.full_name
+            },
+            ...extraParams
+        }
+    }
+
+    static buildParamChapter(chapterData, comicData, user, total, tax, fee, extraParams = {}){
         return {
             transactionDetails: {
                 grossAmount: total,

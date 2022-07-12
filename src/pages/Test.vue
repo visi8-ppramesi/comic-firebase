@@ -1,5 +1,5 @@
 <template>
-    <img :src="arLogo" alt="">
+    <div v-for="(a, idx) in uhh" :key="idx + '-test'">{{ a }}</div>
     <!-- <button :disabled="true" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="test">test</button>
     original
     <video
@@ -115,6 +115,20 @@ import fb from '../firebase/firebase.js'
 // import VideoPlayer from '../components/VideoPlayer.vue'
 // import utils from '../firebase/utils/index.js'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
+
+const what = (v) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('zxcvzxcv')
+            resolve(v)
+        }, Math.random() * 10000)
+    })
+};
+
+const doStuff = async (v, test) => {
+    v[test] = await what(test)
+};
+
 export default {
     components: {
         // VideoPlayer
@@ -123,6 +137,7 @@ export default {
     inject: ['Viewer'],
     data(){
         return {
+            uhh: [],
             arLogo: require('@/assets/icons/ar_icon.svg'),
             shit: null,
             imgViewer: null,
@@ -199,6 +214,9 @@ export default {
         }
     },
     created(){
+        Array(10).fill().forEach((_, i) => {
+            doStuff(this.uhh, i)
+        })
         // this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
         //     this.shit = dataurl
         // })
@@ -213,6 +231,7 @@ export default {
         // this.sources = this.videos.map(() => null)
     },
     methods: {
+        async shitfuck(){},
         test(){
             console.log('test')
         },

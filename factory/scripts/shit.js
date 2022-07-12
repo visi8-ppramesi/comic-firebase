@@ -47,9 +47,18 @@ const main = async () => {
     //     })
     // })
     // console.log('done')
-    const comicColl = collection(fb.db, 'comics')
-    const comicDocs = await getDocs(comicColl)
-    console.log(comicDocs.size)
+    const comicColl = collection(fb.db, 'users', 'VOibHVLCulhx3eSHeuFSx9aDqQj2', 'purchased_comics')
+    const comicSnap = await getDocs(comicColl)
+    const promises = Object.values(comicSnap.docs).map((comic) => {
+        const promises = comic.get('chapters').map((chapter) => {
+            return getDoc(chapter).then(v => v.data())
+        })
+
+        return Promise.all(promises)
+    })
+
+    const chapters = await Promise.all(promises)
+    console.log(chapters)
 
     // const noteDoc = doc(fb.db, 'notifications', 'VOibHVLCulhx3eSHeuFSx9aDqQj2')
     // const stuff = await setDoc(noteDoc, {

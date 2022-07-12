@@ -1,6 +1,7 @@
 import firebase from './firebase.js'
 import Subcollection from './Subcollection.js';
 import {
+    DocumentSnapshot,
     doc,
     query,
     updateDoc,
@@ -10,6 +11,7 @@ import {
     getDocs,
     getDoc,
     addDoc,
+    setDoc,
     // orderBy,
     // limit
 } from "firebase/firestore";
@@ -43,10 +45,10 @@ const setDataHelper = async (fields, instance, key, data, extraConditional = tru
             instance[key] = data[key]
         }
     }else{
-        if(isProfilePicture){
-            instance[key] = firebase.firebaseConfig.defaultProfilePicture
-        }
-    }
+      if(isProfilePicture){
+          instance[key] = firebase.firebaseConfig.defaultProfilePicture
+      }
+  }
 }
 
 export default class{
@@ -78,6 +80,11 @@ export default class{
         })
     }
 
+    setDocumentReference(docPath){
+      const ref = doc(this.constructor.db, ...docPath)
+      this.doc = new DocumentSnapshot(this.constructor.db, null, ref._key)
+    }
+
     setEmpty(){
         this.empty = true
     }
@@ -107,8 +114,28 @@ export default class{
     async saveDocument(){
         const data = this.toDataJSON()
         const fields = Object.keys(this.constructor.fields)
-        await this.updateDocument(pick(data, fields))
+        await this.setDocument(pick(data, fields))
         return this
+    }
+
+    async setDocument(data, merge = true){
+      try{
+          const validation = this.constructor.validateData(data)
+          if(validation){
+              const eventRef = this.doc.ref
+              if(merge){
+                await setDoc(eventRef, data, {merge: true})
+              }else{
+                await setDoc(eventRef, data)
+              }
+              this.doc = await getDoc(eventRef)
+              this.setData(this.parentId, this.id, data, false, false)
+              return this
+          }
+      }catch(err){
+          handleError(err, 'setDocumentError')
+          throw err
+      }
     }
 
     async updateDocument(data){
@@ -117,6 +144,7 @@ export default class{
             if(validation){
                 const eventRef = this.doc.ref
                 await updateDoc(eventRef, data)
+                this.doc = await getDoc(eventRef)
                 this.setData(this.id, data, null, false, false)
                 return this
             }
@@ -357,6 +385,7 @@ export default class{
                 }))
             }
         }catch(err){
+            console.error(err)
             handleError(err, 'getDocumentsError')
             throw err
         }

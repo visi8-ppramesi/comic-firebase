@@ -305,6 +305,12 @@ export default {
         goToChapter(chapterId){
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.id, chapterId: chapterId}))
         },
+        async purchaseComic(){
+            this.selectedChapterData = 'all'
+            this.$refs.paymentModal.setState('chapterData', 'all')
+            this.$refs.paymentModal.setState('comicData', this.comic)
+            this.$refs.paymentModal.openModal()
+        },
         async purchaseChapter(chapterId){
             this.selectedChapterData = this.chapters.find(c => c.id == chapterId)
             this.$refs.paymentModal.setState('chapterData', this.selectedChapterData)
@@ -354,6 +360,23 @@ export default {
             this.comic = await Comic.getDocumentWithStorageResource(this.$route.params.id, ['cover_image_url'], true)
             this.comic.getComments(orderByDateDesc()).then((comments) => {
                 this.comments = comments
+            }).then(() => {
+                let firstRun = this.comments == 0
+                this.comic.createNewCommentListener((newCommInstance) => {
+                    if(firstRun){
+                        const foundId = findIndex(this.comments, (com) => {
+                            return com.id == newCommInstance.id
+                        })
+                        if(foundId < 0){
+                            utils.getDataUrlFromStorage(newCommInstance.user_data.profile_image_url).then((image) => {
+                                newCommInstance.user_data.profile_image_url = image
+                                this.comments.unshift(newCommInstance)
+                            })
+                        }
+                    }else{
+                        firstRun = true
+                    }
+                })
             })
             this.chapters = this.comic.chapters_data.map(this.formatChapter)//(await this.comic.getChaptersWithStorageResource()).map(this.formatChapter)
                 .sort((a, b) => {
@@ -371,23 +394,6 @@ export default {
             // }
 
             this.purchasedChapterIds.push(...this.chapters.filter((cpt) => cpt.price == 0).map(cpt => cpt.id))
-
-            let firstRun = this.comments == 0
-            this.comic.createNewCommentListener((newCommInstance) => {
-                if(firstRun){
-                    const foundId = findIndex(this.comments, (com) => {
-                        return com.id == newCommInstance.id
-                    })
-                    if(foundId < 0){
-                        utils.getDataUrlFromStorage(newCommInstance.user_data.profile_image_url).then((image) => {
-                            newCommInstance.user_data.profile_image_url = image
-                            this.comments.unshift(newCommInstance)
-                        })
-                    }
-                }else{
-                    firstRun = true
-                }
-            })
             return this.comic
         },
         async submitComment(){

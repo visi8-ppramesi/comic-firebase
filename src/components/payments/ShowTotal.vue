@@ -1,7 +1,15 @@
 <template>
     <div class="flex flex-col md:flex-row">
         <img class="h-full w-full object-cover max-w-24" :src="chapterData.chapter_preview_url" alt="">
-        <div class="flex flex-col">
+        <div v-if="this.chapterData == 'all'" class="flex flex-col">
+            <div>
+                {{this.comicData.title}}
+            </div>
+            <div>
+                Rp. {{this.comicData.price}}
+            </div>
+        </div>
+        <div v-else class="flex flex-col">
             <div>
                 {{this.comicData.title}}
             </div>

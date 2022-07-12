@@ -32,7 +32,7 @@ export default {
     mounted(){
         console.log('testestest')
         const gopayCharger = new GopayCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV)
-        gopayCharger.createCharge({
+        gopayCharger.createChapterCharge({
             chapterData: this.store.state.chapterData,
             comicData: this.store.state.comicData,
             user: this.user

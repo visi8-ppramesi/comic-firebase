@@ -122,7 +122,32 @@ export default class extends Midtrans{
         })
     }
 
-    async createCharge({chapterData, comicData, user}, cardData){
+    async createComicCharge({comicData, user}, cardData){
+        const token = await this.getCardToken(cardData)
+            .then((response) => {
+                return response
+            }).catch(() => {
+                return this.registerCard(cardData).then((response) => {
+                    return response
+                }).catch((err) => {
+                    throw err
+                })
+            })
+        
+        const createCreditCardCharge = httpsCallable(fb.functions, 'createComicCreditCardCharge-createComicCreditCardCharge')
+        const { total, tax, fee } = await this.constructor.calculateTax(comicData.price)
+
+        const creditCardDetails = {
+            statusCode: token.status_code,
+            statusMessage: token.status_message,
+            tokenId: token.token_id,
+            hash: token.hash
+        }
+        const param = this.constructor.buildParamComic(comicData, user, total, tax, fee, { creditCardDetails })
+        return createCreditCardCharge(param)
+    }
+
+    async createChapterCharge({chapterData, comicData, user}, cardData){
         const token = await this.getCardToken(cardData)
             .then((response) => {
                 return response
@@ -143,7 +168,7 @@ export default class extends Midtrans{
             tokenId: token.token_id,
             hash: token.hash
         }
-        const param = this.constructor.buildParam(chapterData, comicData, user, total, tax, fee, { creditCardDetails })
+        const param = this.constructor.buildParamChapter(chapterData, comicData, user, total, tax, fee, { creditCardDetails })
         return createCreditCardCharge(param)
 
         // .catch(() => {
