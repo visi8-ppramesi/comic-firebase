@@ -117,7 +117,7 @@ import fb from '../firebase/firebase.js'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
 
 const what = (v) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             console.log('zxcvzxcv')
             resolve(v)
