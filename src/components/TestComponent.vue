@@ -1,15 +1,18 @@
 <template>
     <div>
-        <div v-for="(item, idx) in items" :key="idx">
-            <img :src="item" alt="">
-        </div>
+        {{test}}
     </div>
 </template>
 
 <script>
 export default {
     name: 'test-component',
-    props: ['items']
+    props: {
+        test: {
+            type: String,
+            default: 'test'
+        }
+    }
 }
 </script>
 

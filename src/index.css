@@ -65,3 +65,13 @@
     transform: translateX(0px);
   }
 }
+
+.overlay-enter-active,
+.overlay-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.overlay-enter-from,
+.overlay-leave-to {
+  opacity: 0;
+}

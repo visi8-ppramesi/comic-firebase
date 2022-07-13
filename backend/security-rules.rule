@@ -95,6 +95,11 @@ service cloud.firestore {
           allow read: if checkIfFree() || checkIfOwned() || isAdmin();
           allow write: if isAdmin();
           
+          match /extras/{extra}{
+            allow read: if true;
+            allow write: if isAdmin();
+          }
+          
           match /scenes/{scene}{
             allow read: if true;
             allow write: if isAdmin();
