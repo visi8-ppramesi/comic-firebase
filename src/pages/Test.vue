@@ -121,7 +121,7 @@ import TestComponent from '../components/TestComponent.vue'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
 
 const what = (v) => {
-    return new Promise((resolve,) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             console.log('zxcvzxcv')
             resolve(v)

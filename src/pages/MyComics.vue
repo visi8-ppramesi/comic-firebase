@@ -1,20 +1,33 @@
 <template>
 
     <div class="h-full w-full">
-        <div class="md:grid md:grid-cols-3 md:gap-6">
+        <div>
             <div class="md:col-span-1 text-white">
                 <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">Your Purchased Comics</div>
             </div>
 
-            <div v-for="(comic, idx) in purchasedComics" :key="idx + '-comic'" class="md:col-span-2">
-                <div class="p-3">
-                    <div class="bg-slate-100 rounded border-2">
-                        <div class="grid grid-cols-6 gap-6">
-                            <div class="col-span-6 sm:col-span-4">
-                                {{ comic.purchased }}
-                                <img :src="comic.cover_image_url" />
+            <div class="mt-5 mx-3">
+                <div class="md:grid md:grid-cols-2 md:gap-2">
+                    <div v-for="(comic, idx) in purchasedComics" :key="idx + '-comic'" class="md:w-full md:h-full">
+                        <router-link :to="{name: 'Comic', params: { id: comic.id}}">
+                            <div class="mb-1 w-full flex flex-row h-24 md:w-full bg-white md:rounded-none rounded-md">
+                                <div class="flex-none w-1/5 md:w-16 lg:w-24">
+                                    <img class="h-full w-full object-cover rounded-tl-md rounded-bl-md" :src="comic.cover_image_url" alt="">
+                                </div>
+                                <div class="flex-grow text-left flex flex-col py-3 pl-3 w-2/5 lg:w-96">
+                                    <div class="w-100">
+                                        <span class="text-sm lg:text-md xl:text-lg">{{comic.title}}</span>
+                                    </div>
+                                    <div class="flex flex-row mt-2">
+                                        <div class="mr-2 md:text-sm flex items-center justify-center">Chapter</div>
+                                        <div class="flex flex-row items-center justify-center" v-for="(item, index) in comic.purchased.sort()" :key="index.id">
+                                            <span class="text-md md:text-sm lg:text-xl xl:text-xl lg:mx-2 xl:mx-2 px-0.5">{{item}}</span>
+                                            <span v-if="index + 1 < comic.purchased.length">, </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -79,7 +92,7 @@ export default {
                             }
                             acc.push(comic.chapters_data.find(chapter => chapter.id === purchasedChapter.id).chapter_number)
                             return acc
-                        }, [])
+                        },[])
                     })
                 })
             })
