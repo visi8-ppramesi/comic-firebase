@@ -1,34 +1,41 @@
 <template>
     <div ref="imageContainer" class="bg-black flex justify-center justify-items-center content-center items-center">
-        <!-- <template v-if="isLink && detectMobile()">
-            <div class="glow-animation" :class="showGlow ? 'glow' : 'fill-width'">
-                <router-link :to="arLink">
-                    <img ref="imageElement" :src="source" class="lg:object-fill lg:w-full" >
-                </router-link>
-            </div>
-        </template>
-        <template v-else> -->
-            <div class="relative">
-                <div v-if="isLink && detectMobile()" class="z-20 w-14 h-10 border-2 border-black bg-gray-200 bg-opacity-75 flex justify-center items-center rounded-md absolute left-2 top-2">
+        <div class="relative">
+            <template v-if="isLink">
+                <div v-if="detectMobile()" class="z-20 w-14 h-10 border-2 border-black bg-gray-200 bg-opacity-75 flex justify-center items-center rounded-md absolute left-2 top-2">
                     <router-link :to="arLink">
                         <img class="w-full" :src="arLogo" />
                     </router-link>
                 </div>
-                <img ref="imageElement" :src="source" class="w-full">
-            </div>
-        <!-- </template> -->
+            </template>
+            <template v-else>
+                <component v-if="extraComponent" :is="extraComponent"></component>
+            </template>
+            <img ref="imageElement" :src="source" class="w-full">
+        </div>
     </div>
 </template>
 
 <script>
 import utils from '../firebase/utils/index.js'
+// import VideoOverlay from '../asyncComponents/VideoOverlay.vue'
 // import _ from 'lodash'
 import size from 'lodash/size'
 import once from 'lodash/once'
+import isEmpty from 'lodash/isEmpty'
+import { doc, getDoc } from 'firebase/firestore'
+import fb from '@/firebase/firebase.js'
 export default {
     name: 'image-player',
     inject: ['routeResolver', 'detectMobile'],
+    components: {
+        // VideoOverlay
+    },
     props: {
+        chapterId: {
+            type: String,
+            default: () => ''
+        },
         arLink: {
             type: Object,
             default: () => ({})
@@ -36,6 +43,10 @@ export default {
         linkType: {
             type: String,
             default: 'gspath'
+        },
+        extras: {
+            type: String,
+            default : ''
         },
         link: String,
         idx: Number,
@@ -55,25 +66,40 @@ export default {
             arLogo: require('@/assets/icons/ar_icon.svg'),
             source: null,
             showGlow: false,
+            extraComponent: null,
+            scrollEventListener: null
         }
     },
     mounted(){
-        if(this.isLink){
-            this.$nextTick(() => {
-                this.handleScroll()
-                window.addEventListener('scroll', this.handleScroll)
-            })
+        if(!isEmpty(this.extras)){
+            const self = this
+            const fetcherFunc = async function(){
+                const docRef = doc(fb.db, 'comics', self.$route.params.comicId, 'chapters', self.$route.params.chapterId, 'pages', self.chapterId, 'extras', self.extras)
+                const snap = await getDoc(docRef)
+                const data = snap.data()
+                return data
+            }
+            this.extraComponent = this.extrasLoader(fetcherFunc)
         }
+        // if(this.isLink){
+        //     this.$nextTick(() => {
+        //         this.handleScroll()
+        //         window.addEventListener('scroll', this.handleScroll)
+        //     })
+        // }
+    },
+    beforeUnmount(){
+        // window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
-        handleScroll(){
-            const imgElem = this.$refs.imageElement
-            if(this.isInViewport(imgElem)){
-                this.showGlow = true
-            }else{
-                this.showGlow = false
-            }
-        },
+        // handleScroll(){
+        //     const imgElem = this.$refs.imageElement
+        //     if(this.isInViewport(imgElem)){
+        //         this.showGlow = true
+        //     }else{
+        //         this.showGlow = false
+        //     }
+        // },
         isInViewport(element){
             const rect = element.getBoundingClientRect();
             const bottom = rect.bottom < (window.innerHeight / 1.5) ? rect.bottom : rect.bottom / 1.5

@@ -4,7 +4,7 @@
             <div class="bg-black w-full">
                 <template v-for="(page, idx) in pages" :key="'item-' + idx">
                     <div v-if="page.media_type == 'image'">
-                        <image-viewer :ar-link="getArLink(page)" :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
+                        <image-viewer :chapterId="page.id" :ar-link="getArLink(page)" :extras="getExtras(page.extras)" :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
                     </div>
                     <div v-else-if="page.media_type == 'video'">
                         <video-player 
@@ -152,9 +152,9 @@ export default {
         this.chapterPromise.then(() => {
             const loaders = []
             Object.keys(this.$refs).forEach((el) => {
+                console.log(el)
                 loaders.push(this.$refs[el][0].getLoader())
             })
-            
 
             const pagesDupe = [...this.pages]
             pagesDupe.pop()
@@ -165,14 +165,14 @@ export default {
                     const play = once(this.$refs[containerIndex][0].playVideo)
                     loaders[idx].elem.addEventListener('ended', () => {
                         loaders[idx + 1].loader()
-                        loaders[idx + 1].scroller()
+                        // loaders[idx + 1].scroller()
                         play()
                     })
                 }
             })
 
             loaders[0].loader()
-            loaders[0].scroller()
+            // loaders[0].scroller()
 
             this.scrollFunc = () => {
                 debounce(() => {
@@ -202,6 +202,9 @@ export default {
         }
     },
     methods: {
+        getExtras(xtr){
+            return xtr ?? ''
+        },
         playClicked(idx){
             this.pages.forEach((page, pIdx) => {
                 if(page.media_type == 'video' && idx !== pIdx){

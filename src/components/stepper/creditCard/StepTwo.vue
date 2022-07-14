@@ -82,12 +82,20 @@ export default {
             this.$emit('loading', true)
             const ccData = this.$refs.creditCardInput.getPaymentInfo()
             const ccCharger = new CreditCardCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV)
+            let data
             try{
-                const { data } = await ccCharger.createChapterCharge({
-                    chapterData: this.store.state.chapterData,
-                    comicData: this.store.state.comicData,
-                    user: this.user
-                }, ccData)
+                if(this.store.state.chapterData == 'all'){
+                    ({ data } = await ccCharger.createComicCharge({
+                        comicData: this.store.state.comicData,
+                        user: this.user
+                    }, ccData))
+                }else{
+                    ({ data } = await ccCharger.createChapterCharge({
+                        chapterData: this.store.state.chapterData,
+                        comicData: this.store.state.comicData,
+                        user: this.user
+                    }, ccData))
+                }
 
                 this.store.setState('responseData', data)
                 this.$emit('loading', false)

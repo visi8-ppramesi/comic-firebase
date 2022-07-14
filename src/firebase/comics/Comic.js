@@ -31,6 +31,7 @@ export default class extends Collection{
         'tags':	Array,
         'categories': Array,
         'cover_image_url': StorageLink,
+        'cover_image_url_landscape': String,
         'is_draft':	Boolean,
         // 'chapters_data': Array,
         'last_update': Date,

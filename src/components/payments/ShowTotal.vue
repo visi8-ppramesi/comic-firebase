@@ -1,25 +1,31 @@
 <template>
     <div class="flex flex-col md:flex-row">
-        <img class="h-full w-full object-cover max-w-24" :src="chapterData.chapter_preview_url" alt="">
-        <div v-if="this.chapterData == 'all'" class="flex flex-col">
-            <div>
-                {{this.comicData.title}}
+        <template v-if="this.chapterData == 'all'">
+            <img class="h-full w-full object-cover max-w-24" :src="comicData.cover_image_url" alt="">
+            <div class="flex flex-col">
+                <div>
+                    {{this.comicData.title}}
+                </div>
+                <div>
+                    Rp. {{this.comicData.price}}
+                </div>
             </div>
-            <div>
-                Rp. {{this.comicData.price}}
+        </template>
+        <template v-else>
+            <img class="h-full w-full object-cover max-w-24" :src="chapterData.chapter_preview_url" alt="">
+            <div class="flex flex-col">
+                <div>
+                    {{this.comicData.title}}
+                </div>
+                <div>
+                    Chapter {{this.chapterData.chapter_number}}
+                </div>
+                <div>
+                    Rp. {{this.chapterData.price}}
+                </div>
             </div>
-        </div>
-        <div v-else class="flex flex-col">
-            <div>
-                {{this.comicData.title}}
-            </div>
-            <div>
-                Chapter {{this.chapterData.chapter_number}}
-            </div>
-            <div>
-                Rp. {{this.chapterData.price}}
-            </div>
-        </div>
+
+        </template>
     </div>
 </template>
 

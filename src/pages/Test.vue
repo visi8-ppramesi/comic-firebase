@@ -1,5 +1,7 @@
 <template>
-    <div v-for="(a, idx) in uhh" :key="idx + '-test'">{{ a }}</div>
+    <button @click="qwerqwer">Toggle</button>
+    <component v-if="testing" :is="testing"></component>
+    <!-- <div v-for="(a, idx) in uhh" :key="idx + '-test'">{{ a }}</div> -->
     <!-- <button :disabled="true" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="test">test</button>
     original
     <video
@@ -105,6 +107,8 @@
 <script>
 // import { markRaw } from 'vue'
 import fb from '../firebase/firebase.js'
+import { defineAsyncComponent, shallowRef } from 'vue'
+import TestComponent from '../components/TestComponent.vue'
 // import { httpsCallable, connectFunctionsEmulator } from 'firebase/functions'
 // import StepperComponent from '../components/stepper/StepperComponent.vue'
 // import StepOne from '../components/stepper/StepOne.vue'
@@ -131,12 +135,15 @@ const doStuff = async (v, test) => {
 
 export default {
     components: {
+        // AsyncComponent
         // VideoPlayer
         // StepperComponent
     },
     inject: ['Viewer'],
     data(){
         return {
+            show: false,
+            testing: null,
             uhh: [],
             arLogo: require('@/assets/icons/ar_icon.svg'),
             shit: null,
@@ -214,9 +221,15 @@ export default {
         }
     },
     created(){
-        Array(10).fill().forEach((_, i) => {
-            doStuff(this.uhh, i)
-        })
+        let asdf
+        if(Math.random() > 0.5){
+            const test = {asdf: 1};
+            ({asdf} = test)
+        }else{
+            const test = {asdf: 2};
+            ({asdf} = test)
+        }
+        console.log(asdf)
         // this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
         //     this.shit = dataurl
         // })
@@ -231,6 +244,33 @@ export default {
         // this.sources = this.videos.map(() => null)
     },
     methods: {
+        qwerqwer(){
+            this.testing = shallowRef(defineAsyncComponent({
+                loader: () => {
+                    console.log('called')
+                    //eslint-disable-next-line no-unused-vars
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            resolve({
+                                template: ''
+                                // components: {
+                                //     TestComponent
+                                // },
+                                // template: '<TestComponent @click="fuckshit" test="zxcvzxcvzxcv" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"></TestComponent><div>asdfdasfasdf</div>',
+                                // created(){
+                                //     eval(`this.hurrr();this.duh()`)
+                                // },
+                                // methods: eval(`({hurrr(){console.log("hurrr")},duh(){console.log("dugh")},fuckshit(){alert("fuckshit")}})`)
+                            })
+                        }, Math.random() * 1000)
+                    })
+                },
+                loadingComponent: TestComponent,
+                errorComponent: {
+                    template: '<div>error</div>'
+                }
+            }))
+        },
         async shitfuck(){},
         test(){
             console.log('test')
@@ -423,5 +463,13 @@ export default {
     transition: 1s; 
     fill:#303030; 
 }
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>

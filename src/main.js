@@ -9,6 +9,7 @@ import emitter from './utils/emitter.js'
 import routeResolver from './utils/routeResolver';
 import detectMobile from './utils/detectMobile'
 import fbAnalytics from './utils/analytics.js'
+import extrasLoader from './utils/extrasLoader.js'
 import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
@@ -37,7 +38,6 @@ const vuePropertySetter = (app, name, instance) => {
     app.provide(name, instance)
     app.config.globalProperties[name] = instance
 }
-
 const app = createApp(App)
 // const emitter = mitt()
 const injector = {
@@ -49,6 +49,7 @@ const injector = {
         // vuePropertySetter(app, 'qrCode', QRCode)
         vuePropertySetter(app, 'detectMobile', detectMobile)
         vuePropertySetter(app, 'fbAnalytics', fbAnalytics)
+        vuePropertySetter(app, 'extrasLoader', extrasLoader)
         // app.provide('swal', Swal)
         // app.provide('emitter', emitter)
         // app.config.globalProperties.emitter = emitter

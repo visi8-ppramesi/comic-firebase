@@ -1,5 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  runtimeCompiler: true,
   devServer: {
     hot: false,
     liveReload: false,

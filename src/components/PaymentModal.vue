@@ -127,7 +127,11 @@ export default {
             this.selectedPayment = newPayment
         },
         confirm(){
-            this.$router.push(this.routeResolver('Chapter', {comicId: this.comicData.id, chapterId: this.chapterData.id}))
+            if(this.selectedChapterData === 'all'){
+                this.$router.push(this.routeResolver('Comic', {comicId: this.comicData.id}))
+            }else{
+                this.$router.push(this.routeResolver('Chapter', {comicId: this.comicData.id, chapterId: this.chapterData.id}))
+            }
         },
         setState(key, value){
             this.tempState = {

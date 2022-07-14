@@ -2,3 +2,5 @@ maybe think about changing collection/subcollection reference data as its own ty
 chapter sharded counters
     implement on view
     implement on functions
+implement buy comic
+integrate video on chapter 2
