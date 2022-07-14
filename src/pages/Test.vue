@@ -121,7 +121,7 @@ import TestComponent from '../components/TestComponent.vue'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
 
 const what = (v) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve,) => {
         setTimeout(() => {
             console.log('zxcvzxcv')
             resolve(v)
@@ -132,27 +132,6 @@ const what = (v) => {
 const doStuff = async (v, test) => {
     v[test] = await what(test)
 };
-
-const AsyncComponent = defineAsyncComponent({
-    loader: () => {
-        //eslint-disable-next-line no-unused-vars
-        console.log('called')
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve({
-                    components: {
-                        TestComponent
-                    },
-                    template: '<TestComponent test="zxcvzxcvzxcv"></TestComponent><div>asdfdasfasdf</div>',
-                    created: () => {
-                        console.log('stuff')
-                    }
-                })
-            }, Math.random() * 10000)
-        })
-    },
-    loadingComponent: TestComponent
-})
 
 export default {
     components: {
@@ -242,9 +221,15 @@ export default {
         }
     },
     created(){
-        Array(10).fill().forEach((_, i) => {
-            doStuff(this.uhh, i)
-        })
+        let asdf
+        if(Math.random() > 0.5){
+            const test = {asdf: 1};
+            ({asdf} = test)
+        }else{
+            const test = {asdf: 2};
+            ({asdf} = test)
+        }
+        console.log(asdf)
         // this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
         //     this.shit = dataurl
         // })

@@ -31,12 +31,22 @@ export default {
     },
     mounted(){
         console.log('testestest')
-        const gopayCharger = new GopayCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV)
-        gopayCharger.createChapterCharge({
-            chapterData: this.store.state.chapterData,
-            comicData: this.store.state.comicData,
-            user: this.user
-        }).then(({data}) => {
+        const gopayCharger = new GopayCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV);
+        const conditionalCharge = () => {
+            if(this.store.state.chapterData === 'all'){
+                return gopayCharger.createComicCharge({
+                    comicData: this.store.state.comicData,
+                    user: this.user
+                })
+            }else{
+                return gopayCharger.createChapterCharge({
+                    chapterData: this.store.state.chapterData,
+                    comicData: this.store.state.comicData,
+                    user: this.user
+                })
+            }
+        }
+        conditionalCharge().then(({data}) => {
             this.midtransQrCode = data.chargeResponse.actions.find(v => v.name == 'generate-qr-code').url
             this.store.setState('responseData', data)
             this.$emit('loading', false)

@@ -18,7 +18,7 @@
 
 <script>
 import utils from '../firebase/utils/index.js'
-import VideoOverlay from './VideoOverlay.vue'
+// import VideoOverlay from '../asyncComponents/VideoOverlay.vue'
 // import _ from 'lodash'
 import size from 'lodash/size'
 import once from 'lodash/once'
@@ -29,7 +29,7 @@ export default {
     name: 'image-player',
     inject: ['routeResolver', 'detectMobile'],
     components: {
-        VideoOverlay
+        // VideoOverlay
     },
     props: {
         chapterId: {

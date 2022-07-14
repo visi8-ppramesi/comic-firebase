@@ -6,18 +6,42 @@ const buildComponentParam = (name, template, createdStr = null, mountedStr = nul
         template
     }
     if(createdStr){
-        param.created = function(){
-            eval(createdStr)
+        //created(){}
+        if(/^created\(\)/.test(createdStr)){
+            const code = createdStr.match(/^created\(\){(?<code>.*)}$/).groups.code
+            param.created = function(){
+                eval(code)
+            }
+        //() => {}
+        }else if(/^\(\)(\s?)=>(\s?)(\(|{)/.test(createdStr)){
+            param.created = eval(createdStr)
+        }else{
+            param.created = function(){
+                eval(createdStr)
+            }
         }
     }
     if(mountedStr){
-        param.mounted = function(){
-            eval(mountedStr)
+        //mounted(){}
+        if(/^mounted\(\)/.test(mountedStr)){
+            const code = mountedStr.match(/^mounted\(\){(?<code>.*)}$/).groups.code
+            param.mounted = function(){
+                eval(code)
+            }
+        //() => {}
+        }else if(/^\(\)(\s?)=>(\s?)(\(|{)/.test(mountedStr)){
+            param.mounted = eval(mountedStr)
+        }else{
+            param.mounted = function(){
+                eval(mountedStr)
+            }
         }
     }
     if(methodsStr){
+        //({...})
         if(/^(\(\{).*(\}\))$/.test(methodsStr)){
             param.methods = eval(methodsStr)
+        //{...}
         }else if(/^(\{).*(\})$/.test(methodsStr)){
             param.methods = eval(`(${methodsStr})`)
         }
@@ -31,17 +55,21 @@ const buildComponentParam = (name, template, createdStr = null, mountedStr = nul
     }
     if(computedStr){
         if(/^(\(\{).*(\}\))$/.test(computedStr)){
-            param.props = eval(computedStr)
+            param.computed = eval(computedStr)
         }else if(/^(\{).*(\})$/.test(computedStr)){
-            param.props = eval(`(${computedStr})`)
+            param.computed = eval(`(${computedStr})`)
         }
     }
     if(dataStr){
-        if(/^(\{).*(\})$/.test(dataStr)){
-            dataStr = `(${dataStr})`
-        }
-        param.data = function(){
-            return eval(dataStr)
+        if(/^\(\)(\s?)=>(\s?)(\(|{)/.test(dataStr)){
+            param.data = eval(dataStr)
+        }else{
+            if(/^(\{).*(\})$/.test(dataStr)){
+                dataStr = `(${dataStr})`
+            }
+            param.data = function(){
+                return eval(dataStr)
+            }
         }
     }
     return param

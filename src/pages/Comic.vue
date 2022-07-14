@@ -37,7 +37,10 @@
                         </div>
 
                         <div class="flex flex-row content-center justify-between">
-                            <button :disabled="subscribeDisabled" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
+                            <div class="flex flex-row">
+                                <button :disabled="subscribeDisabled" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
+                                <button v-if="!comicFullyPurchased && !isNilWrapper(comic.price) && comic.price > 0" class="ml-1 lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseComic">Purchase Comic</button>
+                            </div>
                             <!-- <template v-if="purchased">
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="continueReading(true)">View with AR</button>
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" v-if="isEmpty(bookmark)" @click="startReading">Start Reading</button>
@@ -288,6 +291,9 @@ export default {
         })
     },
     methods: {
+        isNilWrapper(v){
+            return isNil(v)
+        },
         insertPurchase(cptId){
             this.purchasedChapterIds.push(cptId)
         },
