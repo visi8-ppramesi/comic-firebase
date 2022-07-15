@@ -6,6 +6,7 @@
           <div class="absolute inset-y-0 left-0 flex items-center md:hidden">
             <!-- Mobile menu button-->
             <button
+              id="mobile-menu-button"
               @click="mobileMenuOpen = !mobileMenuOpen"
               type="button"
               class="
@@ -532,6 +533,12 @@ export default {
 
   },
   mounted(){
+    document.addEventListener('click', (e) => {
+      if(!(e.target.closest("#mobile-menu-button") || e.target.closest("#user-menu-button"))){
+        this.mobileMenuOpen = false
+        this.profileMenuOpen = false
+      }
+    })
     this.emitter.on('navigate', () => {
       this.mobileMenuOpen = false
       this.profileMenuOpen = false
