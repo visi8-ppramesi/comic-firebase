@@ -120,19 +120,6 @@ import TestComponent from '../components/TestComponent.vue'
 // import utils from '../firebase/utils/index.js'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
 
-const what = (v) => {
-    return new Promise((resolve,) => {
-        setTimeout(() => {
-            console.log('zxcvzxcv')
-            resolve(v)
-        }, Math.random() * 10000)
-    })
-};
-
-const doStuff = async (v, test) => {
-    v[test] = await what(test)
-};
-
 export default {
     components: {
         // AsyncComponent

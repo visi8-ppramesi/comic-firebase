@@ -9,7 +9,7 @@ import emitter from './utils/emitter.js'
 import routeResolver from './utils/routeResolver';
 import detectMobile from './utils/detectMobile'
 import fbAnalytics from './utils/analytics.js'
-import extrasLoader from './utils/extrasLoader.js'
+import asyncComponentLoader from './utils/asyncComponentLoader.js'
 import { Vue3Mq, MqResponsive } from "vue3-mq"
 import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
@@ -49,7 +49,7 @@ const injector = {
         // vuePropertySetter(app, 'qrCode', QRCode)
         vuePropertySetter(app, 'detectMobile', detectMobile)
         vuePropertySetter(app, 'fbAnalytics', fbAnalytics)
-        vuePropertySetter(app, 'extrasLoader', extrasLoader)
+        vuePropertySetter(app, 'asyncComponentLoader', asyncComponentLoader)
         // app.provide('swal', Swal)
         // app.provide('emitter', emitter)
         // app.config.globalProperties.emitter = emitter

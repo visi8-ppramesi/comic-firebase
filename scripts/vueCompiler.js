@@ -102,7 +102,8 @@ const asyncComponentConvert = async function(vueStr){
         collapseInlineTagWhitespace: true,
         caseSensitive: true
     })
-    console.log(stringifiedObj)
+
+    return stringifiedObj
     // // Object.keys(vueObj).forEach((key) => {
     // //     if(typeof vueObj[key] === 'function'){
     // //         console.log(vueObj[key].toString())

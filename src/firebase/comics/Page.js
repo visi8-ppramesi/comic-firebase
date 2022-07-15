@@ -14,7 +14,8 @@ export default class extends Subcollection{
         'scenes': Subcollection.resolve('./Scenes.js'),
         'scenes_data': Array,
         'ar_button_show_time': Object,
-        'extras': String
+        'extras': String,
+        'async_component': String
     }
 
     async getScenes(){

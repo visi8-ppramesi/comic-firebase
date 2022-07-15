@@ -149,6 +149,11 @@ service cloud.firestore {
       }
     }
 
+    match /async_components/{async_component}{
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     match /user_roles/{user}{
       allow read: if belongsTo(user) || isAdmin();
       allow write: if isAdmin();

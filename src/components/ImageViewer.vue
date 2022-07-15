@@ -44,7 +44,7 @@ export default {
             type: String,
             default: 'gspath'
         },
-        extras: {
+        asyncComponent: {
             type: String,
             default : ''
         },
@@ -71,15 +71,15 @@ export default {
         }
     },
     mounted(){
-        if(!isEmpty(this.extras)){
+        if(!isEmpty(this.asyncComponent)){
             const self = this
             const fetcherFunc = async function(){
-                const docRef = doc(fb.db, 'comics', self.$route.params.comicId, 'chapters', self.$route.params.chapterId, 'pages', self.chapterId, 'extras', self.extras)
+                const docRef = doc(fb.db, 'async_components', self.asyncComponent)
                 const snap = await getDoc(docRef)
                 const data = snap.data()
                 return data
             }
-            this.extraComponent = this.extrasLoader(fetcherFunc)
+            this.extraComponent = this.asyncComponentLoader(fetcherFunc)
         }
         // if(this.isLink){
         //     this.$nextTick(() => {

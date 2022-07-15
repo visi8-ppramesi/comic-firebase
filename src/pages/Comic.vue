@@ -39,7 +39,7 @@
                         <div class="flex flex-row content-center justify-between">
                             <div class="flex flex-row">
                                 <button :disabled="subscribeDisabled" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
-                                <button v-if="!comicFullyPurchased && !isNilWrapper(comic.price) && comic.price > 0" class="ml-1 lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseComic">Purchase Comic</button>
+                                <button v-if="!comicFullyPurchased && !isNilWrapper(comic.price) && comic.price > 0" class="ml-1 lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseComic">Purchase Comic (Rp. {{comic.price}})</button>
                             </div>
                             <!-- <template v-if="purchased">
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="continueReading(true)">View with AR</button>
@@ -61,7 +61,7 @@
                 <div class="md:grid md:grid-cols-1">
                     <div class="divide-y divide-black">
                         <div class="md:bg-indigo-900 md:w-full md:h-full">
-                            <div class="flex flex-row h-24 md:w-full bg-indigo-800 text-white" v-for="(chapter, idx) in chapters" :key="'chapter-'+idx">
+                            <div class="flex flex-row h-24 md:w-full bg-indigo-800 text-white border-t border-[#39348f]" v-for="(chapter, idx) in chapters" :key="'chapter-'+idx">
                                 <div class="flex-none w-1/5 md:w-24 lg:w-24">
                                     <img class="h-full w-full object-cover" :src="chapter.chapter_preview_url" alt="">
                                 </div>
