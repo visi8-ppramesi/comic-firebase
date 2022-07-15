@@ -1,107 +1,10 @@
 <template>
-    <button @click="qwerqwer">Toggle</button>
-    <component v-if="testing" :is="testing"></component>
-    <!-- <div v-for="(a, idx) in uhh" :key="idx + '-test'">{{ a }}</div> -->
-    <!-- <button :disabled="true" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="test">test</button>
-    original
-    <video
-        controls
-        playsinline loop
-        :src="testVid1"
-        type='video/mp4'
-    ></video>
-    orig crf 30
-    <video
-        controls
-        playsinline loop
-        :src="testVid5"
-        type='video/mp4'
-    ></video>
-    Compressed
-    <video
-        controls
-        playsinline loop
-        :src="testVid6"
-        type='video/mp4'
-    ></video> -->
-    <!-- <div>
-        <div class="cc-selector">
-            <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
-                <label class="drinkcard-cc test" for="test">
-                    <img :src="image">
-                </label>
-                <input id="test" v-model="paymentType" @change="paymentChange" type="radio" name="credit-card" class="group" value="test" />
-            </div>
-            <div class="group-selected:bg-slate-100 w-max p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
-                <label class="drinkcard-cc visa" for="visa">
-                    <img :src="image">
-                </label>
-                <input id="visa" v-model="paymentType" @change="paymentChange" type="radio" name="credit-card" class="group" value="visa" />
-            </div>
+    <div class="flex w-screen h-screen">
+        <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute h-screen object-cover"></video>
+        <div class="w-full h-full bg-black/50 items-center justify-center z-20 flex text-white">
+            <img v-show="imgSrc" :src="imgSrc" />
         </div>
-        <button @click="showModal = true">Open Modal</button>
-        <Teleport to="#modal">
-            <vue-final-modal 
-                v-model="showModal"
-                classes="flex justify-center items-center"
-                content-class="max-w-2xl max-h-screen-4-y overflow-y-auto relative flex flex-col max-h-full mx-4 p-4 border dark:border-gray-800 rounded bg-white dark:bg-gray-900"
-            >
-                <stepper-component :steps="steps" :initial-state="{ name: 'Carlos', users: [] }">
-                    <template #fatal-error="{ errorMsg }">{{ errorMsg }}</template>
-                    <template #action-buttons>
-                        <button 
-                            class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                            @click="showModal = false"
-                        >Close</button>
-                    </template>
-                </stepper-component>
-            </vue-final-modal>
-        </Teleport>
-    </div> -->
-    <!-- <div class="relative relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
-        <video @loadeddata="asdf" :src="img" ref="videoElement" class="absolute z-10" />
-        <div class="z-20 w-36 h-36">
-            <svg v-if="vidLoaded" :class="[vidPlaying ? 'opacity-0' : 'opacity-75']" @click="toggleVideo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
-                <polygon class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
-                <path class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
-            </svg>
-        </div> -->
-        <!-- <video-player v-for="(video, idx) in videos" :link="video" :idx="idx" :ref="'videoPlayer' + idx" :key="'video-' + idx">
-        </video-player> -->
-        <!-- <div v-for="(video, idx) in videos" :ref="'testVideo' + idx + 'Container'" :key="'video-' + idx" class="relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
-            <video class="video absolute z-10" :ref="'testVideo' + idx" playsinline :src="sources[idx]" type="video/mp4">
-            </video>
-            <div class="z-20 w-36 h-36">
-                <svg v-if="vidLoaded[idx]" :class="[vidPlaying[idx] ? 'opacity-0' : 'opacity-75']" @click="toggleVideo(idx)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
-                    <polygon class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
-                    <path class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
-                </svg>
-            </div>
-        </div> -->
-
-
-
-        <!-- <div ref="testVideo0Container" class="relative h-screen bg-black flex justify-center justify-items-center content-center items-center">
-            <video class="video absolute z-10" ref="testVideo0" playsinline :src="sources[0]" type="video/mp4">
-            </video>
-            <div class="z-20 w-36 h-36">
-                <svg v-if="vidLoaded[0]" :class="[vidPlaying[0] ? 'opacity-0' : 'opacity-75']" @click="toggleVideo(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
-                    <polygon class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
-                    <path class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
-                </svg>
-            </div>
-        </div>
-        <div ref="testVideo1Container" class="relative h-screen bg-white flex justify-center justify-items-center content-center items-center">
-            <video class="video absolute z-10" ref="testVideo1" playsinline :src="sources[1]" type="video/mp4">
-            </video>
-            <div class="z-20 w-36 h-36">
-                <svg v-if="vidLoaded[1]" :class="[vidPlaying[1] ? 'opacity-0' : 'opacity-75']" @click="toggleVideo(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
-                    <polygon class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
-                    <path class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
-                </svg>
-            </div>
-        </div> -->
-    <!-- </div> -->
+    </div>
 </template>
 
 <script>
@@ -114,7 +17,7 @@ import TestComponent from '../components/TestComponent.vue'
 // import StepOne from '../components/stepper/StepOne.vue'
 // import StepTwo from '../components/stepper/StepTwo.vue'
 // import StepThree from '../components/stepper/StepThree.vue'
-// import utils from '../firebase/utils/index.js'
+import utils from '../firebase/utils/index.js'
 // import _ from 'lodash'
 // import VideoPlayer from '../components/VideoPlayer.vue'
 // import utils from '../firebase/utils/index.js'
@@ -147,6 +50,8 @@ export default {
             gsPath4: 'gs://comics-77200.appspot.com/test/web_comic_9_720_22.mp4',
             gsPath5: 'gs://comics-77200.appspot.com/test/web_comic_9_orig_30.mp4',
             gsPath6: 'gs://comics-77200.appspot.com/test/web_comic_9_compressed.mp4',
+            videoSrc: null,
+            imgSrc: null,
             // paymentType: null,
             // image: require('../assets/logo.png'),
             // showModal: false,
@@ -208,15 +113,12 @@ export default {
         }
     },
     created(){
-        let asdf
-        if(Math.random() > 0.5){
-            const test = {asdf: 1};
-            ({asdf} = test)
-        }else{
-            const test = {asdf: 2};
-            ({asdf} = test)
-        }
-        console.log(asdf)
+        utils.getDataUrlFromStorage('gs://comics-77200.appspot.com/videos/dashboard/test-compressed.mp4').then((dataUrl) => {
+            this.videoSrc = dataUrl
+        })
+        utils.getDataUrlFromStorage('gs://comics-77200.appspot.com/logos/kara_logo.png').then((dataUrl) => {
+            this.imgSrc = dataUrl
+        })
         // this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
         //     this.shit = dataurl
         // })

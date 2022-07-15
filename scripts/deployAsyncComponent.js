@@ -49,11 +49,13 @@ async function parseVueFile() {
     const vueObject = await asyncComponentConvert(file)
     await signInPromise
     // console.log(params)
-    const extrasRef = doc(fb.db, 'async_components', name)
+    const extrasRef = doc(db, 'async_components', name)
     try{
         await setDoc(extrasRef, vueObject)
+        process.exit(0)
     }catch(err){
         console.error(err)
+        process.exit(1)
     }
 }
 

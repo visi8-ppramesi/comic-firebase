@@ -15,7 +15,9 @@ export default class extends Collection{
         const banners = await this.getDocument('banners')
 
         for(let i = 0; i < banners.value.length; i++){
-            banners.value[i].banner_image_url = await utils.getDataUrlFromStorage(banners.value[i].banner_image_url)
+            if(banners.value[i].type === 'image'){
+                banners.value[i].banner_image_url = await utils.getDataUrlFromStorage(banners.value[i].banner_image_url)
+            }
         }
 
         return banners

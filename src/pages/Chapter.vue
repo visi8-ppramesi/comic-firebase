@@ -4,7 +4,7 @@
             <div class="bg-black w-full">
                 <template v-for="(page, idx) in pages" :key="'item-' + idx">
                     <div v-if="page.media_type == 'image'">
-                        <image-viewer :chapterId="page.id" :ar-link="getArLink(page)" :async-component="getExtras(page.async_component)" :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
+                        <image-viewer :chapterId="page.id" :ar-link="getArLink(page)" :async-component="getAsyncComponentPath(page.async_component)" :link="page.page_image_url" :idx="idx" :ref="'mediaViewer' + idx"></image-viewer>
                     </div>
                     <div v-else-if="page.media_type == 'video'">
                         <video-player 
@@ -202,7 +202,7 @@ export default {
         }
     },
     methods: {
-        getExtras(xtr){
+        getAsyncComponentPath(xtr){
             return xtr ?? ''
         },
         playClicked(idx){
