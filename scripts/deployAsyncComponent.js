@@ -4,7 +4,7 @@ const path = require('path')
 const minimist = require('minimist')
 const argv = minimist(process.argv.slice(2))
 const { doc, setDoc } = require('firebase/firestore')
-const { fpath, path: filePath } = argv
+const { path: filePath, name } = argv
 
 const env = require('dotenv').config().parsed
 
@@ -30,85 +30,10 @@ const auth = getAuth(app);
 const storage = getStorage(app)
 const signInPromise = signInWithEmailAndPassword(auth, env.VUE_APP_ADMIN_EMAIL, env.VUE_APP_ADMIN_PASSWORD)
 
-const buildComponentParam = ({name, template, created = null, mounted = null, methods = null, props = null, data = null, computed = null}) => {
-    const param = {
-        name,
-        template
-    }
-    if(created){
-        //created(){}
-        if(/^created\(\)/.test(created)){
-            const code = created.match(/^created\(\){(?<code>.*)}$/).groups.code
-            param.created = function(){
-                eval(code)
-            }
-        //() => {}
-        }else if(/^\(\)(\s?)=>(\s?)(\(|{)/.test(created)){
-            param.created = eval(created)
-        }else{
-            param.created = function(){
-                eval(created)
-            }
-        }
-    }
-    if(mounted){
-        //mounted(){}
-        if(/^mounted\(\)/.test(mounted)){
-            const code = mounted.match(/^mounted\(\){(?<code>.*)}$/).groups.code
-            param.mounted = function(){
-                eval(code)
-            }
-        //() => {}
-        }else if(/^\(\)(\s?)=>(\s?)(\(|{)/.test(mounted)){
-            param.mounted = eval(mounted)
-        }else{
-            param.mounted = function(){
-                eval(mounted)
-            }
-        }
-    }
-    if(methods){
-        //({...})
-        if(/^(\(\{).*(\}\))$/.test(methods)){
-            param.methods = eval(methods)
-        //{...}
-        }else if(/^(\{).*(\})$/.test(methods)){
-            param.methods = eval(`(${methods})`)
-        }
-    }
-    if(props){
-        if(/^(\(\{).*(\}\))$/.test(props)){
-            param.props = eval(props)
-        }else if(/^(\{).*(\})$/.test(props)){
-            param.props = eval(`(${props})`)
-        }
-    }
-    if(computed){
-        if(/^(\(\{).*(\}\))$/.test(computed)){
-            param.computed = eval(computed)
-        }else if(/^(\{).*(\})$/.test(computed)){
-            param.computed = eval(`(${computed})`)
-        }
-    }
-    if(data){
-        if(/^\(\)(\s?)=>(\s?)(\(|{)/.test(data)){
-            param.data = eval(data)
-        }else{
-            if(/^(\{).*(\})$/.test(data)){
-                data = `(${data})`
-            }
-            param.data = function(){
-                return eval(data)
-            }
-        }
-    }
-    return param
-}
-
 //create a function that reads file
-function readFile(filePath) {
+function readFile(filePathParam) {
     return new Promise((resolve, reject) => {
-        fs.readFile(filePath, 'utf8', (err, data) => {
+        fs.readFile(filePathParam, 'utf8', (err, data) => {
             if (err) {
                 reject(err)
             } else {
@@ -122,16 +47,14 @@ function readFile(filePath) {
 async function parseVueFile() {
     const file = await readFile(filePath)
     const vueObject = await asyncComponentConvert(file)
-    const params = buildComponentParam({...vueObject})
     await signInPromise
-    console.log(params)
-    // const fsPathArray = fpath.split('/')
-    // const extrasRef = doc(fb.db, ...fsPathArray)
-    // try{
-    //     await setDoc(extrasRef, vueObject)
-    // }catch(err){
-    //     console.error(err)
-    // }
+    // console.log(params)
+    const extrasRef = doc(fb.db, 'async_components', name)
+    try{
+        await setDoc(extrasRef, vueObject)
+    }catch(err){
+        console.error(err)
+    }
 }
 
 parseVueFile()
