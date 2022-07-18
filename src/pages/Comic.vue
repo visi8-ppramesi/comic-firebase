@@ -175,8 +175,8 @@ import { mapState } from 'pinia'
 import utils from '../firebase/utils/index.js'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         views: '{ view_count } views',
         purchase: 'Purchase Comic {price}',
         buy: 'buy comic',

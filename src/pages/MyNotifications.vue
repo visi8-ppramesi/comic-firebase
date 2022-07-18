@@ -30,8 +30,8 @@ import Comic from '@/firebase/comics/Comic.js'
 import over from 'lodash/over'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         update: 'Comic Update: { notif.title } Chapter {notif.chapter_number}',
         release: 'Release date: { notif.created_date.toDate().toLocaleDateString(\'id-ID\') }',
         load: 'Load More'

@@ -237,8 +237,8 @@ import { authorLimitTen, orderByLimit } from '../firebase/utils/queries.js'
 // import { ref } from 'vue'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
       title1: 'All Comics',
       title2: 'Adventure',
       title3: 'Science Fiction',

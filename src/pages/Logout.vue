@@ -6,9 +6,9 @@
 import { useAuthStore } from '../store/auth.js'
 
 const i18Texts = {
-  en: {
-    message: {
-        'log-out': 'Logging out...'
+  messages: {
+    en: {
+        log-out: 'Logging out...'
     }
   }
 }

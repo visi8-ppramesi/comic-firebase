@@ -10,8 +10,8 @@
 import Scene from '../firebase/comics/Scene.js'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         loading: 'Loading... Please wait'
     }
   }

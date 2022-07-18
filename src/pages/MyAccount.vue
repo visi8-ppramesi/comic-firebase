@@ -131,8 +131,8 @@ import { mapState } from 'pinia'
 import isNil from 'lodash/isNil'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         title: 'Profile Information',
         accDescription: 'Update Your Account\'s Profile Information and Email Address',
         profile: 'Profile Photo',

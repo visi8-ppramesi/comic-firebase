@@ -57,8 +57,8 @@ import { authorComicsQuery } from '../firebase/utils/queries.js'
 import Comic from '@/firebase/comics/Comic'
 
 const i18Texts = {
-  en: {
-    message: { 
+  messages: {
+    en: { 
         author: 'About Author',
         book: 'Author books'
     }

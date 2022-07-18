@@ -82,8 +82,8 @@ import isArray from 'lodash/isArray'
 import Comic from '@/firebase/comics/Comic';
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
       episode: 'Episode {chapter_number}',
       chapter: 'Select Chapter',
       prev: 'prev',

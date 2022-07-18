@@ -47,8 +47,8 @@ import { mapState } from 'pinia'
 import Comic from '@/firebase/comics/Comic.js'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         title: 'Your Purchased Comics',
         chapter: 'Chapter',
         load: 'Load More'

@@ -52,8 +52,8 @@
 
 <script>
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
       title: 'About Visi8',
       decription: `it’s 3D Animated movie, about a young guardian of the magical realms, who is curious yet skeptical toward humans, 
                     must cooperate with two mysterious human time explorers in order to find the source of anomalies, before the destructions spreads too far.

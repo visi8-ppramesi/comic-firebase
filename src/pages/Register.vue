@@ -39,8 +39,8 @@
 import { useAuthStore } from '../store/auth.js'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         failed: 'Register failed! Email already exists!',
         register: 'Register',
         goback: 'Go Back'
