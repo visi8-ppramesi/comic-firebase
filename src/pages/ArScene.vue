@@ -8,6 +8,11 @@
 
 <script>
 import Scene from '../firebase/comics/Scene.js'
+const text = {
+  en: {
+    message: { 'Loading... Please wait' }
+  }
+}
 export default {
     name: 'scene-show',
     data(){

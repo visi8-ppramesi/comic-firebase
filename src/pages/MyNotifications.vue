@@ -28,6 +28,16 @@ import { mapState } from 'pinia'
 import Comic from '@/firebase/comics/Comic.js'
 // import _ from 'lodash'
 import over from 'lodash/over'
+
+const text = {
+  en: {
+    message: {
+        update: 'Comic Update: { notif.title } Chapter {notif.chapter_number}',
+        release: 'Release date: { notif.created_date.toDate().toLocaleDateString('id-ID') }',
+        load: 'Load More'
+    }
+  }
+}
 export default{
     name: 'my-notifications',
     inject: ['routeResolver'],

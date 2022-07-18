@@ -33,6 +33,19 @@
 
 <script>
 import { useAuthStore } from '../store/auth.js'
+
+const text = {
+  en: {
+    message: {
+      forgot: 'Forgot Password?',
+      wrong: 'Wrong password or email',
+      login: 'Log In',
+      account: 'Dont have an account yet?',
+      signup: 'Sign Up',
+      option: 'Or Login With'
+    }
+  }
+}
 export default {
     name:'login',
     data(){

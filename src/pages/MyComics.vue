@@ -45,6 +45,16 @@
 import { useAuthStore } from '@/store/auth'
 import { mapState } from 'pinia'
 import Comic from '@/firebase/comics/Comic.js'
+
+const text = {
+  en: {
+    message: {
+        title: 'Your Purchased Comics',
+        chapter: 'Chapter',
+        load: 'Load More'
+    }
+  }
+}
 export default {
     data(){
         return {
