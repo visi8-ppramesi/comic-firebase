@@ -84,7 +84,7 @@ export default {
             const ccCharger = new CreditCardCharger(process.env.VUE_APP_MIDTRANS_CLIENT_KEY, process.env.VUE_APP_MIDTRANS_ENV)
             let data
             try{
-                if(this.store.state.chapterData == 'all'){
+                if(this.store.state.chapterData === 'all'){
                     ({ data } = await ccCharger.createComicCharge({
                         comicData: this.store.state.comicData,
                         user: this.user

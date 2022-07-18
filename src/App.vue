@@ -71,12 +71,12 @@
               class="flex-shrink-0 flex items-center"
             >
               <img
-                class="block md:hidden h-16 w-auto"
+                class="block md:hidden h-16 w-auto p-3"
                 :src="visi8Icon"
                 alt="Workflow"
               />
               <img
-                class="hidden md:block h-16 w-auto"
+                class="hidden md:block h-16 w-auto p-3"
                 :src="visi8Icon"
                 alt="Workflow"
               />
@@ -563,7 +563,7 @@ export default {
           icons: {
               comic: require('./assets/comic.jpeg'),
           },
-          visi8Icon: require('./assets/visi8_logo.png'),
+          visi8Icon: require('./assets/visi8_logo_new.png'),
           facebook: require('./assets/icons/facebook.png'),
           instagram: require('./assets/icons/instagram.png'),
           twitter: require('./assets/icons/twitter.png'),//require('./assets/visi8_logo.png'),

@@ -34,10 +34,14 @@ export default{
             }
         },
         nextStep(){
-            this.$router.push(this.routeResolver('Chapter', {
-                comicId: this.store.state.comicData.id, 
-                chapterId: this.store.state.chapterData.id 
-            }))
+            if(this.store.state.chapterData === 'all'){
+                this.$router.go()
+            }else{
+                this.$router.push(this.routeResolver('Chapter', {
+                    comicId: this.store.state.comicData.id, 
+                    chapterId: this.store.state.chapterData.id 
+                }))
+            }
         },
         loadingAction(status){
             this.$emit('loading', status)

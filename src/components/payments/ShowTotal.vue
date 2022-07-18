@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col md:flex-row">
-        <template v-if="this.chapterData == 'all'">
+        <template v-if="chapterData === 'all'">
             <img class="h-full w-full object-cover max-w-24" :src="comicData.cover_image_url" alt="">
             <div class="flex flex-col">
                 <div>

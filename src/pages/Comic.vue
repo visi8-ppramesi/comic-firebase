@@ -35,11 +35,10 @@
                                 <div class="text-sm px-2 lg:text-md xl:text-lg">{{ comic.favorite_count }}</div>
                             </div>
                         </div>
-
                         <div class="flex flex-row content-center justify-between">
                             <div class="flex flex-row">
                                 <button :disabled="subscribeDisabled" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
-                                <button v-if="!comicFullyPurchased && !isNilWrapper(comic.price) && comic.price > 0" class="ml-1 lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseComic">Purchase Comic (Rp. {{comic.price}})</button>
+                                <button v-if="!comicFullyPurchased && !isNilWrapper(comic.price) && comic.price > 0" class="ml-1 lg:text-sm xl:text-md text-xxs mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white max-w-[125px]" @click="purchaseComic">Purchase Comic (Rp. {{comic.price}})</button>
                             </div>
                             <!-- <template v-if="purchased">
                                 <button class="text-sm mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="continueReading(true)">View with AR</button>
@@ -312,16 +311,24 @@ export default {
             this.$router.push(this.routeResolver('Chapter', {comicId: this.$route.params.id, chapterId: chapterId}))
         },
         async purchaseComic(){
-            this.selectedChapterData = 'all'
-            this.$refs.paymentModal.setState('chapterData', 'all')
-            this.$refs.paymentModal.setState('comicData', this.comic)
-            this.$refs.paymentModal.openModal()
+            if(!isNil(this.userData)){
+                this.selectedChapterData = 'all'
+                this.$refs.paymentModal.setState('chapterData', 'all')
+                this.$refs.paymentModal.setState('comicData', this.comic)
+                this.$refs.paymentModal.openModal()
+            }else{
+                this.$router.push(this.routeResolver('Login'))
+            }
         },
         async purchaseChapter(chapterId){
-            this.selectedChapterData = this.chapters.find(c => c.id == chapterId)
-            this.$refs.paymentModal.setState('chapterData', this.selectedChapterData)
-            this.$refs.paymentModal.setState('comicData', this.comic)
-            this.$refs.paymentModal.openModal()
+            if(!isNil(this.userData)){
+                this.selectedChapterData = this.chapters.find(c => c.id == chapterId)
+                this.$refs.paymentModal.setState('chapterData', this.selectedChapterData)
+                this.$refs.paymentModal.setState('comicData', this.comic)
+                this.$refs.paymentModal.openModal()
+            }else{
+                this.$router.push(this.routeResolver('Login'))
+            }
         },
         async toggleSubscribeComic(){
             this.subscribeDisabled = true

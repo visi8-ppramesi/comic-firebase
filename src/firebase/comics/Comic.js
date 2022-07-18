@@ -24,6 +24,7 @@ export default class extends Collection{
             name: String,
             profile_picture_url: String
         }),
+        'price': Number,
         // 'authors_split': Subcollection,
         'comments':	Subcollection.resolve('./Comment.js'),
         'description': LongText,
