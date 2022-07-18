@@ -1,9 +1,11 @@
 <template>
     <div class="flex w-screen h-screen">
-        <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute h-screen object-cover"></video>
+        {{ $t('message.hello', {  test: testing }) }}
+        {{testing}}
+        <!-- <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute h-screen object-cover"></video>
         <div class="w-full h-full bg-black/50 items-center justify-center z-20 flex text-white">
             <img v-show="imgSrc" :src="imgSrc" />
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -17,7 +19,7 @@ import TestComponent from '../components/TestComponent.vue'
 // import StepOne from '../components/stepper/StepOne.vue'
 // import StepTwo from '../components/stepper/StepTwo.vue'
 // import StepThree from '../components/stepper/StepThree.vue'
-import utils from '../firebase/utils/index.js'
+// import utils from '../firebase/utils/index.js'
 // import _ from 'lodash'
 // import VideoPlayer from '../components/VideoPlayer.vue'
 // import utils from '../firebase/utils/index.js'
@@ -30,10 +32,16 @@ export default {
         // StepperComponent
     },
     inject: ['Viewer'],
+    i18n: {
+        messages: {
+            en: { message: { hello: 'hello component {test}' } },
+            id: { message: { hello: 'こんにちは、component1' } }
+        }
+    },
     data(){
         return {
             show: false,
-            testing: null,
+            testing: 'null',
             uhh: [],
             arLogo: require('@/assets/icons/ar_icon.svg'),
             shit: null,
@@ -113,12 +121,15 @@ export default {
         }
     },
     created(){
-        utils.getDataUrlFromStorage('gs://comics-77200.appspot.com/videos/dashboard/test-compressed.mp4').then((dataUrl) => {
-            this.videoSrc = dataUrl
-        })
-        utils.getDataUrlFromStorage('gs://comics-77200.appspot.com/logos/kara_logo.png').then((dataUrl) => {
-            this.imgSrc = dataUrl
-        })
+        setInterval(() => {
+            this.testing = (Math.random() + 1).toString(36).substring(7)
+        }, 500)
+        // utils.getDataUrlFromStorage('gs://comics-77200.appspot.com/videos/dashboard/test-compressed.mp4').then((dataUrl) => {
+        //     this.videoSrc = dataUrl
+        // })
+        // utils.getDataUrlFromStorage('gs://comics-77200.appspot.com/logos/kara_logo.png').then((dataUrl) => {
+        //     this.imgSrc = dataUrl
+        // })
         // this.shitshit('gs://comics-77200.appspot.com/videos/chapter_1/PAGE_1.mp4').then((dataurl) => {
         //     this.shit = dataurl
         // })

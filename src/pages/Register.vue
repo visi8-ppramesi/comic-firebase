@@ -38,7 +38,7 @@
 <script>
 import { useAuthStore } from '../store/auth.js'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
         failed: 'Register failed! Email already exists!',
@@ -49,6 +49,7 @@ const text = {
 }
 export default {
     name: 'register',
+    i18n: i18Texts,
     inject: [
         'routeResolver',
         'emitter'

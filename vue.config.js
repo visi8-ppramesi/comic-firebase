@@ -1,5 +1,8 @@
 const { defineConfig } = require('@vue/cli-service')
+const path = require('path')
+
 module.exports = defineConfig({
+  outputDir: path.resolve(__dirname, process.env.OUTPUT_DIR),
   runtimeCompiler: true,
   devServer: {
     hot: false,

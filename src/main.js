@@ -15,6 +15,7 @@ import VueToast from 'vue-toast-notification';
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
 import { vfmPlugin } from 'vue-final-modal'
+import { createI18n } from 'vue-i18n'
 // import QRCode from 'qrcode'
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
@@ -33,6 +34,11 @@ import './registerServiceWorker'
 //         }
 //     }
 // })
+
+const VueI18n = createI18n({
+    locale: 'en',
+    fallbackLocale: 'id'
+})
 
 const vuePropertySetter = (app, name, instance) => {
     app.provide(name, instance)
@@ -76,6 +82,7 @@ app.use(router)
 app.use(VueToast)
 app.use(Vue3Mq, {preset: 'tailwind'})
 app.use(VueLoading);
+app.use(VueI18n);
 app.use(createPinia())
 app.component('mq-responsive', MqResponsive)
 

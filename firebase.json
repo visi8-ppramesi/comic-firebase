@@ -28,7 +28,7 @@
     },
     {
       "target": "staging",
-      "public": "dist",
+      "public": "dist-staging",
       "ignore": [
         "firebase.json",
         "**/.*",

@@ -56,7 +56,7 @@ import HorizontalSlider from '../components/HorizontalSlider.vue'
 import { authorComicsQuery } from '../firebase/utils/queries.js'
 import Comic from '@/firebase/comics/Comic'
 
-const text = {
+const i18Texts = {
   en: {
     message: { 
         author: 'About Author',
@@ -66,6 +66,7 @@ const text = {
 }
 export default {
     name: 'author',
+    i18n: i18Texts,
     components: {
         HorizontalSlider,
     },

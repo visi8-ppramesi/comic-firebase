@@ -8,13 +8,18 @@
 
 <script>
 import Scene from '../firebase/comics/Scene.js'
-const text = {
+
+const i18Texts = {
   en: {
-    message: { 'Loading... Please wait' }
+    message: {
+        loading: 'Loading... Please wait'
+    }
   }
 }
+
 export default {
     name: 'scene-show',
+    i18n: i18Texts,
     data(){
         return {
             origHtmlClass: '',

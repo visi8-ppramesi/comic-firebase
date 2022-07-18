@@ -174,15 +174,15 @@ import { useAuthStore } from '../store/auth.js'
 import { mapState } from 'pinia'
 import utils from '../firebase/utils/index.js'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
-        views: '{ comic.view_count } views',
-        purchase: 'Purchase Comic {comic.price}',
+        views: '{ view_count } views',
+        purchase: 'Purchase Comic {price}',
         buy: 'buy comic',
-        episode: 'Ep. {chapter.chapter_number}',
-        read: 'Read Ep. {chapter.chapter_number}',
-        buyComic: 'Buy Ep. {chapter.chapter_number}',
+        episode: 'Ep. {chapter_number}',
+        read: 'Read Ep. {chapter_number}',
+        buyComic: 'Buy Ep. {chapter_number}',
         commentTitle: 'Add a new comment',
         comment: 'Comments'
     }
@@ -190,6 +190,7 @@ const text = {
 }
 export default {
     name: 'comic-show',
+    i18n: i18Texts,
     inject: ['routeResolver'],
     components: {
         CommentComponent,

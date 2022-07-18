@@ -34,7 +34,7 @@
 import { useAuthStore } from '@/store/auth'
 import { mapState } from 'pinia'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
         title: 'Your Transaction History',
@@ -49,6 +49,7 @@ const text = {
   }
 }
 export default {
+    i18n: i18Texts,
     data(){
         return {
             transactions: [],

@@ -7,14 +7,15 @@
 </template>
 
 <script>
-const text = {
+const i18Texts = {
   en: {
     message: {
-        'Page Not Found'
+        'not-found': 'Page Not Found'
     }
   }
 }
 export default {
+    i18n: i18Texts,
 }
 </script>
 

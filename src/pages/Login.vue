@@ -34,7 +34,7 @@
 <script>
 import { useAuthStore } from '../store/auth.js'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
       forgot: 'Forgot Password?',
@@ -48,6 +48,7 @@ const text = {
 }
 export default {
     name:'login',
+    i18n: i18Texts,
     data(){
         return {
             email: '',

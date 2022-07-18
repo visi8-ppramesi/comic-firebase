@@ -51,7 +51,7 @@
 </template>
 
 <script>
-const text = {
+const i18Texts = {
   en: {
     message: {
       title: 'About Visi8',
@@ -62,8 +62,8 @@ const text = {
                     
                     for both national and international market. This project is currently still being produced by our in-house production.`,
       ceo: 'CEO Of Visi8',
-      cofounder: 'CO-FOUNDER'.
-      title2: 'WHAT WE DO'
+      cofounder: 'CO-FOUNDER',
+      title2: 'WHAT WE DO',
       services: {
         design: 'AR and 3D Design',
         web: 'Web and Apps',
@@ -75,6 +75,7 @@ const text = {
 // import AppLayout from '@/Layouts/AppLayout.vue'
 export default {
     name: 'about-us',
+    i18n: i18Texts,
     components: {
         // AppLayout,
     },

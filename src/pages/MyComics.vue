@@ -46,7 +46,7 @@ import { useAuthStore } from '@/store/auth'
 import { mapState } from 'pinia'
 import Comic from '@/firebase/comics/Comic.js'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
         title: 'Your Purchased Comics',
@@ -63,6 +63,7 @@ export default {
             loaded: false
         }
     },
+    i18n: i18Texts,
     computed: {
         ...mapState(useAuthStore, ['userInstance'])
     },

@@ -236,7 +236,7 @@ import { authorLimitTen, orderByLimit } from '../firebase/utils/queries.js'
 // import UserRole from '../firebase/UserRole.js'
 // import { ref } from 'vue'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
       title1: 'All Comics',
@@ -250,6 +250,7 @@ const text = {
 
 export default {
     name: 'dashboard-page',
+    i18n: i18Texts,
     components: {
         HorizontalSlider,
         Banner,

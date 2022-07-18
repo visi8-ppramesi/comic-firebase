@@ -51,7 +51,7 @@ import startCase from 'lodash/startCase'
 import toLower from 'lodash/toLower'
 import Grid from '../components/Grid.vue'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
       sort: 'Sort By',
@@ -64,6 +64,7 @@ const text = {
 }
 export default {
     name: 'authors',
+    i18n: i18Texts,
     components: {
         Grid
     },

@@ -81,10 +81,10 @@ import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import Comic from '@/firebase/comics/Comic';
 
-const text = {
+const i18Texts = {
   en: {
     message: {
-      episode: 'Episode {chapter.chapter_number}',
+      episode: 'Episode {chapter_number}',
       chapter: 'Select Chapter',
       prev: 'prev',
       next: 'next'
@@ -94,6 +94,7 @@ const text = {
 
 export default {
     name: 'chapter',
+    i18n: i18Texts,
     inject: ['routeResolver'],
     components: {
         ImageViewer,

@@ -5,14 +5,16 @@
 <script>
 import { useAuthStore } from '../store/auth.js'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
-        'Logging out...'
+        'log-out': 'Logging out...'
     }
   }
 }
+
 export default {
+    i18n: i18Texts,
     setup(){
         const authStore = useAuthStore()
 

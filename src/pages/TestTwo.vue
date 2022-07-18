@@ -99,13 +99,6 @@ import fb from '../firebase/firebase.js'
 // import VideoPlayer from '../components/VideoPlayer.vue'
 // import utils from '../firebase/utils/index.js'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
-const text = {
-  en: {
-    message: {
-        'test'
-    }
-  }
-}
 export default {
     components: {
         // VideoPlayer

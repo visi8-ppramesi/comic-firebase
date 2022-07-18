@@ -48,7 +48,7 @@ import isNil from 'lodash/isNil'
 import { searchQueryArray as searchQueryHelper } from '../firebase/utils/queries.js'
 import Comic from '@/firebase/comics/Comic'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
         search: 'Search results for {query}',
@@ -59,6 +59,7 @@ const text = {
 }
 export default {
     name: 'search',
+    i18n: i18Texts,
     components: {
         Grid
     },

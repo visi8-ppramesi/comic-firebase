@@ -29,11 +29,11 @@ import Comic from '@/firebase/comics/Comic.js'
 // import _ from 'lodash'
 import over from 'lodash/over'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
         update: 'Comic Update: { notif.title } Chapter {notif.chapter_number}',
-        release: 'Release date: { notif.created_date.toDate().toLocaleDateString('id-ID') }',
+        release: 'Release date: { notif.created_date.toDate().toLocaleDateString(\'id-ID\') }',
         load: 'Load More'
     }
   }
@@ -41,6 +41,7 @@ const text = {
 export default{
     name: 'my-notifications',
     inject: ['routeResolver'],
+    i18n: i18Texts,
     mounted(){
         this.loader = this.$loading.show({
             loader: 'dots'

@@ -130,11 +130,11 @@ import { mapState } from 'pinia'
 // import _ from 'lodash'
 import isNil from 'lodash/isNil'
 
-const text = {
+const i18Texts = {
   en: {
     message: {
         title: 'Profile Information',
-        accDescription: 'Update Your Account's Profile Information and Email Address',
+        accDescription: 'Update Your Account\'s Profile Information and Email Address',
         profile: 'Profile Photo',
         profilePicture: 'Select Profile Picture',
         username: 'Username',
@@ -151,6 +151,7 @@ const text = {
 }
 export default {
     name: 'my-account',
+    i18n: i18Texts,
     data() {
         return {
             profilePicture: null,
