@@ -35,8 +35,8 @@
 import { useAuthStore } from '../store/auth.js'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
       forgot: 'Forgot Password?',
       wrong: 'Wrong password or email',
       login: 'Log In',

@@ -49,8 +49,8 @@ import { searchQueryArray as searchQueryHelper } from '../firebase/utils/queries
 import Comic from '@/firebase/comics/Comic'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         search: 'Search results for {query}',
         noResult: 'No Result for {query} found',
         resultTitle: 'Comic Search Result'

@@ -8,8 +8,8 @@
 
 <script>
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
         'not-found': 'Page Not Found'
     }
   }

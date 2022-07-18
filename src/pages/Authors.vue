@@ -52,8 +52,8 @@ import toLower from 'lodash/toLower'
 import Grid from '../components/Grid.vue'
 
 const i18Texts = {
-  en: {
-    message: {
+  messages: {
+    en: {
       sort: 'Sort By',
       title: 'Title',
       release: 'Release Date',
