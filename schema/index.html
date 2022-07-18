@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    </head>
+    <body>
+        <div class="mermaid">
+            classDiagram
+                Author --|> Comic : projection
+                Comment --o Comic : subdoc
+                User --|> Comment : projection
+                Chapter --o Comic : subdoc
+                Chapter --|> Comic : projection
+                Page --o Chapter : subdoc
+                Scene --o Page : subdoc
+                Scene --|> Page : projection
+                class Author {
+                    String name
+                    ProfilePicture profile_picture_url
+                    LongText description
+                    Array~Object~ social_media_links
+                    String email
+                }
+                class Comic {
+                    String title
+                    Number view_count
+                    Number favorite_count
+                    Date release_date
+                    Array~AuthorRef~ author_id
+                    Array~Author~ authors_data
+                    Number price
+                    LongText description
+                    Array~String~ tags
+                    Array~String~ categories
+                    StorageLink cover_image_url
+                    String cover_image_url_landscape
+                    Boolean is_draft
+                    Date last_update
+                    Array~Chapter~ chapters_data
+                }
+                class Chapter {
+                    Number chapter_number 
+                    Date release_date 
+                    Number view_count 
+                    Number price 
+                    Number ar_price 
+                    StorageLink chapter_preview_url 
+                }
+                class Page {
+                    Number page_number 
+                    String page_image_url 
+                    Boolean is_ar 
+                    Object config 
+                    String media_type 
+                    Array~Scene~ scenes_data 
+                    Object ar_button_show_time 
+                    String async_component 
+                }
+                class Scene {
+                    String scene_html
+                    Stringar_model_url
+                }
+                class Comment {
+                    UserRef user
+                    User user_data
+                    String message
+                    Date created_date
+                    Number flag
+                }
+                class User{
+
+                }
+        </div>
+    </body>
+</html>
