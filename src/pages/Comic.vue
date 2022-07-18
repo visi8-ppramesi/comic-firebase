@@ -173,6 +173,21 @@ import { useViewStore } from '../store/view.js'
 import { useAuthStore } from '../store/auth.js'
 import { mapState } from 'pinia'
 import utils from '../firebase/utils/index.js'
+
+const text = {
+  en: {
+    message: {
+        views: '{ comic.view_count } views',
+        purchase: 'Purchase Comic {comic.price}',
+        buy: 'buy comic',
+        episode: 'Ep. {chapter.chapter_number}',
+        read: 'Read Ep. {chapter.chapter_number}',
+        buyComic: 'Buy Ep. {chapter.chapter_number}',
+        commentTitle: 'Add a new comment',
+        comment: 'Comments'
+    }
+  }
+}
 export default {
     name: 'comic-show',
     inject: ['routeResolver'],

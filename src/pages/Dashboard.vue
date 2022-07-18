@@ -235,6 +235,19 @@ import { authorLimitTen, orderByLimit } from '../firebase/utils/queries.js'
 // import Tag from '../firebase/Tag.js'
 // import UserRole from '../firebase/UserRole.js'
 // import { ref } from 'vue'
+
+const text = {
+  en: {
+    message: {
+      title1: 'All Comics',
+      title2: 'Adventure',
+      title3: 'Science Fiction',
+      show: 'Show More',
+      authors: 'Authors',
+    }
+  }
+}
+
 export default {
     name: 'dashboard-page',
     components: {

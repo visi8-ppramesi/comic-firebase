@@ -37,6 +37,16 @@
 
 <script>
 import { useAuthStore } from '../store/auth.js'
+
+const text = {
+  en: {
+    message: {
+        failed: 'Register failed! Email already exists!',
+        register: 'Register',
+        goback: 'Go Back'
+    }
+  }
+}
 export default {
     name: 'register',
     inject: [

@@ -50,6 +50,18 @@ import { categoryQueryPaginated } from '../firebase/utils/queries.js'
 import startCase from 'lodash/startCase'
 import toLower from 'lodash/toLower'
 import Grid from '../components/Grid.vue'
+
+const text = {
+  en: {
+    message: {
+      sort: 'Sort By',
+      title: 'Title',
+      release: 'Release Date',
+      updated: 'Last Updated',
+      views: 'views'
+    }
+  }
+}
 export default {
     name: 'authors',
     components: {

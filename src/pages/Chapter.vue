@@ -81,6 +81,17 @@ import debounce from 'lodash/debounce'
 import isArray from 'lodash/isArray'
 import Comic from '@/firebase/comics/Comic';
 
+const text = {
+  en: {
+    message: {
+      episode: 'Episode {chapter.chapter_number}',
+      chapter: 'Select Chapter',
+      prev: 'prev',
+      next: 'next'
+    }
+  }
+}
+
 export default {
     name: 'chapter',
     inject: ['routeResolver'],

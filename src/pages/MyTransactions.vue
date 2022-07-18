@@ -33,6 +33,21 @@
 <script>
 import { useAuthStore } from '@/store/auth'
 import { mapState } from 'pinia'
+
+const text = {
+  en: {
+    message: {
+        title: 'Your Transaction History',
+        id: 'Id',
+        name: 'Name',
+        description: 'Description',
+        price: 'Price',
+        currency: 'Currency',
+        payment: 'Payment',
+        transaction: 'Transaction Time'
+    }
+  }
+}
 export default {
     data(){
         return {

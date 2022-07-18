@@ -47,6 +47,16 @@ import Grid from '../components/Grid.vue'
 import isNil from 'lodash/isNil'
 import { searchQueryArray as searchQueryHelper } from '../firebase/utils/queries.js'
 import Comic from '@/firebase/comics/Comic'
+
+const text = {
+  en: {
+    message: {
+        search: 'Search results for {query}',
+        noResult: 'No Result for {query} found',
+        resultTitle: 'Comic Search Result'
+    }
+  }
+}
 export default {
     name: 'search',
     components: {

@@ -55,6 +55,15 @@ import Author from '@/firebase/Author'
 import HorizontalSlider from '../components/HorizontalSlider.vue'
 import { authorComicsQuery } from '../firebase/utils/queries.js'
 import Comic from '@/firebase/comics/Comic'
+
+const text = {
+  en: {
+    message: { 
+        author: 'About Author',
+        book: 'Author books'
+    }
+  }
+}
 export default {
     name: 'author',
     components: {

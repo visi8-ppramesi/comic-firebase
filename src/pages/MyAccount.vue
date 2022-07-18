@@ -129,6 +129,26 @@ import { mapState } from 'pinia'
 // import firebase from '../firebase/firebase.js'
 // import _ from 'lodash'
 import isNil from 'lodash/isNil'
+
+const text = {
+  en: {
+    message: {
+        title: 'Profile Information',
+        accDescription: 'Update Your Account's Profile Information and Email Address',
+        profile: 'Profile Photo',
+        profilePicture: 'Select Profile Picture',
+        username: 'Username',
+        email: 'Email',
+        fullname: 'Fullname',
+        save: 'Save',
+        password: 'Update Password',
+        passDescription: 'Ensure Your Password is using a long, random password to stay secure',
+        currentPass: 'Current Password',
+        newPass: 'New Password',
+        confirmPass: 'Confirm Password',
+    }
+  }
+}
 export default {
     name: 'my-account',
     data() {

@@ -7,6 +7,13 @@
 </template>
 
 <script>
+const text = {
+  en: {
+    message: {
+        'Page Not Found'
+    }
+  }
+}
 export default {
 }
 </script>
