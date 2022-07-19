@@ -7,12 +7,12 @@
         <div class="mermaid">
             classDiagram
                 Author --|> Comic : projection
-                Comment --o Comic : subdoc
+                Comment o-- Comic : subdoc
                 User --|> Comment : projection
-                Chapter --o Comic : subdoc
+                Chapter o-- Comic : subdoc
                 Chapter --|> Comic : projection
-                Page --o Chapter : subdoc
-                Scene --o Page : subdoc
+                Page o-- Chapter : subdoc
+                Scene o-- Page : subdoc
                 Scene --|> Page : projection
                 class Author {
                     String name
@@ -21,6 +21,7 @@
                     Array~Object~ social_media_links
                     String email
                 }
+                ComicCounter o-- Comic : subdoc
                 class Comic {
                     String title
                     Number view_count
@@ -37,7 +38,12 @@
                     Boolean is_draft
                     Date last_update
                     Array~Chapter~ chapters_data
+                    Array~String~ keywords
                 }
+                class ComicCounter{
+                    Number view_count
+                }
+                ChapterCounter o-- Chapter : subdoc
                 class Chapter {
                     Number chapter_number 
                     Date release_date 
@@ -46,13 +52,16 @@
                     Number ar_price 
                     StorageLink chapter_preview_url 
                 }
+                class ChapterCounter{
+                    Number view_count
+                }
                 class Page {
                     Number page_number 
                     String page_image_url 
                     Boolean is_ar 
                     Object config 
                     String media_type 
-                    Array~Scene~ scenes_data 
+                    Array~Scene~ scenes_data
                     Object ar_button_show_time 
                     String async_component 
                 }
@@ -67,8 +76,79 @@
                     Date created_date
                     Number flag
                 }
-                class User{
-
+                PurchasedComic o-- User : subdoc
+                ReadHistory o-- User : subdoc
+                Order o-- User : subdoc
+                Receipt o-- User : subdoc
+                class User {
+                    String email 
+                    String name 
+                    String full_name
+                    Array~ComicRef~ favorites 
+                    Array~ComicRef~ bookmarks 
+                    Array~ComicRef~ comic_subscriptions 
+                    Date email_verified_at 
+                    ProfilePicture profile_image_url 
+                }
+                Comic .. PurchasedComic : ShareId
+                class PurchasedComic {
+                    Array~ChapterRef~ chapters
+                }
+                Comic .. ReadHistory : ShareId
+                class ReadHistory {
+                    Array~ChapterRef~ chapters
+                }
+                class Order {
+                    Number chapters 
+                    String status 
+                    Number total_amount 
+                    String order_id 
+                    Date created_date 
+                    String type 
+                    Array~any~ items 
+                    Object notification_response
+                    Object charge_response
+                }
+                class Receipt {
+                    Date created_date 
+                    Number total_amount 
+                    Number tax 
+                    Number discount 
+                    String payment_method 
+                    String purchaser_name 
+                    Object purchaser_address 
+                    Array~any~ items 
+                    String transaction_id 
+                }
+                User .. Notification : ShareId
+                class Notification {
+                    Number unread_count
+                }
+                ComicNotification o-- Notification : subdoc
+                class ComicNotification {
+                    ChapterRef chapter
+                    ComicRef comic
+                    Date created_date
+                    Boolean unread
+                }
+                class Category {
+                    String name
+                }
+                class Tag {
+                    String name
+                }
+                class Setting {
+                    Any value
+                }
+                class AsyncComponent {
+                    String data
+                    String template
+                    String created
+                    String name
+                }
+                User .. UserRole : ShareId
+                class UserRole {
+                    Array~String~ roles
                 }
         </div>
     </body>

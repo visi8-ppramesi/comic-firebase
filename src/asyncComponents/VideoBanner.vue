@@ -1,6 +1,6 @@
 <template>
     <div class="flex w-full h-full">
-        <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute w-full h-full object-cover"></video>
+        <video playsinline autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute w-full h-full object-cover"></video>
         <div class="w-full h-full bg-black/50 items-center justify-center z-20 flex text-white">
             <img v-show="imgSrc" :src="imgSrc" />
         </div>

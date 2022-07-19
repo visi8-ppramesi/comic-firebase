@@ -17,8 +17,7 @@
                 <video
                     class="video"
                     ref="videoElement"
-                    playsinline
-                    loop
+                    playsinline autoplay loop
                     :src="source"
                     type="video/mp4">
                 </video>

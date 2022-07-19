@@ -1,7 +1,7 @@
 <template>
     <div class="flex w-screen h-screen">
-        {{ $t('message.hello', {  test: testing }) }}
-        {{testing}}
+        {{ $t('message.hello') }}
+        <button @click="test">test</button>
         <!-- <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute h-screen object-cover"></video>
         <div class="w-full h-full bg-black/50 items-center justify-center z-20 flex text-white">
             <img v-show="imgSrc" :src="imgSrc" />
@@ -14,6 +14,7 @@
 import fb from '../firebase/firebase.js'
 import { defineAsyncComponent, shallowRef } from 'vue'
 import TestComponent from '../components/TestComponent.vue'
+import { useI18nStore } from '@/store/i18n.js'
 // import { httpsCallable, connectFunctionsEmulator } from 'firebase/functions'
 // import StepperComponent from '../components/stepper/StepperComponent.vue'
 // import StepOne from '../components/stepper/StepOne.vue'
@@ -34,8 +35,8 @@ export default {
     inject: ['Viewer'],
     i18n: {
         messages: {
-            en: { message: { hello: 'hello component {test}' } },
-            id: { message: { hello: 'こんにちは、component1' } }
+            en: { message: { hello: 'hello' } },
+            id: { message: { hello: 'halo pak' } }
         }
     },
     data(){
@@ -60,6 +61,7 @@ export default {
             gsPath6: 'gs://comics-77200.appspot.com/test/web_comic_9_compressed.mp4',
             videoSrc: null,
             imgSrc: null,
+            i18nStore: null
             // paymentType: null,
             // image: require('../assets/logo.png'),
             // showModal: false,
@@ -121,9 +123,7 @@ export default {
         }
     },
     created(){
-        setInterval(() => {
-            this.testing = (Math.random() + 1).toString(36).substring(7)
-        }, 500)
+        this.i18nStore = useI18nStore()
         // utils.getDataUrlFromStorage('gs://comics-77200.appspot.com/videos/dashboard/test-compressed.mp4').then((dataUrl) => {
         //     this.videoSrc = dataUrl
         // })
@@ -173,7 +173,7 @@ export default {
         },
         async shitfuck(){},
         test(){
-            console.log('test')
+            console.log(this.i18nStore.test())
         },
         async getBlob(gsPath){//gs://comics-77200.appspot.com/videos/test/PAGE_18.mp4
             return await getStorageBlob(ref(fb.storage, gsPath))
