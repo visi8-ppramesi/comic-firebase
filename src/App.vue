@@ -515,7 +515,7 @@
           <a target="_blank" :href="socials.twitter"><img class="w-8" :src="twitter" /></a>
         </div>
       </div>
-      <div v-if="multiLanguage" class="h-12 py-2 flex justify-center content-center items-center text-sm">
+      <div class="h-12 py-2 flex justify-center content-center items-center text-sm">
         <span class="mr-2">{{ $t('language') }}:</span>
         <span @click="selectLanguage('en')" class="lang-selector" :class="{ 'lang-selected': $i18n.locale === 'en' }">En</span> | <span @click="selectLanguage('id')" class="lang-selector" :class="{ 'lang-selected': $i18n.locale === 'id' }">Id</span>
       </div>

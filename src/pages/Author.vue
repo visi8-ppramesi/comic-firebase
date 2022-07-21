@@ -33,11 +33,11 @@
                 </div>
             </div>
             <div class="p-5">
-                <div class="text-xl font-bold">About Author :</div>
+                <div class="text-xl font-bold">{{ $t("author") }} :</div>
                 <div>{{author.description}}</div>
             </div>
             <div class="p-5">
-                <div class="text-xl font-bold">Author Books :</div>
+                <div class="text-xl font-bold">{{ $t("book") }} :</div>
                 <div class="mb-3">
                     <div>
                         <horizontal-slider :items="comics"

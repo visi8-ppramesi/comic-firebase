@@ -9,8 +9,8 @@
             <div class="px-5 py-5">
                 <div class="mb-3">
                     <div class="flex items-center justify-between mb-2">
-                        <div>All Comics</div>
-                        <div><router-link :to="routeResolver('Comics', {}, {category: 'all'})" class="text-blue-200">Show More</router-link></div>
+                        <div>{{ $t("title1") }}</div>
+                        <div><router-link :to="routeResolver('Comics', {}, {category: 'all'})" class="text-blue-200">{{ $t("show") }}</router-link></div>
                     </div>
                     <mq-responsive target="sm-" tag="span">
                         <horizontal-slider :items="comics" :config="comicConfig" />
@@ -24,8 +24,8 @@
             <div class="px-5 py-5">
                 <div class="mb-3">
                     <div class="flex items-center justify-between mb-2">
-                        <div>Adventure</div>
-                        <div><router-link :to="routeResolver('Comics', {}, {category: 'adventure'})" class="text-blue-200">Show More</router-link></div>
+                        <div>{{ $t("title2") }}</div>
+                        <div><router-link :to="routeResolver('Comics', {}, {category: 'adventure'})" class="text-blue-200">{{ $t("show") }}</router-link></div>
                     </div>
                     <mq-responsive target="sm-" tag="span">
                         <horizontal-slider :items="comics" :config="comicConfig" />
@@ -39,8 +39,8 @@
             <div class="px-5 py-5">
                 <div class="mb-3">
                     <div class="flex items-center justify-between mb-2">
-                        <div>Science Fiction</div>
-                        <div><router-link :to="routeResolver('Comics', {}, {category: 'scifi'})" class="text-blue-200">Show More</router-link></div>
+                        <div>{{ $t("title3") }}</div>
+                        <div><router-link :to="routeResolver('Comics', {}, {category: 'scifi'})" class="text-blue-200">{{ $t("show") }}</router-link></div>
                     </div>
                     <mq-responsive target="sm-" tag="span">
                         <horizontal-slider :items="comics" :config="comicConfig" />
@@ -54,8 +54,8 @@
             <div class="px-5 py-5">
                 <div class="mb-3">
                     <div class="flex items-center justify-between mb-2">
-                        <div>Authors</div>
-                        <div><router-link :to="routeResolver('Authors', {}, {category: 'all'})" class="text-blue-200">Show More</router-link></div>
+                        <div>{{ $t("authors") }}</div>
+                        <div><router-link :to="routeResolver('Authors', {}, {category: 'all'})" class="text-blue-200">{{ $t("show") }}</router-link></div>
                     </div>
                     <mq-responsive target="sm-" tag="span">
                         <horizontal-slider :items="authors" :config="authorConfig"/>
@@ -247,8 +247,8 @@ const i18Texts = {
     },
     id: {
         title1: 'Semua Komik',
-        title2: 'Komik Adventure',
-        title3: 'Komik Science Fiction',
+        title2: 'Petualangan',
+        title3: 'Fiksi Ilmiah',
         show: 'Lihat Lebih Banyak',
         authors: 'Penulis',
     }

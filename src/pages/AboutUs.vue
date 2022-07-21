@@ -1,15 +1,11 @@
 <template>
     <div class="text-white divide-y">
         <div>
-            <div class="text-4xl text-center p-3">About Visi8</div>
+            <div class="text-4xl text-center p-3">{{ $t("title") }}</div>
             <div class="justify-end items-center bg-blue-100 w-full h-52" :style="'background-size:cover;background-position:center;background-image: linear-gradient(rgba(245, 246, 252, 0) 50%, rgb(49 46 129)), url('+ background +');'">
             </div>
             <div class="p-3 text-center">
-                It’s 3D Animated movie , about a young guardian of the magical realms, who is curious yet skeptical toward humans, must cooperate with two mysterious human time explorers in order to find the source of anomalies, before the destructions spreads too far.
-
-                The project itself will develop it’s IP, through movies, games, AR & VR Experience, as well as merchandising and licensing for both national and international market.
-
-                This project is currently still being produced by our in-house production.
+                {{ $t("description") }}
             </div>
         </div>
         <!-- <div>
@@ -34,15 +30,15 @@
             </div>
         </div> -->
         <div>
-            <div class="text-2xl text-center text-white py-3">WHAT WE DO</div>
+            <div class="text-2xl text-center text-white py-3">{{ $t("title2") }}</div>
             <div class="mb-7">
                 <div class="grid grid-cols-3 divide-x divide-green-500 lg:mt-10">
-                    <div class="text-center px-3">AR and 3D Design</div>
+                    <div class="text-center px-3">{{ $t("services.design") }}</div>
                     <div>
-                        <div class="text-center px-3">Web and Apps</div>
+                        <div class="text-center px-3">{{ $t("services.web") }}</div>
                     </div>
                     <div>
-                        <div class="text-center px-3">Animation Movie</div>
+                        <div class="text-center px-3">{{ $t("services.animation") }}</div>
                     </div>
                 </div>
             </div>
@@ -55,7 +51,7 @@ const i18Texts = {
   messages: {
     en: {
       title: 'About Visi8',
-      decription: `it’s 3D Animated movie, about a young guardian of the magical realms, who is curious yet skeptical toward humans, 
+      description: `it’s 3D Animated movie, about a young guardian of the magical realms, who is curious yet skeptical toward humans, 
                     must cooperate with two mysterious human time explorers in order to find the source of anomalies, before the destructions spreads too far.
 
                     The project itself will develop it’s IP, through movies, games, AR & VR Experience, as well as merchandising and licensing 
@@ -72,13 +68,13 @@ const i18Texts = {
     },
     id: {
         title: "Tentang Visi8",
-        description: `it’s 3D Animated movie, about a young guardian of the magical realms, who is curious yet skeptical toward humans, 
-                    must cooperate with two mysterious human time explorers in order to find the source of anomalies, before the destructions spreads too far.
-
-                    The project itself will develop it’s IP, through movies, games, AR & VR Experience, as well as merchandising and licensing 
-                    
-                    for both national and international market. This project is currently still being produced by our in-house production.`,
-        title2: "Bagaimana Kita Bekerja",
+        description: `Kara merupakan film animasi 3d, bercerita tentang seorang penjaga yang berasal dari alam yang magis, 
+                      yang penasaran namun juga memiliki keraguan terhadap manusia. Kara harus bekerja sama dengan
+                      dua manusia penjelajah waktu yang misterius untuk menemukan sumber anomali sebelum kehancuran
+                      menyebar terlalu jauh. Project kara tersebut akan dikembangkan melalui animasi, permainan, pengalaman
+                      AR dan VR, serta akan mengambil pasar nasional dan internasional. Projek ini saat ini masih diproduksi
+                      di rumah produksi kami.`,
+        title2: "Apa yang Kita Lakukan",
         ceo: "CEO Visi8",
         services: {
             design: "Desain AR dan 3D",

@@ -16,13 +16,13 @@
                         <input name="password" for="password" class="shadow appearance-none border border-red rounded-full w-full py-2 px-3 text-grey-darker mb-3" v-model="password" id="password" type="password" placeholder="Password">
                     </div>
                 </form>
-                <div v-if="registerFailed" class="text-red-400 mb-2">Register failed! Email already exists!</div>
+                <div v-if="registerFailed" class="text-red-400 mb-2">{{ $t("failed") }}</div>
                 <div class="flex flex-col items-center justify-between">
                     <button @click="register" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
-                        Register
+                        {{ $t("register") }}
                     </button>
                     <router-link :to="routeResolver('Login')" class="text-blue-200 mt-4">
-                        Go Back
+                        {{ $t("goback") }}
                     </router-link>
                 </div>
                 <div class="flex flex-row items-center justify-center mt-3">

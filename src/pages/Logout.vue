@@ -1,5 +1,5 @@
 <template>
-    <div>Logging out...</div>
+    <div>{{ $t("log-out") }}</div>
 </template>
 
 <script>

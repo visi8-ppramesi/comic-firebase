@@ -1,7 +1,7 @@
 <template>
     <div class="flex text-center text-white text-5xl h-screen-navbar w-screen justify-center items-center">
         <div>
-            Loading... Please wait
+            {{ $t("loading") }}
         </div>
     </div>
 </template>
@@ -13,6 +13,10 @@ const i18Texts = {
   messages: {
     en: {
         loading: 'Loading... Please wait'
+    },
+
+    in: {
+        loading: 'Loading... Harap Tunggu'
     }
   }
 }
