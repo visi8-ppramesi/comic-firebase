@@ -515,6 +515,10 @@
           <a target="_blank" :href="socials.twitter"><img class="w-8" :src="twitter" /></a>
         </div>
       </div>
+      <div v-if="multiLanguage" class="h-12 py-2 flex justify-center content-center items-center text-sm">
+        <span class="mr-2">{{ $t('language') }}:</span>
+        <span @click="selectLanguage('en')" class="lang-selector" :class="{ 'lang-selected': $i18n.locale === 'en' }">En</span> | <span @click="selectLanguage('id')" class="lang-selector" :class="{ 'lang-selected': $i18n.locale === 'id' }">Id</span>
+      </div>
     </div>
   </div>
   <div id="modal"></div>
@@ -523,15 +527,52 @@
 <script>
 import { useAuthStore } from './store/auth.js'
 import { mapState } from 'pinia'
+import { useI18nStore } from '@/store/i18n.js'
 import Settings from './firebase/Setting.js'
 // import facebook from "../assets/icons/facebook.png";
 // import instagram from "../assets/icons/instagram.png";
 // import twitter from "../assets/icons/twitter.png";
+const i18Texts = {
+  messages: {
+    en: {
+      language: 'Language',
+      myAccount: 'My Account',
+      faq: 'FAQ',
+      logout: 'Logout',
+      login: 'Login',
+      register: 'Register',
+      dashboard: 'Dashboard',
+      myComics: 'My Comics',
+      myTransactions: 'My Transactions',
+      purchaseTokens: 'Purchase Tokens',
+      aboutUs: 'About Us',
+      privacyPolicy: 'Privacy Policy',
+      follow: 'Follow Us On'
+    },
+    id: {
+      language: 'Bahasa',
+      myAccount: 'Akun Saya',
+      faq: 'FAQ',
+      logout: 'Keluar',
+      login: 'Masuk',
+      register: 'Daftar',
+      dashboard: 'Dashboard',
+      myComics: 'Komik Saya',
+      myTransactions: 'Transaksi Saya',
+      purchaseTokens: 'Beli Token',
+      aboutUs: 'Tentang Kami',
+      privacyPolicy: 'Kebijakan Privasi',
+      follow: 'Ikuti Kami Di'
+    }
+  }
+}
+
 export default {
   name: "App",
   components: {
 
   },
+  i18n: i18Texts,
   mounted(){
     document.addEventListener('click', (e) => {
       if(!(e.target.closest("#mobile-menu-button") || e.target.closest("#user-menu-button"))){
@@ -546,10 +587,12 @@ export default {
     this.getSocials()
   },
   setup(){
+    const i18nStore = useI18nStore()
     const authStore = useAuthStore()
     authStore.authAction()
     return {
-      authStore
+      authStore,
+      i18nStore
     }
   },
   // created(){
@@ -575,12 +618,16 @@ export default {
     'emitter'
   ],
   computed: {
+    multiLanguage: () => process.env.VUE_APP_MULTI_LANGUAGE === 'true',
     showNav(){
       return this.$route.meta.showNav
     },
     ...mapState(useAuthStore, ['user', 'isLoggedIn', 'profile_image_url', 'unreadCount'])
   },
   methods: {
+    selectLanguage(lang){
+      this.i18nStore.changeLocale(lang)
+    },
     goTo(url){
       this.$router.push(url)
     },
@@ -610,6 +657,20 @@ export default {
 </script>
 
 <style>
+.lang-selected:before{
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  content: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20fill=%22none%22%20viewBox=%220%200%2024%2024%22%20stroke=%22white%22%20stroke-width=%222%22%3E%3Cpath%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%20d=%22M5%2013l4%204L19%207%22%20/%3E%3C/svg%3E");
+}
+.lang-selected{
+  padding: 1px 5px;
+  display: flex;
+  align-items: center;
+  border: 1px white solid;
+  border-radius: 8px;
+  align-items: center;
+}
 #mobile-menu {
   z-index: 900;
 }

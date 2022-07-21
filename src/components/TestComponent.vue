@@ -12,6 +12,11 @@ export default {
             type: String,
             default: 'test'
         }
+    },
+    data(){
+        return {
+            test: 'test'
+        }
     }
 }
 </script>

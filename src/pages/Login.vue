@@ -43,6 +43,14 @@ const i18Texts = {
       account: 'Dont have an account yet?',
       signup: 'Sign Up',
       option: 'Or Login With'
+    },
+    id: {
+        forgot: 'Lupa Password?',
+        wrong: 'Password atau email salah',
+        login: 'Masuk',
+        account: 'Belum punya akun?',
+        signup: 'Daftar',
+        option: 'Atau Masuk Dengan'
     }
   }
 }

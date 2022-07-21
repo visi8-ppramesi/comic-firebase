@@ -69,6 +69,22 @@ const i18Texts = {
         web: 'Web and Apps',
         animation: 'Animation Movie'
       }
+    },
+    id: {
+        title: "Tentang Visi8",
+        description: `it’s 3D Animated movie, about a young guardian of the magical realms, who is curious yet skeptical toward humans, 
+                    must cooperate with two mysterious human time explorers in order to find the source of anomalies, before the destructions spreads too far.
+
+                    The project itself will develop it’s IP, through movies, games, AR & VR Experience, as well as merchandising and licensing 
+                    
+                    for both national and international market. This project is currently still being produced by our in-house production.`,
+        title2: "Bagaimana Kita Bekerja",
+        ceo: "CEO Visi8",
+        services: {
+            design: "Desain AR dan 3D",
+            web: "Web dan Aplikasi",
+            animation: "Animasi Movie"
+        }
     }
   }
 }

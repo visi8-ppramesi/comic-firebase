@@ -88,6 +88,12 @@ const i18Texts = {
       chapter: 'Select Chapter',
       prev: 'prev',
       next: 'next'
+    },
+    id: {
+        episode: 'Episode {chapter_number}',
+        chapter: 'Pilih Chapter',
+        prev: 'sebelumnya',
+        next: 'selanjutnya'
     }
   }
 }

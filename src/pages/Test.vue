@@ -2,6 +2,7 @@
     <div class="flex w-screen h-screen">
         {{ $t('message.hello') }}
         <button @click="test">test</button>
+        <TestComponent v-test></TestComponent>
         <!-- <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute h-screen object-cover"></video>
         <div class="w-full h-full bg-black/50 items-center justify-center z-20 flex text-white">
             <img v-show="imgSrc" :src="imgSrc" />
@@ -28,6 +29,7 @@ import { getBlob as getStorageBlob, ref } from 'firebase/storage'
 
 export default {
     components: {
+        TestComponent
         // AsyncComponent
         // VideoPlayer
         // StepperComponent

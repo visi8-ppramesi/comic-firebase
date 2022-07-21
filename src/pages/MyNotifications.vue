@@ -32,8 +32,13 @@ import over from 'lodash/over'
 const i18Texts = {
   messages: {
     en: {
-        update: 'Comic Update: { notif.title } Chapter {notif.chapter_number}',
-        release: 'Release date: { notif.created_date.toDate().toLocaleDateString(\'id-ID\') }',
+        update: 'Comic Update: { title } Chapter { chapter_number }',
+        release: 'Release date: { release_date }',
+        load: 'Load More'
+    },
+    id: {
+        update: 'Terakhir Diperbarui: { title } Chapter { chapter_number }',
+        release: 'Tanggal Rilis: { release_date }',
         load: 'Load More'
     }
   }

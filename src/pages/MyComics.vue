@@ -52,6 +52,11 @@ const i18Texts = {
         title: 'Your Purchased Comics',
         chapter: 'Chapter',
         load: 'Load More'
+    },
+    id: {
+        title: 'Comic yang Anda Beli',
+        chapter: 'Chapter',
+        load: 'Load More'
     }
   }
 }

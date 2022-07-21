@@ -61,6 +61,10 @@ const i18Texts = {
     en: { 
         author: 'About Author',
         book: 'Author books'
+    },
+    id: {
+        author: 'Tentang Penulis',
+        book: 'Buku-buku Penulis'
     }
   }
 }

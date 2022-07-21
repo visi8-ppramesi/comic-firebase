@@ -54,6 +54,11 @@ const i18Texts = {
         search: 'Search results for {query}',
         noResult: 'No Result for {query} found',
         resultTitle: 'Comic Search Result'
+    },
+    id: {
+        search: 'Hasil pencarian untuk {query}',
+        noResult: 'Tidak ada hasil untuk {query}',
+        resultTitle: 'Hasil Pencarian'
     }
   }
 }

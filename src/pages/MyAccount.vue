@@ -146,6 +146,21 @@ const i18Texts = {
         currentPass: 'Current Password',
         newPass: 'New Password',
         confirmPass: 'Confirm Password',
+    },
+    id: {
+        title: 'Informasi Profil',
+        accDescription: 'Perbarui Informasi Profil dan Alamat Email Akun Anda',
+        profile: 'Foto Profil',
+        profilePicture: 'Pilih Foto Profil',
+        username: 'Nama Pengguna',
+        email: 'Email',
+        fullname: 'Nama Lengkap',
+        save: 'Simpan',
+        password: 'Perbarui Sandi',
+        passDescription: 'Pastikan Sandi Anda menggunakan sandi yang panjang, acak, dan aman untuk menjaga keamanan',
+        currentPass: 'Sandi Saat Ini',
+        newPass: 'Sandi Baru',
+        confirmPass: 'Konfirmasi Sandi Baru',
     }
   }
 }

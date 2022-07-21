@@ -11,6 +11,9 @@ const i18Texts = {
   messages: {
     en: {
         'not-found': 'Page Not Found'
+    },
+    id: {
+        'not-found': 'Halaman Tidak Ditemukan'
     }
   }
 }

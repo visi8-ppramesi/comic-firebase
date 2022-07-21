@@ -45,6 +45,16 @@ const i18Texts = {
         currency: 'Currency',
         payment: 'Payment',
         transaction: 'Transaction Time'
+    },
+    id: {
+        title: 'Riwayat Transaksi',
+        id: 'Id',
+        name: 'Nama',
+        description: 'Deskripsi',
+        price: 'Harga',
+        currency: 'Mata Uang',
+        payment: 'Tipe Pembayaran',
+        transaction: 'Waktu Transaksi'
     }
   }
 }

@@ -178,13 +178,23 @@ const i18Texts = {
   messages: {
     en: {
         views: '{ view_count } views',
-        purchase: 'Purchase Comic {price}',
+        purchase: 'Purchase Comic (Rp. {price})',
         buy: 'buy comic',
         episode: 'Ep. {chapter_number}',
         read: 'Read Ep. {chapter_number}',
         buyComic: 'Buy Ep. {chapter_number}',
         commentTitle: 'Add a new comment',
         comment: 'Comments'
+    },
+    id: {
+        views: 'Dilihat { view_count } kali',
+        purchase: 'Beli Komik (Rp. {price})',
+        buy: 'beli komik',
+        episode: 'Ep. {chapter_number}',
+        read: 'Baca Ep. {chapter_number}',
+        buyComic: 'Beli Ep. {chapter_number}',
+        commentTitle: 'Tambahkan komentar',
+        comment: 'Komentar'
     }
   }
 }

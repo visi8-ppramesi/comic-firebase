@@ -244,6 +244,13 @@ const i18Texts = {
       title3: 'Science Fiction',
       show: 'Show More',
       authors: 'Authors',
+    },
+    id: {
+        title1: 'Semua Komik',
+        title2: 'Komik Adventure',
+        title3: 'Komik Science Fiction',
+        show: 'Lihat Lebih Banyak',
+        authors: 'Penulis',
     }
   }
 }

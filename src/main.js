@@ -77,6 +77,10 @@ app.directive('loading', (el, binding) => {
     }
 })
 
+app.directive('test', (el, binding) => {
+    console.log(el, binding, 'test')
+})
+
 app.use(vfmPlugin)
 app.use(injector)
 app.use(router)

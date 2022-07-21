@@ -9,6 +9,9 @@ const i18Texts = {
   messages: {
     en: {
         'log-out': 'Logging out...'
+    },
+    id: {
+        'log-out': 'Keluar...'
     }
   }
 }

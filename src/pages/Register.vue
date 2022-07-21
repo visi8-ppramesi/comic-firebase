@@ -44,6 +44,11 @@ const i18Texts = {
         failed: 'Register failed! Email already exists!',
         register: 'Register',
         goback: 'Go Back'
+    },
+    id: {
+        failed: 'Pendaftaran gagal! Email sudah ada!',
+        register: 'Daftar',
+        goback: 'Kembali'
     }
   }
 }

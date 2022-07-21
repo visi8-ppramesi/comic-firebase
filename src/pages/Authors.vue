@@ -59,6 +59,13 @@ const i18Texts = {
       release: 'Release Date',
       updated: 'Last Updated',
       views: 'views'
+    },
+    id:{
+        sort: 'Urutkan',
+        title: 'Judul',
+        release: 'Tanggal Rilis',
+        updated: 'Terakhir Diperbarui',
+        views: 'Dilihat'
     }
   }
 }
