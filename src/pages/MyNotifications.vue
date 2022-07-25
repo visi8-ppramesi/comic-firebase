@@ -9,7 +9,7 @@
                                 <img class="h-28 max-w-auto" style="max-width: fit-content;" :src="notif.chapter_preview_url" alt="">
                             </div>
                             <div class="px-3 flex flex-col flex-grow items-start justify-center gap-y-1">
-                                <span class="font-extrabold text-sm leading-3 lg:text-md xl:text-lg">{{ $t("update", {title, chapter_number}) }}</span> <span class="=lg:text-sm xl:text-md text-xs text-gray-900 leading-3">{{ $t("release", {release_date}) }}</span>
+                                <span class="font-extrabold text-sm leading-3 lg:text-md xl:text-lg">{{ $t("update", {title: notif.title, chapter_number: notif.chapter_number}) }}</span> <span class="=lg:text-sm xl:text-md text-xs text-gray-900 leading-3">{{ $t("release", {release_date: notif.created_date.toDate().toLocaleDateString('id-ID')}) }}</span>
                             </div>
                         </div>
                     </div>

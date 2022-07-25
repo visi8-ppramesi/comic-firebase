@@ -36,22 +36,22 @@
             <div class="w-full px-5 text-center">
                 <div class="flex pb-3 pt-2">
                     <select class="rounded-lg form-select block w-full mt-1 xl:text-xl" @change="changeChapter(selectedChapter)" v-model="selectedChapter">
-                        <option v-for="(chapter, idx) in chapters" :value="chapter.id" :key="'cpt-' + idx">{{ $t("episode", {chapter_number}) }}</option>
+                        <option v-for="(chapter, idx) in chapters" :value="chapter.id" :key="'cpt-' + idx">{{ $t("episode", {chapter_number: chapter.chapter_number}) }}</option>
                     </select>
                 </div>
                 <label for="chapter" class="text-white xl:text-2xl">{{ $t("chapter") }}</label>
             </div>
 
             <div class="flex justify-center text-white mt-8 pb-5">
-                <button @click="prevChapter" class="flex bg-indigo-900 h-8 w-20 text-white rounded-lg justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1 mr-1" fill="none" viewBox="0 0 24 24" :stroke="prevEnabled ? '#919191' : '#2f2f2f'">
+                <button @click="prevChapter" class="flex bg-indigo-900 h-8 w-fit mx-2 text-white rounded-lg justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-1 h-6 w-6 mt-1 mr-1" fill="none" viewBox="0 0 24 24" :stroke="prevEnabled ? '#919191' : '#2f2f2f'">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    <div class="mt-1" :class="!prevEnabled ? 'text-gray-500' : ''">{{ $t("prev") }}</div>
+                    <div class="mt-1 mx-1" :class="!prevEnabled ? 'text-gray-500' : ''">{{ $t("prev") }}</div>
                 </button>
-                <button @click="nextChapter" class="ml-5 flex bg-indigo-900 h-8 w-20 text-white rounded-lg justify-center">
-                    <div class="mt-1" :class="!nextEnabled ? 'text-gray-500' : ''">{{ $t("next") }}</div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1 ml-1" fill="none" viewBox="0 0 24 24" :stroke="nextEnabled ? '#919191' : '#2f2f2f'">
+                <button @click="nextChapter" class="ml-5 flex bg-indigo-900 h-8 w-fit text-white rounded-lg justify-center">
+                    <div class="mt-1 mx-1" :class="!nextEnabled ? 'text-gray-500' : ''">{{ $t("next") }}</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-1 ml-1 mx-1" fill="none" viewBox="0 0 24 24" :stroke="nextEnabled ? '#919191' : '#2f2f2f'">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                 </button>
