@@ -104,7 +104,7 @@ export default {
         // VideoPlayer
         // StepperComponent
     },
-    inject: ['Viewer'],
+    // inject: ['Viewer'],
     data(){
         return {
             shit: null,

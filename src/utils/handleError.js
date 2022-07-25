@@ -5,7 +5,6 @@ import Toaster from './toaster.js'
 export default function(err, type){
     switch(type){
         case 'loginError':
-            console.log(app)
             emitter.emit('loginError')
             break;
         case 'registerError':
@@ -90,6 +89,15 @@ export default function(err, type){
             //     dismissible: true,
             //     position: 'bottom'
             // })
+            break;
+        case 'testError':
+            Toaster.open({
+                message: "Can't delete comment! Something went wrong!",
+                type: "error",
+                duration: 5000,
+                dismissible: true,
+                position: 'bottom'
+            })
             break;
         default:
             break;

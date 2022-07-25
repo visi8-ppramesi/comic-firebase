@@ -1,4 +1,4 @@
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, markRaw } from 'vue'
 
 
 const buildComponentParam = ({name, template, created = null, mounted = null, methods = null, props = null, data = null, computed = null}) => {
@@ -92,5 +92,5 @@ export default function(fetcher, loaderComponent = null){
         asyncLoaderParam.loadingComponent = loaderComponent
     }
     
-    return defineAsyncComponent(asyncLoaderParam)
+    return markRaw(defineAsyncComponent(asyncLoaderParam))
 }

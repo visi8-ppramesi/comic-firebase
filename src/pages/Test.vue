@@ -1,8 +1,7 @@
 <template>
     <div class="flex w-screen h-screen">
         {{ $t('message.hello') }}
-        <button @click="test">test</button>
-        <TestComponent v-test></TestComponent>
+        <button @click="testError">test</button>
         <!-- <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute h-screen object-cover"></video>
         <div class="w-full h-full bg-black/50 items-center justify-center z-20 flex text-white">
             <img v-show="imgSrc" :src="imgSrc" />
@@ -14,7 +13,7 @@
 // import { markRaw } from 'vue'
 import fb from '../firebase/firebase.js'
 import { defineAsyncComponent, shallowRef } from 'vue'
-import TestComponent from '../components/TestComponent.vue'
+// import TestComponent from '../components/TestComponent.vue'
 import { useI18nStore } from '@/store/i18n.js'
 // import { httpsCallable, connectFunctionsEmulator } from 'firebase/functions'
 // import StepperComponent from '../components/stepper/StepperComponent.vue'
@@ -26,10 +25,11 @@ import { useI18nStore } from '@/store/i18n.js'
 // import VideoPlayer from '../components/VideoPlayer.vue'
 // import utils from '../firebase/utils/index.js'
 import { getBlob as getStorageBlob, ref } from 'firebase/storage'
+import errorHandler from '@/utils/handleError.js'
 
 export default {
     components: {
-        TestComponent
+        // TestComponent
         // AsyncComponent
         // VideoPlayer
         // StepperComponent
@@ -146,32 +146,35 @@ export default {
         // this.sources = this.videos.map(() => null)
     },
     methods: {
+        testError(){
+            errorHandler(new Error('error'), 'testError')
+        },
         qwerqwer(){
-            this.testing = shallowRef(defineAsyncComponent({
-                loader: () => {
-                    console.log('called')
-                    //eslint-disable-next-line no-unused-vars
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            resolve({
-                                template: ''
-                                // components: {
-                                //     TestComponent
-                                // },
-                                // template: '<TestComponent @click="fuckshit" test="zxcvzxcvzxcv" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"></TestComponent><div>asdfdasfasdf</div>',
-                                // created(){
-                                //     eval(`this.hurrr();this.duh()`)
-                                // },
-                                // methods: eval(`({hurrr(){console.log("hurrr")},duh(){console.log("dugh")},fuckshit(){alert("fuckshit")}})`)
-                            })
-                        }, Math.random() * 1000)
-                    })
-                },
-                loadingComponent: TestComponent,
-                errorComponent: {
-                    template: '<div>error</div>'
-                }
-            }))
+            // this.testing = shallowRef(defineAsyncComponent({
+            //     loader: () => {
+            //         console.log('called')
+            //         //eslint-disable-next-line no-unused-vars
+            //         return new Promise((resolve, reject) => {
+            //             setTimeout(() => {
+            //                 resolve({
+            //                     template: ''
+            //                     // components: {
+            //                     //     TestComponent
+            //                     // },
+            //                     // template: '<TestComponent @click="fuckshit" test="zxcvzxcvzxcv" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"></TestComponent><div>asdfdasfasdf</div>',
+            //                     // created(){
+            //                     //     eval(`this.hurrr();this.duh()`)
+            //                     // },
+            //                     // methods: eval(`({hurrr(){console.log("hurrr")},duh(){console.log("dugh")},fuckshit(){alert("fuckshit")}})`)
+            //                 })
+            //             }, Math.random() * 1000)
+            //         })
+            //     },
+            //     loadingComponent: TestComponent,
+            //     errorComponent: {
+            //         template: '<div>error</div>'
+            //     }
+            // }))
         },
         async shitfuck(){},
         test(){

@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import Dashboard from '../src/pages/Dashboard.vue'
+import options from './pluginInitializer.js'
 // import { createTestingPinia } from '@pinia/testing'
 const i18Texts = {
     messages: {
@@ -21,7 +22,12 @@ const i18Texts = {
 }
 
 test('Dashboard', () => {
-    const wrapper = mount(Dashboard)
-    console.log(JSON.stringify(wrapper))
+    const wrapper = mount(Dashboard, {
+        global: {
+            plugins: [...options.plugins],
+            components: {...options.components}
+        }
+    })
+    
     expect(wrapper.find('#test').exists()).toBe(true)
 })

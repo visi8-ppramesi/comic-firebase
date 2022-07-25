@@ -86,7 +86,7 @@ app.directive('test', (el, binding) => {
 app.use(vfmPlugin)
 app.use(injector)
 app.use(router)
-app.use(VueToast)
+// app.use(VueToast)
 app.use(Vue3Mq, {preset: 'tailwind'})
 app.use(VueLoading);
 app.use(VueI18n);
