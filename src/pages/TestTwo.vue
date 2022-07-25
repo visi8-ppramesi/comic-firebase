@@ -1,5 +1,5 @@
 <template>
-    <button @click="test">test</button>
+    <button id="test" @click="test">test</button>
     <!-- <video
         controls
         playsinline autoplay loop

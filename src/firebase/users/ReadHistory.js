@@ -1,4 +1,4 @@
-import Subcollection from "../Subcollection";
+import Subcollection from "../Subcollection.js";
 // import Comic from "../comics/Comic";
 // import Chapter from "../comics/Chapter";
 

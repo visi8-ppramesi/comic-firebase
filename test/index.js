@@ -7,9 +7,9 @@
 // import Author from '../src/firebase/Author.js'
 // import User from '../src/firebase/users/User.js'
 // import Comic from '../src/firebase/comics/Comic.js'
-import Comment from '../src/firebase/comics/Comment.js'
-import firebase from '../src/firebase/firebase.js'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+// import Comment from '../src/firebase/comics/Comment.js'
+// import firebase from '../src/firebase/firebase.js'
+// import { signInWithEmailAndPassword } from 'firebase/auth'
 
 // describe('Login', function(){
 //     describe('Admin', async function(){
@@ -23,11 +23,11 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 //     })
 // })
 
-describe('Comments', function(){
-    describe('Login', async function(){
-        await signInWithEmailAndPassword(firebase.auth, 'ppramesi@gmail.com', '123qweasd')
-        Comment.getDocumentsCollection().then((docs) => {
-            console.log(docs)
-        })
-    })
-})
+// describe('Comments', function(){
+//     describe('Login', async function(){
+//         await signInWithEmailAndPassword(firebase.auth, 'ppramesi@gmail.com', '123qweasd')
+//         Comment.getDocumentsCollection().then((docs) => {
+//             console.log(docs)
+//         })
+//     })
+// })

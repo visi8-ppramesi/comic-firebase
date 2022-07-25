@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1658737050251" clover="3.2.0">
+  <project timestamp="1658737050251" name="All files">
+    <metrics statements="14" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0" elements="16" coveredelements="11" complexity="0" loc="14" ncloc="14" packages="1" files="1" classes="1"/>
+    <file name="firebase.js" path="/home/ppramesi/comic-firebase/src/firebase/firebase.js">
+      <metrics statements="14" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <line num="21" count="1" type="stmt"/>
+      <line num="24" count="1" type="stmt"/>
+      <line num="35" count="1" type="stmt"/>
+      <line num="36" count="0" type="stmt"/>
+      <line num="37" count="0" type="stmt"/>
+      <line num="38" count="0" type="stmt"/>
+      <line num="41" count="1" type="stmt"/>
+      <line num="42" count="1" type="stmt"/>
+      <line num="43" count="1" type="stmt"/>
+      <line num="44" count="1" type="stmt"/>
+      <line num="45" count="1" type="stmt"/>
+      <line num="46" count="1" type="stmt"/>
+      <line num="47" count="1" type="stmt"/>
+      <line num="51" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>

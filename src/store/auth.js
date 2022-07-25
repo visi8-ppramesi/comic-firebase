@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import User from "@/firebase/users/User";
+import User from "@/firebase/users/User.js";
 import { getDoc, doc } from "firebase/firestore";
 // import handleError from "@/utils/handleError";
 

@@ -11,7 +11,8 @@ import detectMobile from './utils/detectMobile'
 import fbAnalytics from './utils/analytics.js'
 import asyncComponentLoader from './utils/asyncComponentLoader.js'
 import { Vue3Mq, MqResponsive } from "vue3-mq"
-import VueToast from 'vue-toast-notification';
+// import VueToast from 'vue-toast-notification';
+import Toaster from './utils/toaster.js'
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
 import { vfmPlugin } from 'vue-final-modal'
@@ -57,6 +58,7 @@ const injector = {
         vuePropertySetter(app, 'detectMobile', detectMobile)
         vuePropertySetter(app, 'fbAnalytics', fbAnalytics)
         vuePropertySetter(app, 'asyncComponentLoader', asyncComponentLoader)
+        vuePropertySetter(app, '$toast', Toaster)
         // app.provide('swal', Swal)
         // app.provide('emitter', emitter)
         // app.config.globalProperties.emitter = emitter
