@@ -1,18 +1,18 @@
 <template>
     <div class="h-full w-full">
         <div class="md:col-span-1 text-white">
-            <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">Your Transaction History</div>
+            <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
         </div>
         <table class="rounded" role="table">
             <thead role="rowgroup">
                 <tr role="row">
-                    <th role="columnheader">Id</th>
-                    <th role="columnheader">Name</th>
-                    <th role="columnheader">Description</th>
-                    <th role="columnheader">Price</th>
-                    <th role="columnheader">Currency</th>
-                    <th role="columnheader">Payment</th>
-                    <th role="columnheader">Transaction Time</th>
+                    <th role="columnheader">{{ $t("id") }}</th>
+                    <th role="columnheader">{{ $t("name") }}</th>
+                    <th role="columnheader">{{ $t("description") }}</th>
+                    <th role="columnheader">{{ $t("price") }}</th>
+                    <th role="columnheader">{{ $t("currency") }}</th>
+                    <th role="columnheader">{{ $t("payment") }}</th>
+                    <th role="columnheader">{{ $t("transaction") }}</th>
                 </tr>
             </thead>
             <tbody v-for="item in transactions" :key="item.div" role="rowgroup">
@@ -47,7 +47,7 @@ const i18Texts = {
         transaction: 'Transaction Time'
     },
     id: {
-        title: 'Riwayat Transaksi',
+        title: 'Riwayat Transaksi Anda',
         id: 'Id',
         name: 'Nama',
         description: 'Deskripsi',

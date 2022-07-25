@@ -9,19 +9,19 @@
                     <input @keyup.enter="login" name="password" for="password" class="shadow appearance-none border border-red rounded-full w-full py-2 px-3 text-grey-darker mb-3" v-model="password" id="password" type="password" placeholder="Password">
                 </div>
                 <div class="text-sm text-center text-white mb-10">
-                    <router-link to="#">Forgot Password?</router-link>
+                    <router-link to="#">{{ $t("forgot") }}</router-link>
                 </div>
-                <div v-if="loginFailed" class="text-red-400 mb-2">Wrong password or email</div>
+                <div v-if="loginFailed" class="text-red-400 mb-2">{{ $t("wrong") }}</div>
                 <div class="flex items-center justify-between">
                     <button @click="login" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
-                        LOG IN
+                        {{ $t("login") }}
                     </button>
                 </div>
                 <div class="text-m text-center mt-6 text-white">
-                    <p>Dont have an account yet? <router-link :to="routeResolver('Register')" class="text-blue-200">Sign up</router-link></p>
+                    <p>{{ $t("account") }} <router-link :to="routeResolver('Register')" class="text-blue-200">{{ $t("signup") }}</router-link></p>
                 </div>
                 <div class="strike mt-4">
-                    <span class="text-m text-white">Or Login With</span>
+                    <span class="text-m text-white">{{ $t("option") }}</span>
                 </div>
                 <div class="flex flex-row items-center justify-center pt-5">
                     <img class="w-10" :src="googleIcon" @click="loginWithGoogle" />

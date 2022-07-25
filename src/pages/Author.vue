@@ -13,7 +13,7 @@
                     </div>
                     <div class="md:ml-4">
                         <div class="mt-3 text-xl font-bold">
-                            Social Media :
+                            {{ $t("media") }} :
                         </div>
                         <div class="flex w-8">
                             <div class="w-10"></div>
@@ -33,11 +33,11 @@
                 </div>
             </div>
             <div class="p-5">
-                <div class="text-xl font-bold">About Author :</div>
+                <div class="text-xl font-bold">{{ $t("author") }} :</div>
                 <div>{{author.description}}</div>
             </div>
             <div class="p-5">
-                <div class="text-xl font-bold">Author Books :</div>
+                <div class="text-xl font-bold">{{ $t("book") }} :</div>
                 <div class="mb-3">
                     <div>
                         <horizontal-slider :items="comics"
@@ -59,10 +59,12 @@ import Comic from '@/firebase/comics/Comic'
 const i18Texts = {
   messages: {
     en: { 
+        media: 'Social Media',
         author: 'About Author',
         book: 'Author books'
     },
     id: {
+        media: 'Media Sosial',
         author: 'Tentang Penulis',
         book: 'Buku-buku Penulis'
     }

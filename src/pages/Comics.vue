@@ -5,7 +5,7 @@
                 <div>{{title}}</div>
             </div>
             <div class="flex flex-col md:w-1/4 mb-2">
-                <label id="assigned-to-label" class="block text-sm leading-5 font-medium">Sort By</label>
+                <label id="assigned-to-label" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
                 <select class="form-select appearance-none
                     block
                     w-full
@@ -25,10 +25,10 @@
                     v-model="sortByParam"
                     @change="changeSort"
                 >
-                    <option value="title" selected>Title</option>
-                    <option value="release_date">Release Date</option>
-                    <option value="last_update">Last Updated</option>
-                    <option value="view_count">Views</option>
+                    <option value="title" selected>{{ $t("title") }}</option>
+                    <option value="release_date">{{ $t("release") }}</option>
+                    <option value="last_update">{{ $t("updated") }}</option>
+                    <option value="view_count">{{ $t("views") }}</option>
                 </select>
             </div>
             <grid
@@ -61,7 +61,7 @@ const i18Texts = {
       views: 'views'
     },
     id:{
-        sort: 'Urutkan',
+        sort: 'Diurut berdasarkan',
         title: 'Judul',
         release: 'Tanggal Rilis',
         updated: 'Terakhir Diperbarui',

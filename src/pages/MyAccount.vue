@@ -2,26 +2,25 @@
     <div class="h-full w-full">
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1 text-white">
-                <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">Profile Information</div>
-                <div class="px-3 lg:px-5">Update Your Account's Profile Information and Email Address</div>
+                <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
+                <div class="px-3 lg:px-5">{{ $t("accDescription") }}</div>
             </div>
             <div class="md:col-span-2">
                 <div class="p-3">
                     <div class="bg-slate-100 rounded border-2">
                         <div class="grid grid-cols-6 gap-6">
                             <div class="col-span-6 sm:col-span-4">
-                                <div class="text-xl p-3 lg:p-5">Profile Photo</div>
+                                <div class="text-xl p-3 lg:p-5">{{ $t("profile") }}</div>
                                 <div class="px-3">
                                     <img v-if="imageDataUrl" :src="imageDataUrl" />
                                     <input ref="profilePictureRef" type="file" accept="image/*" style="display:none"
                                         @change="onFileChange" />
-                                    <button class="font-bold px-3 border-2 rounded" @click="selectProfilePicture">Select
-                                        Profile Picture</button>
+                                    <button class="font-bold px-3 border-2 rounded" @click="selectProfilePicture">{{ $t("profilePicture") }}</button>
                                 </div>
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                                    Username
+                                    {{ $t("username") }}
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -29,7 +28,7 @@
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                                    Email
+                                    {{ $t("email") }}
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -37,7 +36,7 @@
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="fullname">
-                                    Full name
+                                    {{ $t("fullname") }}
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -45,15 +44,15 @@
                             </div>
                         </div>
                         <div class="flex justify-end px-5 py-5">
-                            <button class="bg-blue-500 rounded w-14 h-7" @click="saveProfile">Save</button>
+                            <button class="bg-blue-500 rounded w-14 h-7" @click="saveProfile">{{ $t("save") }}</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div v-if="authProvider == 'email'" class="md:col-span-1 text-white">
-                <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">Update Password</div>
-                <div class="px-3 lg:px-5">Ensure Your Password is using a long, random password to stay secure</div>
+                <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("password") }}</div>
+                <div class="px-3 lg:px-5">{{ $t("passDescription") }}</div>
             </div>
             <div v-if="authProvider == 'email'" class="md:col-span-2">
                 <div class="p-3">
@@ -61,7 +60,7 @@
                         <div class="grid grid-cols-6 gap-6">
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="cureent-password">
-                                    Current Password
+                                    {{ $t("currentPass") }}
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -69,7 +68,7 @@
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="new-password">
-                                    New Password
+                                    {{ $t("newPass") }}
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -77,7 +76,7 @@
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="confirm-password">
-                                    Confirm Password
+                                    {{ $t("confirmPass") }}
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -85,7 +84,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end px-5 py-5">
-                            <button class="bg-blue-500 rounded w-14 h-7" @click="savePassword">Save</button>
+                            <button class="bg-blue-500 rounded w-14 h-7" @click="savePassword">{{ $t("save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -149,7 +148,7 @@ const i18Texts = {
     },
     id: {
         title: 'Informasi Profil',
-        accDescription: 'Perbarui Informasi Profil dan Alamat Email Akun Anda',
+        accDescription: 'Perbarui Profil dan Alamat Email Akun Anda',
         profile: 'Foto Profil',
         profilePicture: 'Pilih Foto Profil',
         username: 'Nama Pengguna',
