@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-screen h-screen">
+    <div id="test-message" class="flex w-screen h-screen">
         {{ $t('message.hello') }}
         <button @click="test">test</button>
         <TestComponent v-test></TestComponent>

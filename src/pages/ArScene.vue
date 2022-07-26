@@ -1,6 +1,6 @@
 <template>
     <div class="flex text-center text-white text-5xl h-screen-navbar w-screen justify-center items-center">
-        <div>
+        <div id="arscene-loading">
             {{ $t("loading") }}
         </div>
     </div>
