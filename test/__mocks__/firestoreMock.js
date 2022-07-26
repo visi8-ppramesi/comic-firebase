@@ -1,39 +1,59 @@
-const abunchashit = {
-    settings: {
-        banners: {
-            value: [
-                {
-                    async_component: "video-banner",
-                    target: "SSb0da8HXyie7DbcAEve",
-                    target_type: "Comic",
-                    title: "Kara",
-                    type: "component"
-                }
-            ]
+// import mockData from './dataMock.js'
+import store from './storeMock.js'
+import { isEqual } from 'lodash/isEqual';
+class FieldOperator{
+    constructor(value){
+        this.value = value
+    }
+    operateField(){}
+}
+class Incrementor extends FieldOperator{
+    constructor(value){
+        super(value)
+    }
+    operateField(paths, field){
+        const currentValue = store.getState([...paths, field])
+        if(currentValue){
+            return this.value + currentValue
+        }else{
+            return this.value
         }
-    },
-    async_components: {
-        'video-banner': {
-            data: '()=>({videoSrc:"https://firebasestorage.googleapis.com/v0/b/comics-77200.appspot.com/o/videos%2Fdashboard%2Ftest-compressed.mp4?alt=media&token=4d7a6536-0203-4698-ba2a-3cbed199b965",imgSrc:"https://firebasestorage.googleapis.com/v0/b/comics-77200.appspot.com/o/logos%2Fkara_logo.png?alt=media&token=7060c54a-8c85-4131-8f88-8a6c7ac84200"})',
-            name: 'video-banner',
-            template: '<div class="flex w-full h-full"><video playsinline autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute w-full h-full object-cover"></video><div class="w-full h-full bg-black/50 items-center justify-center z-20 flex text-white"><img v-show="imgSrc" :src="imgSrc"></div></div>'
+    }
+}
+class ArrayUnioner extends FieldOperator{
+    constructor(value){
+        super(value)
+    }
+    operateField(paths, field){
+        const currentValue = store.getState([...paths, field])
+        if(currentValue){
+            return [...new Set([...currentValue, this.value])]
+        }else{
+            return this.value
+        }
+    }
+}
+class ArrayRemover extends FieldOperator{
+    constructor(value){
+        super(value)
+    }
+    operateField(paths, field){
+        const currentValue = store.getState([...paths, field])
+        if(currentValue){
+            return currentValue.filter(v => !isEqual(v, this.value))
+        }else{
+            return this.value
         }
     }
 }
 
 const emptyDocument = (paths) => {
-    let fakeData = abunchashit[paths[0]]
-    for(let i = 1; i < paths.length; i++){
-        fakeData = fakeData[paths[i]]
-    }
-    return {
-        data(){
-            return {
-                ...fakeData
-            }
-        }
-    }
+    return store.getState(paths)
 }
+
+export const arrayRemove = jest.fn(v => new ArrayRemover(v));
+export const arrayUnion = jest.fn(v => new ArrayUnioner(v));
+export const increment = jest.fn(v => new Incrementor(v));
 
 export const getFirestore = jest.fn();
 export const where = jest.fn();
@@ -46,25 +66,85 @@ export const doc = jest.fn((...args) => {
 });
 export const FieldPath = jest.fn();
 export const endBefore = jest.fn();
-export const collection = jest.fn();
-export const query = jest.fn();
-
+export const collection = jest.fn((...args) => {
+    args.shift();
+    return args;
+});
+export const query = jest.fn((...args) => {
+    return [...args[0]]
+});
+export const writeBatch = jest.fn();
+export const updateDoc = jest.fn((paths, value) => {
+    Object.keys(value).forEach(key => {
+        if(value[key] instanceof FieldOperator){
+            value[key] = value[key].operateField(paths, key)
+        }
+    })
+    store.setState(paths, value, true)
+});
 
 export const getDoc = jest.fn((ref) => {
-    return {
-        exists(){
-            return true
-        },
-        id: '123',
-        ...emptyDocument(ref)
+    const data = emptyDocument(ref)
+    if(data){
+        return Promise.resolve({
+            exists(){
+                return true
+            },
+            id: ref[ref.length - 1],
+            data(){
+                return data
+            }
+        })
+    }else{
+        return Promise.resolve({
+            exists(){
+                return false
+            },
+            id: null
+        })
     }
 });
 export const getDocs = jest.fn((ref) => {
-    return {
-        exists(){
-            return true
-        },
-        empty: false,
-        docs: Array(5).fill(emptyDocument(ref))
+    const data = emptyDocument(ref)
+    if(data){
+        const docs = Object.keys(data).map((key) => {
+            return {
+                data(){
+                    return data[key]
+                },
+                id: key
+            }
+        })
+        return Promise.resolve({
+            exists(){
+                return true
+            },
+            empty: false,
+            docs
+        })
+    }else{
+        return Promise.resolve({
+            exists(){
+                return false
+            },
+            empty: true,
+        })
     }
 });
+
+export const onSnapshot = jest.fn();
+export const addDoc = jest.fn();
+export const deleteDoc = jest.fn();
+export const setDoc = jest.fn();
+
+export const runTransaction = jest.fn((db, fn) => {
+    const trans = {
+        update: (...args) => {
+            updateDoc(...args)
+        },
+        set: (...args) => {
+            setDoc(...args)
+        }
+    }
+    return fn(trans)
+})

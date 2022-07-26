@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
-import Dashboard from '../src/pages/Dashboard.vue'
-import options from './pluginInitializer.js'
+import { flushPromises, mount } from '@vue/test-utils'
+import Dashboard from '../../src/pages/Dashboard.vue'
+import options from '../utils/pluginInitializer.js'
 // import { createTestingPinia } from '@pinia/testing'
 const i18Texts = {
     messages: {
@@ -21,13 +21,20 @@ const i18Texts = {
     }
 }
 
-test('Dashboard', () => {
+test('Dashboard', async () => {
     const wrapper = mount(Dashboard, {
         global: {
-            plugins: [...options.plugins],
+            plugins: [...Object.values(options.plugins)],
             components: {...options.components}
         }
     })
+    await flushPromises()
+    await flushPromises()
+    await flushPromises()
+    await flushPromises()
+    await flushPromises()
+    await flushPromises()
     
-    expect(wrapper.find('#test').exists()).toBe(true)
+    expect(wrapper.find('#banner').exists()).toBe(true)
+    expect(wrapper.find('#async-banner').exists()).toBe(true)
 })

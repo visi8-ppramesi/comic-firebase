@@ -1,6 +1,6 @@
 <template>
 <div class="pa-2 w-full">
-        <div class="flex flex-col justify-end items-center bg-blue-100 w-150 h-40 featured-block w-full h-screen-navbar sm:h-96">
+        <div id="banner" class="flex flex-col justify-end items-center bg-blue-100 w-150 h-40 featured-block w-full h-screen-navbar sm:h-96">
             <banner
                 :banners="banners"
             ></banner>

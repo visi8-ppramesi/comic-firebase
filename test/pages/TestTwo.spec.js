@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import TestTwo from '../src/pages/TestTwo.vue'
+import TestTwo from '../../src/pages/TestTwo.vue'
 // import { createTestingPinia } from '@pinia/testing'
 
 test('TestTwo', () => {

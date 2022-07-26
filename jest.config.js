@@ -111,7 +111,7 @@ module.exports = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  // preset: '',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -149,7 +149,7 @@ module.exports = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles: ['<rootDir>/test/testSetup.js'],
+  setupFiles: ['<rootDir>/test/utils/testSetup.js'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],

@@ -1,13 +1,13 @@
-import router from '../src/router/index.js'
-import helpers from '../src/utils/helpers'
-import DRM from '../src/utils/DRM.js'
-import emitter from '../src/utils/emitter.js'
-import routeResolver from '../src/utils/routeResolver';
-import detectMobile from '../src/utils/detectMobile'
-import fbAnalytics from '../src/utils/analytics.js'
-import asyncComponentLoader from '../src/utils/asyncComponentLoader.js'
+import router from '../../src/router/index.js'
+import helpers from '../../src/utils/helpers'
+import DRM from '../../src/utils/DRM.js'
+import emitter from '../../src/utils/emitter.js'
+import routeResolver from '../../src/utils/routeResolver';
+import detectMobile from '../../src/utils/detectMobile'
+import fbAnalytics from '../../src/utils/analytics.js'
+import asyncComponentLoader from '../../src/utils/asyncComponentLoader.js'
 import { Vue3Mq, MqResponsive } from "vue3-mq"
-import Toaster from '../src/utils/toaster.js'
+import Toaster from '../../src/utils/toaster.js'
 import { createPinia } from 'pinia';
 import VueLoading from 'vue-loading-overlay';
 import { vfmPlugin } from 'vue-final-modal'
@@ -46,15 +46,15 @@ const injector = {
 }
 
 export default {
-    plugins: [
+    plugins: {
         vfmPlugin,
         injector,
         router,
         VueLoading,
         VueI18n,
         Vue3Mq,
-        createPinia()
-    ],
+        pinia: createPinia()
+    },
     components: {
         MqResponsive
     }

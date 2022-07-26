@@ -5,11 +5,11 @@
                 <div class="md:grid md:grid-cols-1">
                     <div class="min-h-screen-navbar md:min-h-screen/2 md:max-h-full bg-cover md:w-full max-h-screen text-left pt-64 description-block text-white flex flex-col justify-end p-5" :style="'background-image:linear-gradient(to bottom, rgba(245, 246, 252, 0), rgb(0 0 0 / 73%)), url(' + comic.cover_image_url + ');'"><!-- top block -->
                         <div>
-                            <div class="lg:text-md xl:text-lg">{{categories}}</div>
+                            <div id="categories" class="lg:text-md xl:text-lg">{{categories}}</div>
                         </div>
 
                         <div class="flex flex-row justify-between">
-                            <div class="text-2xl lg:text-3xl xl:text-4xl font-bold w-2/3">{{ comic.title }}</div>
+                            <div id="title" class="text-2xl lg:text-3xl xl:text-4xl font-bold w-2/3">{{ comic.title }}</div>
                             <!-- <button :class="{'bg-transparent ring-white ring-inset ring-2': subscribed, 'bg-green-400': !subscribed}" class="animated w-fit-content h-fit-content inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                                 Subscribe
                             </button> -->
@@ -48,7 +48,7 @@
                             <template>
                                 <button class="mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="openModal">{{ $t("buy") }}</button>
                             </template>
-                            <button :disabled="favoriteDisabled" class="mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleFavoriteComic">
+                            <button id="favorite-button" :disabled="favoriteDisabled" class="mt-3 inline-flex items-center justify-center px-2 py-2 rounded-full text-gray-50 bg-green-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleFavoriteComic">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path class="animated" :class="favorited ? 'fill-white' : 'fill-none'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                 </svg>
