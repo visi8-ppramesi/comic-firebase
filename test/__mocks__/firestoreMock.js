@@ -1,6 +1,6 @@
 // import mockData from './dataMock.js'
 import store from './storeMock.js'
-import { isEqual } from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual';
 class FieldOperator{
     constructor(value){
         this.value = value

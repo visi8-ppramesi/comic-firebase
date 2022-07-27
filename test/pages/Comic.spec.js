@@ -27,9 +27,15 @@ test('Comic', async () => {
     
     expect(wrapper.find('#title').text()).toBe('hard drive 2000')
     expect(wrapper.find('#categories').text()).toBe('Horror, Scifi')
+    expect(storeMock.getState(['users', 'user-1', 'favorites'])[0]).toEqual(expect.arrayContaining([]))
 
     await wrapper.find('#favorite-button').trigger('click')
     await flushPromises()
     await flushPromises()
     expect(storeMock.getState(['users', 'user-1', 'favorites'])[0]).toEqual(expect.arrayContaining(['comics', 'comic-1']))
+
+    await wrapper.find('#favorite-button').trigger('click')
+    await flushPromises()
+    await flushPromises()
+    expect(storeMock.getState(['users', 'user-1', 'favorites'])[0]).toEqual(expect.arrayContaining([]))
 })
