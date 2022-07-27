@@ -2,10 +2,10 @@
     <div class="mb-3 text-white md:w-288 md:mx-auto">
         <div class="px-5 py-5">
             <div class="flex items-center justify-between mb-2">
-                <div>{{title}}</div>
+                <div id="comics-title">{{title}}</div>
             </div>
             <div class="flex flex-col md:w-1/4 mb-2">
-                <label id="assigned-to-label" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
+                <label id="assigned-to-label comics-sort" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
                 <select class="form-select appearance-none
                     block
                     w-full
@@ -25,13 +25,14 @@
                     v-model="sortByParam"
                     @change="changeSort"
                 >
-                    <option value="title" selected>{{ $t("title") }}</option>
-                    <option value="release_date">{{ $t("release") }}</option>
-                    <option value="last_update">{{ $t("updated") }}</option>
-                    <option value="view_count">{{ $t("views") }}</option>
+                    <option id="comics-select-title" value="title" selected>{{ $t("title") }}</option>
+                    <option id="comics-select-release" value="release_date">{{ $t("release") }}</option>
+                    <option id="comics-select-updated" value="last_update">{{ $t("updated") }}</option>
+                    <option id="comics-select-views" value="view_count">{{ $t("views") }}</option>
                 </select>
             </div>
             <grid
+                id="comics-grid"
                 :items="comics"
                 :config="config"
                 objectCategory="all"

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-screen h-screen">
+    <div id="test-message" class="flex w-screen h-screen">
         {{ $t('message.hello') }}
         <button @click="testError">test</button>
         <!-- <video autoplay muted loop v-show="videoSrc" :src="videoSrc" class="absolute h-screen object-cover"></video>

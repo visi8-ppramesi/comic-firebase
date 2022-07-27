@@ -3,32 +3,32 @@
         <div class="h-screen">
             <div class="w-full md:w-96 md:mx-auto min-h-screen flex flex-col p-5 justify-end">
                 <form autocomplete="off">
-                    <div class="mb-4">
+                    <div id="register-username" class="mb-4">
                         <input name="username" for="username" class="shadow appearance-none border rounded-full w-full py-2 px-3 text-grey-darker" v-model="username" id="username" type="text" placeholder="Username">
                     </div>
-                    <div class="mb-4">
+                    <div id="register-email" class="mb-4">
                         <input name="email" for="email" class="shadow appearance-none border rounded-full w-full py-2 px-3 text-grey-darker" v-model="email" id="email" type="text" placeholder="Email">
                     </div>
-                    <div class="mb-4">
+                    <div id="register-fullname" class="mb-4">
                         <input name="full_name" for="full_name" class="shadow appearance-none border rounded-full w-full py-2 px-3 text-grey-darker" v-model="full_name" id="full_name" type="text" placeholder="Full Name">
                     </div>
-                    <div class="pass-form">
+                    <div id="register-password" class="pass-form">
                         <input name="password" for="password" class="shadow appearance-none border border-red rounded-full w-full py-2 px-3 text-grey-darker mb-3" v-model="password" id="password" type="password" placeholder="Password">
                     </div>
                 </form>
-                <div v-if="registerFailed" class="text-red-400 mb-2">{{ $t("failed") }}</div>
+                <div id="register-failed" v-if="registerFailed" class="text-red-400 mb-2">{{ $t("failed") }}</div>
                 <div class="flex flex-col items-center justify-between">
-                    <button @click="register" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
+                    <button id="register-button" @click="register" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
                         {{ $t("register") }}
                     </button>
-                    <router-link :to="routeResolver('Login')" class="text-blue-200 mt-4">
+                    <router-link :to="routeResolver('Login')" id="register-goback" class="text-blue-200 mt-4">
                         {{ $t("goback") }}
                     </router-link>
                 </div>
                 <div class="flex flex-row items-center justify-center mt-3">
-                    <img class="w-10" :src="facebookIcon" />
-                    <img class="w-10" :src="instagramIcon" />
-                    <img class="w-10" :src="twitterIcon" />
+                    <img id="register-facebook" class="w-10" :src="facebookIcon" />
+                    <img id="register-instagram" class="w-10" :src="instagramIcon" />
+                    <img id="register-twitter" class="w-10" :src="twitterIcon" />
                 </div>
             </div>
         </div>

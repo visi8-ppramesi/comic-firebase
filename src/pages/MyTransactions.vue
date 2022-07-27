@@ -1,29 +1,29 @@
 <template>
     <div class="h-full w-full">
         <div class="md:col-span-1 text-white">
-            <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
+            <div id="my-transaction-title" class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
         </div>
         <table class="rounded" role="table">
             <thead role="rowgroup">
                 <tr role="row">
-                    <th role="columnheader">{{ $t("id") }}</th>
-                    <th role="columnheader">{{ $t("name") }}</th>
-                    <th role="columnheader">{{ $t("description") }}</th>
-                    <th role="columnheader">{{ $t("price") }}</th>
-                    <th role="columnheader">{{ $t("currency") }}</th>
-                    <th role="columnheader">{{ $t("payment") }}</th>
-                    <th role="columnheader">{{ $t("transaction") }}</th>
+                    <th id="my-transactions-id" role="columnheader">{{ $t("id") }}</th>
+                    <th id="my-transactions-name" role="columnheader">{{ $t("name") }}</th>
+                    <th id="my-transactions-description" role="columnheader">{{ $t("description") }}</th>
+                    <th id="my-transactions-price" role="columnheader">{{ $t("price") }}</th>
+                    <th id="my-transactions-currency" role="columnheader">{{ $t("currency") }}</th>
+                    <th id="my-transactions-payment" role="columnheader">{{ $t("payment") }}</th>
+                    <th id="my-transactions-transaction" role="columnheader">{{ $t("transaction") }}</th>
                 </tr>
             </thead>
             <tbody v-for="item in transactions" :key="item.div" role="rowgroup">
                 <tr role="row">
-                    <td role="cell">{{item.id}}</td>
-                    <td v-for="items in item.items" :key="items.id" role="cell">{{items.name}}</td>
-                    <td v-for="items in item.items" :key="items.id" role="cell">{{items.description}}</td>
-                    <td v-for="items in item.items" :key="items.id" role="cell">{{items.price}}</td>
-                    <td role="cell">{{item.notification_response.currency}}</td>
-                    <td role="cell">{{item.notification_response.payment_type}}</td>
-                    <td role="cell">{{item.created_date.toDate().toLocaleTimeString('id-ID', { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}}</td>
+                    <td id="my-transaction-data-id" role="cell">{{item.id}}</td>
+                    <td id="my-transaction-data-name" v-for="items in item.items" :key="items.id" role="cell">{{items.name}}</td>
+                    <td id="my-transaction-data-description" v-for="items in item.items" :key="items.id" role="cell">{{items.description}}</td>
+                    <td id="my-transaction-data-price" v-for="items in item.items" :key="items.id" role="cell">{{items.price}}</td>
+                    <td id="my-transaction-data-currency" role="cell">{{item.notification_response.currency}}</td>
+                    <td id="my-transaction-data-payment" role="cell">{{item.notification_response.payment_type}}</td>
+                    <td id="my-transaction-data-transaction" role="cell">{{item.created_date.toDate().toLocaleTimeString('id-ID', { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}}</td>
                 </tr>
             </tbody>
         </table>
