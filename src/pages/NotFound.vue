@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen w-full p-5 flex justify-center items-center">
-        <h1 class="text-7xl text-white">
+        <h1 id="not-found-title" class="text-7xl text-white">
             {{ $t("not-found") }}
         </h1>
     </div>

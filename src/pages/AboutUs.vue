@@ -1,10 +1,10 @@
 <template>
     <div class="text-white divide-y">
         <div>
-            <div class="text-4xl text-center p-3">{{ $t("title") }}</div>
+            <div id="about-us-title" class="text-4xl text-center p-3">{{ $t("title") }}</div>
             <div class="justify-end items-center bg-blue-100 w-full h-52" :style="'background-size:cover;background-position:center;background-image: linear-gradient(rgba(245, 246, 252, 0) 50%, rgb(49 46 129)), url('+ background +');'">
             </div>
-            <div class="p-3 text-center">
+            <div id="about-us-description" class="p-3 text-center">
                 {{ $t("description") }}
             </div>
         </div>
@@ -30,15 +30,15 @@
             </div>
         </div> -->
         <div>
-            <div class="text-2xl text-center text-white py-3">{{ $t("title2") }}</div>
+            <div id="about-us-title2" class="text-2xl text-center text-white py-3">{{ $t("title2") }}</div>
             <div class="mb-7">
                 <div class="grid grid-cols-3 divide-x divide-green-500 lg:mt-10">
-                    <div class="text-center px-3">{{ $t("services.design") }}</div>
+                    <div id="about-us-services-design" class="text-center px-3">{{ $t("services.design") }}</div>
                     <div>
-                        <div class="text-center px-3">{{ $t("services.web") }}</div>
+                        <div id="about-us-services-web" class="text-center px-3">{{ $t("services.web") }}</div>
                     </div>
                     <div>
-                        <div class="text-center px-3">{{ $t("services.animation") }}</div>
+                        <div id="about-us-services-animation" class="text-center px-3">{{ $t("services.animation") }}</div>
                     </div>
                 </div>
             </div>

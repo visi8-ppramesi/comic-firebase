@@ -15,18 +15,19 @@
         </div>
         <div v-else class="min-h-screen-navbar">
             <template v-if="comics.length > 0">
-                <div class="text-center text-white mt-3" v-if="searched">{{ $t("search", {query}) }}</div>
+                <div id="search-query" class="text-center text-white mt-3" v-if="searched">{{ $t("search", {query}) }}</div>
             </template>
             <template v-else>
-                <div class="text-center text-white mt-3" v-if="searched">{{ $t("noResult", {query}) }}</div>
+                <div id="search-result" class="text-center text-white mt-3" v-if="searched">{{ $t("noResult", {query}) }}</div>
             </template>
             <div class="px-5 py-5 bg-gradient-to-t  to-indigo-900 from-purple-900" v-if="searched && comics.length > 0">
                 <div class="mb-3 text-white">
                     <div>
-                        <div>{{ $t("resultTitle") }}</div>
+                        <div id="search-result-title">{{ $t("resultTitle") }}</div>
                     </div>
                     <div>
                         <grid
+                            id="search-grid"
                             :items="comics"
                             :config="config"
                             objectCategory="all"
