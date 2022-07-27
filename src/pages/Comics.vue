@@ -5,8 +5,8 @@
                 <div id="comics-title">{{title}}</div>
             </div>
             <div class="flex flex-col md:w-1/4 mb-2">
-                <label id="assigned-to-label comics-sort" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
-                <select class="form-select appearance-none
+                <label id="comics-sort" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
+                <select id="comics-select" class="form-select appearance-none
                     block
                     w-full
                     px-3
@@ -25,14 +25,13 @@
                     v-model="sortByParam"
                     @change="changeSort"
                 >
-                    <option id="comics-select-title" value="title" selected>{{ $t("title") }}</option>
-                    <option id="comics-select-release" value="release_date">{{ $t("release") }}</option>
-                    <option id="comics-select-updated" value="last_update">{{ $t("updated") }}</option>
-                    <option id="comics-select-views" value="view_count">{{ $t("views") }}</option>
+                    <option value="title" selected>{{ $t("title") }}</option>
+                    <option value="release_date">{{ $t("release") }}</option>
+                    <option value="last_update">{{ $t("updated") }}</option>
+                    <option value="view_count">{{ $t("views") }}</option>
                 </select>
             </div>
             <grid
-                id="comics-grid"
                 :items="comics"
                 :config="config"
                 objectCategory="all"

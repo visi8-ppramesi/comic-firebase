@@ -1,12 +1,11 @@
 jest.useFakeTimers()
 import { flushPromises, mount } from '@vue/test-utils'
-import { useAuthStore } from '../../src/store/auth.js'
 import storeMock from '../__mocks__/storeMock.js'
-import Comics from '../../src/pages/Comics.vue'
+import Authors from '../../src/pages/Authors.vue'
 import options from '../utils/pluginInitializer.js'
 
-test('Comics', async () => {
-    const wrapper = mount(Comics, {
+test('Authors', async () => {
+    const wrapper = mount(Authors, {
         global: {
             plugins: [...Object.values(options.plugins)],
             components: {...options.components}
@@ -17,9 +16,9 @@ test('Comics', async () => {
     await flushPromises()
     await flushPromises()
 
-    const titles = Object.values(storeMock.getState(['comics'])).map(item => item.title)
+    const titles = Object.values(storeMock.getState(['authors'])).map(item => item.name)
 
     expect(wrapper.findAll('.grid-item').map(item => item.text())).toEqual(expect.arrayContaining(titles))
-    expect(wrapper.find('#comics-sort').exists()).toBe(true)
-    expect(wrapper.find('#comics-select').exists()).toBe(true)
+    expect(wrapper.find('#authors-sort').exists()).toBe(true)
+    expect(wrapper.find('#authors-select').exists()).toBe(true)
 })

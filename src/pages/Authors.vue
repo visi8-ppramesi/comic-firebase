@@ -5,8 +5,8 @@
                 <div id="authors-title">{{title}}</div>
             </div>
             <div class="flex flex-col mb-2">
-                <label id="assigned-to-label authors-sort" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
-                <select class="form-select appearance-none
+                <label id="authors-sort" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
+                <select id="authors-select" class="form-select appearance-none
                     block
                     w-full
                     px-3
@@ -25,10 +25,10 @@
                     v-model="sortByParam"
                     @change="changeSort"
                 >
-                    <option id="authors-option-title" value="title" selected>{{ $t("title") }}</option>
-                    <option id="authors-option-release" value="release_date">{{ $t("release") }}</option>
-                    <option id="authors-option-updated" value="last_updated">{{ $t("updated") }}</option>
-                    <option id="authors-option-views" value="view_count">{{ $t("views") }}</option>
+                    <option value="title" selected>{{ $t("title") }}</option>
+                    <option value="release_date">{{ $t("release") }}</option>
+                    <option value="last_updated">{{ $t("updated") }}</option>
+                    <option value="view_count">{{ $t("views") }}</option>
                 </select>
             </div>
             <grid
@@ -87,7 +87,7 @@ export default {
             },
             config: {
                 linkName: 'Author',
-                title: 'title',
+                title: 'name',
                 image: 'profile_picture_url',
             },
             tags: [],

@@ -3,7 +3,7 @@
     <div class="h-full w-full">
         <div>
             <div class="md:col-span-1 text-white">
-                <div class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
+                <div id="my-comics-title" class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
             </div>
 
             <div class="mt-5 mx-3">
@@ -15,13 +15,13 @@
                                     <img class="h-full w-full object-cover rounded-tl-md rounded-bl-md" :src="comic.cover_image_url" alt="">
                                 </div>
                                 <div class="flex-grow text-left flex flex-col py-3 pl-3 w-2/5 lg:w-96">
-                                    <div id="my-comics-title" class="w-100">
+                                    <div class="w-100">
                                         <span class="text-sm lg:text-md xl:text-lg">{{comic.title}}</span>
                                     </div>
                                     <div class="flex flex-row mt-2">
-                                        <div id="my-comics=chapter" class="mr-2 md:text-sm flex items-center justify-center">{{ $t("chapter") }}</div>
+                                        <div ref="chapter" class="mr-2 md:text-sm flex items-center justify-center">{{ $t("chapter") }}</div>
                                         <div class="flex flex-row items-center justify-center" v-for="(item, index) in comic.purchased.sort()" :key="index.id">
-                                            <span id="my-comics-item" class="text-md md:text-sm lg:text-xl xl:text-xl lg:mx-2 xl:mx-2 px-0.5">{{item}}</span>
+                                            <span class="text-md md:text-sm lg:text-xl xl:text-xl lg:mx-2 xl:mx-2 px-0.5">{{item}}</span>
                                             <span v-if="index + 1 < comic.purchased.length">, </span>
                                         </div>
                                     </div>
@@ -33,8 +33,8 @@
             </div>
             <!-- centered load more button -->
             <div v-if="loaded && count >= 10" class="md:col-span-1">
-                <div id="my-comics-load" class="p-3 flex justify-center align-center">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="loadMore">{{ $t("load") }}</button>
+                <div class="p-3 flex justify-center align-center">
+                    <button ref="load" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="loadMore">{{ $t("load") }}</button>
                 </div>
             </div>
         </div>

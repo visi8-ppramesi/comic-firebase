@@ -10,4 +10,10 @@ test('About Us', () => {
         }
     })
     expect(wrapper.find('#about-us-description').exists()).toBe(true)
+    expect(wrapper.find('#about-us-title').exists()).toBe(true)
+    expect(wrapper.find('#about-us-description').exists()).toBe(true)
+    expect(wrapper.find('#about-us-title2').exists()).toBe(true)
+    expect(wrapper.find('#about-us-services-design').exists()).toBe(true)
+    expect(wrapper.find('#about-us-services-web').exists()).toBe(true)
+    expect(wrapper.find('#about-us-services-animation').exists()).toBe(true)
 })
