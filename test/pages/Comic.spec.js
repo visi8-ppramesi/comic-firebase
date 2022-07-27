@@ -5,9 +5,22 @@ import storeMock from '../__mocks__/storeMock.js'
 import Comic from '../../src/pages/Comic.vue'
 import options from '../utils/pluginInitializer.js'
 
+beforeEach(() => {
+    // create teleport target
+    const el = document.createElement('div')
+    el.id = 'modal'
+    document.body.appendChild(el)
+  })
+  
+  afterEach(() => {
+    // clean up
+    document.body.outerHTML = ''
+  })
+
 test('Comic', async () => {
     options.plugins.router.push({name: 'Comics', params: {id: 'comic-1'}})
     await options.plugins.router.isReady()
+    
     const wrapper = mount(Comic, {
         global: {
             plugins: [...Object.values(options.plugins)],
@@ -38,4 +51,15 @@ test('Comic', async () => {
     await flushPromises()
     await flushPromises()
     expect(storeMock.getState(['users', 'user-1', 'favorites'])[0]).toEqual(expect.arrayContaining([]))
+
+    await wrapper.find('#subscribe-button').trigger('click')
+    await flushPromises()
+    await flushPromises()
+    expect(storeMock.getState(['users', 'user-1', 'comic_subscriptions'])[0]).toEqual(expect.arrayContaining(['comics', 'comic-1']))
+
+    await wrapper.find('#subscribe-button').trigger('click')
+    await flushPromises()
+    await flushPromises()
+    expect(storeMock.getState(['users', 'user-1', 'comic_subscriptions'])[0]).toEqual(expect.arrayContaining([]))
+    expect(wrapper.findAll('.buy-button')[0].exists()).toBe(true)
 })

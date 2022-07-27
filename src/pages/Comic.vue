@@ -37,7 +37,7 @@
                         </div>
                         <div class="flex flex-row content-center justify-between">
                             <div class="flex flex-row">
-                                <button :disabled="subscribeDisabled" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
+                                <button id="subscribe-button" :disabled="subscribeDisabled" class="lg:text-md xl:text-lg text-sm mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="toggleSubscribeComic">{{ subscribed ? 'Unsubscribe' : 'Subscribe' }}</button>
                                 <button v-if="!comicFullyPurchased && !isNilWrapper(comic.price) && comic.price > 0" class="ml-1 lg:text-sm xl:text-md text-xxs mt-3 inline-flex items-center justify-center px-2 py-1 rounded-full text-gray-50 bg-green-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white max-w-[125px]" @click="purchaseComic">{{ $t("purchase", {price: comic.price}) }}</button>
                             </div>
                             <!-- <template v-if="purchased">
@@ -88,12 +88,12 @@
 
                                 <div class="w-2/5 md:w-36 lg:w-96 flex justify-end items-center pr-5" >
                                     <div v-if="purchasedChapterIds.includes(chapter.id) || comicFullyPurchased">
-                                        <button class="text-xs lg:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="goToChapter(chapter.id)">
+                                        <button class="read-button text-xs lg:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="goToChapter(chapter.id)">
                                             {{ $t("read", {chapter_number: chapter.chapter_number}) }}
                                         </button>
                                     </div>
                                     <div v-else>
-                                        <button class="text-xs lg:text-md xl:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseChapter(chapter.id)">
+                                        <button class="buy-button text-xs lg:text-md xl:text-lg items-center min-h-8 w-116  p-2 rounded-lg text-gray-50 bg-purple-500 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" @click="purchaseChapter(chapter.id)">
                                             {{ $t("buyComic", {chapter_number: chapter.chapter_number}) }}
                                         </button>
                                     </div>

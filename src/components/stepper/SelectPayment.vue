@@ -1,5 +1,5 @@
 <template>
-    <div>Please select your payment method:</div>
+    <div id="select-payment-title">Please select your payment method:</div>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         <div class="p-4 mb-4 bg-slate-100/50 rounded-lg mx-auto flex flex-col justify-center justify-items-center content-center items-center">
             <label class="label-container flex gopay" for="gopay">

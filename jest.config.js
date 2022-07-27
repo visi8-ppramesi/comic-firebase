@@ -1,7 +1,12 @@
+const path = require('path')
 /*
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/configuration
  */
+
+const stringToPath = (string) => {
+  return path.join(...string.split('/'))
+}
 
 module.exports = {
   // All imported modules in your tests should be mocked automatically
@@ -90,15 +95,16 @@ module.exports = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    "@/(.*)$": "<rootDir>/src/$1",
-    '\\.(css|less)$': '<rootDir>/test/__mocks__/cssMock.js',
-    "firebase/app": '<rootDir>/test/__mocks__/appMock.js',
-    "firebase/firestore": '<rootDir>/test/__mocks__/firestoreMock.js',
-    "firebase/analytics": '<rootDir>/test/__mocks__/analyticsMock.js',
-    "firebase/functions": '<rootDir>/test/__mocks__/functionsMock.js',
-    "firebase/auth": '<rootDir>/test/__mocks__/authMock.js',
-    "firebase/storage": '<rootDir>/test/__mocks__/storageMock.js',
-    "firebase/performance": '<rootDir>/test/__mocks__/performanceMock.js',
+    "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
+    "@/(.*)$": stringToPath("<rootDir>/src/$1"),
+    '\\.(css|less)$': stringToPath('<rootDir>/test/__mocks__/cssMock.js'),
+    "firebase/app": stringToPath('<rootDir>/test/__mocks__/appMock.js'),
+    "firebase/firestore": stringToPath('<rootDir>/test/__mocks__/firestoreMock.js'),
+    "firebase/analytics": stringToPath('<rootDir>/test/__mocks__/analyticsMock.js'),
+    "firebase/functions": stringToPath('<rootDir>/test/__mocks__/functionsMock.js'),
+    "firebase/auth": stringToPath('<rootDir>/test/__mocks__/authMock.js'),
+    "firebase/storage": stringToPath('<rootDir>/test/__mocks__/storageMock.js'),
+    "firebase/performance": stringToPath('<rootDir>/test/__mocks__/performanceMock.js'),
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -137,19 +143,19 @@ module.exports = {
   // A list of paths to directories that Jest should use to search for files in
   roots: [
     "<rootDir>",
-    "/home/ppramesi/comic-firebase"
+    path.resolve()
   ],
 
   "modulePaths": [
     "<rootDir>",
-    "/home/ppramesi/comic-firebase"
+    path.resolve()
   ],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles: ['<rootDir>/test/utils/testSetup.js'],
+  setupFiles: [stringToPath('<rootDir>/test/utils/testSetup.js')],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
@@ -207,10 +213,10 @@ module.exports = {
   //   "\\.pnp\\.[^\\/]+$"
   // ],
   "transformIgnorePatterns": [
-    "/node_modules/(?!pinia/.*)",
-    "<rootDir>/node_modules/(?!@pinia/testing)",
-    "<rootDir>/node_modules/(?!vue-demi/.*)",
-    "<rootDir>/node_modules/(?!@vue/test-utils)"
+    stringToPath("/node_modules/(?!pinia/.*)"),
+    stringToPath("<rootDir>/node_modules/(?!@pinia/testing)"),
+    stringToPath("<rootDir>/node_modules/(?!vue-demi/.*)"),
+    stringToPath("<rootDir>/node_modules/(?!@vue/test-utils)")
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them

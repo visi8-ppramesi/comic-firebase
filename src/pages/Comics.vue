@@ -118,10 +118,8 @@ export default {
                 this.$refs.comicGrid.stopLoading()
                 if(startOver){
                     this.comics = comics
-                    console.log('startover')
                 }else{
                     this.comics.push(...comics)
-                    console.log('nah')
                 }
             })
         }

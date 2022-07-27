@@ -69,9 +69,9 @@ export default {
             chapters: {
                 'chapter-1': {
                     ar_price: false,
-                    chapter_number: 0,
+                    chapter_number: 1,
                     chapter_preview_url: "gs://comics-77200.appspot.com/previews/cpt1_preview.jpeg",
-                    price: 0,
+                    price: 1,
                     release_date: mockDate(),
                     view_count: 0,
                     pages: {
@@ -91,9 +91,9 @@ export default {
                 },
                 'chapter-2': {
                     ar_price: false,
-                    chapter_number: 1,
+                    chapter_number: 2,
                     chapter_preview_url: "gs://comics-77200.appspot.com/previews/cpt1_preview.jpeg",
-                    price: 0,
+                    price: 1,
                     release_date: mockDate(),
                     view_count: 0,
                     pages: {
@@ -115,16 +115,16 @@ export default {
             chapters_data: [
                 {
                     view_count: 2,
-                    price: 0,
+                    price: 1,
                     release_date: mockDate(),
-                    chapter_number: 3,
+                    chapter_number: 1,
                     id: 'chapter-1',
                     chapter_preview_url: 'gs://comics-77200.appspot.com/cpt-prev.jpg'
                 },
                 {
                     chapter_preview_url: 'gs://comics-77200.appspot.com/cpt-prev.jpg',
                     price: 1,
-                    chapter_number: 4,
+                    chapter_number: 2,
                     id: 'chapter-2',
                     release_date: mockDate(),
                     view_count: 2
@@ -184,7 +184,7 @@ export default {
     },
     users: {
         'user-1': {
-            comic_subscriptions: ['comic-1', 'comic-2'],
+            comic_subscriptions: [],
             email_verified_at: null,
             profile_image_url: 'gs://comics-77200.appspot.com/uploads/profile_images/hslN0mmWdxUFuAn3R4xd8gvlgLk2/alan_moore.jpg',
             name: 'ppramesii',
