@@ -355,14 +355,11 @@ export default class extends Collection {
             //     throw err
             // }
         }).then((newProfile) => {
-            console.log('after create new user doc', newProfile)
             return { profile: validatedUserData, cred: newUser, id: newUser.user.uid, doc: newProfile }
         }).catch((err) => {
             handleError(err, 'registerError')
             throw err
         })
-
-        console.log('after user create')
 
         const instance = new this()
         await instance.setData(data.id, data.profile, data.doc, 'email')
@@ -404,7 +401,6 @@ export default class extends Collection {
         const gAuthProvider = new GoogleAuthProvider()
         const result = await signInWithPopup(firebase.auth, gAuthProvider)
         const additionalInfo = getAdditionalUserInfo(result)
-        console.log(result.user.uid)
         let data
         if (additionalInfo.isNewUser) {
             const email = result.user.email

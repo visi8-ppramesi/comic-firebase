@@ -135,7 +135,14 @@ export const getDocs = jest.fn((ref) => {
 export const onSnapshot = jest.fn();
 export const addDoc = jest.fn();
 export const deleteDoc = jest.fn();
-export const setDoc = jest.fn();
+export const setDoc = jest.fn((paths, value) => {
+    Object.keys(value).forEach(key => {
+        if(value[key] instanceof FieldOperator){
+            value[key] = value[key].operateField(paths, key)
+        }
+    })
+    store.setState(paths, value, false)
+});
 
 export const runTransaction = jest.fn((db, fn) => {
     const trans = {

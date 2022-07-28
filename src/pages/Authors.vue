@@ -6,7 +6,7 @@
             </div>
             <div class="flex flex-col mb-2">
                 <label id="authors-sort" class="block text-sm leading-5 font-medium">{{ $t("sort") }}</label>
-                <select id="authors-select" class="form-select appearance-none
+                <select id="author-sort-select" class="form-select appearance-none
                     block
                     w-full
                     px-3

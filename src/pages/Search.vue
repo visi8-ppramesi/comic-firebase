@@ -1,7 +1,7 @@
 <template>
         <div class="w-full md:w-192 mt-0 md:mt-5 mx-0 md:mx-auto relative flex w-full flex-wrap items-stretch">
-            <input @keyup.enter="goSearch" v-model="searchQuery" type="text" placeholder="search" class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
-            <button @click="goSearch" class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
+            <input name="search" @keyup.enter="goSearch" v-model="searchQuery" type="text" placeholder="search" class="px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10" />
+            <button id="search-button" @click="goSearch" class="z-10 h-full leading-snug font-normal absolute text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 right-0 pr-3 py-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -15,10 +15,10 @@
         </div>
         <div v-else class="min-h-screen-navbar">
             <template v-if="comics.length > 0">
-                <div id="search-query" class="text-center text-white mt-3" v-if="searched">{{ $t("search", {query}) }}</div>
+                <div id="search-query-title" class="text-center text-white mt-3" v-if="searched">{{ $t("search", {query}) }}</div>
             </template>
             <template v-else>
-                <div id="search-result" class="text-center text-white mt-3" v-if="searched">{{ $t("noResult", {query}) }}</div>
+                <div id="search-query-not-found" class="text-center text-white mt-3" v-if="searched">{{ $t("noResult", {query}) }}</div>
             </template>
             <div class="px-5 py-5 bg-gradient-to-t  to-indigo-900 from-purple-900" v-if="searched && comics.length > 0">
                 <div class="mb-3 text-white">
