@@ -18,7 +18,7 @@
                     </button>
                 </div>
                 <div id="login-description" class="text-m text-center mt-6 text-white">
-                    <p>{{ $t("account") }} <router-link :to="routeResolver('Register')" class="text-blue-200">{{ $t("signup") }}</router-link></p>
+                    <p id="login-account">{{ $t("account") }} <router-link id="login-signup" :to="routeResolver('Register')" class="text-blue-200">{{ $t("signup") }}</router-link></p>
                 </div>
                 <div id="login-option" class="strike mt-4">
                     <span class="text-m text-white">{{ $t("option") }}</span>

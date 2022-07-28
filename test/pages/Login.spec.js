@@ -14,6 +14,7 @@ test('Login', async () => {
         global: {
             plugins: [...Object.values(options.plugins)],
             components: {...options.components}
+
         },
         mocks: {
             $router: mockRouter
@@ -35,5 +36,12 @@ test('Login', async () => {
 
     expect(getAuthStore().getState(['currentUser', 'email'])).toEqual('email@email.com')
     expect(getAuthStore().getState(['currentUser', 'password'])).toEqual('password')
+    
+    expect(wrapper.find('#login-forgot').exists()).toBe(true)
+    expect(wrapper.find('#login-wrong').exists()).toBe(false)
+    expect(wrapper.find('#login-button').exists()).toBe(true)
+    expect(wrapper.find('#login-account').exists()).toBe(true)
+    expect(wrapper.find('#login-signup').exists()).toBe(true)
+    expect(wrapper.find('#login-option').exists()).toBe(true)
 })
 

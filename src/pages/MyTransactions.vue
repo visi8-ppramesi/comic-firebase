@@ -1,7 +1,7 @@
 <template>
     <div class="h-full w-full">
         <div class="md:col-span-1 text-white">
-            <div id="my-transaction-title" class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
+            <div id="my-transactions-title" class="font-bold text-xl px-3 pt-3 lg:px-5 lg:pt-5">{{ $t("title") }}</div>
         </div>
         <table class="rounded" role="table">
             <thead role="rowgroup">

@@ -38,5 +38,8 @@ test('Register', async () => {
     expect(getAuthStore().getState(['currentUser', 'email'])).toEqual('email@email.com')
     expect(getAuthStore().getState(['currentUser', 'password'])).toEqual('password')
     expect(storeMock.getState(['users', 'user-new', 'name'])).toEqual('testestest')
+    
+    expect(wrapper.find('#register-failed').exists()).toBe(false)
+    expect(wrapper.find('#register-button').exists()).toBe(true)
+    expect(wrapper.find('#register-goback').exists()).toBe(true)
 })
-
