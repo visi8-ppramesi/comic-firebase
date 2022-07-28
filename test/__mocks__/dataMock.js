@@ -9,7 +9,30 @@ export default {
         'user-1': {
             unread_count: 0,
             comics: {
-
+                'notification-1': {
+                    chapter: {
+                        id: 'chapter-1',
+                        path: 'comics/comic-1/chapters/chapter-1',
+                    },
+                    comic: {
+                        id: 'comic-1',
+                        path: 'comics/comic-1',
+                    },
+                    created_date: mockDate(),
+                    unread: true,
+                },
+                'notification-2': {
+                    chapter: {
+                        id: 'chapter-1',
+                        path: 'comics/comic-1/chapters/chapter-1',
+                    },
+                    comic: {
+                        id: 'comic-1',
+                        path: 'comics/comic-1',
+                    },
+                    created_date: mockDate(),
+                    unread: true,
+                },
             }
         }
     },

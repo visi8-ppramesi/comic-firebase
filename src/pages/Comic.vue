@@ -382,6 +382,7 @@ export default {
                     this.favorited = false
                     this.fbAnalytics.logEvent('comic_unfavorited', { comic_id: this.$route.params.id })
                 }else{
+                    console.log('unfavorited')
                     await this.userInstance.favoriteComic(this.$route.params.id)
                     this.favoriteDisabled = false
                     this.fbAnalytics.logEvent('comic_favorited', { comic_id: this.$route.params.id })

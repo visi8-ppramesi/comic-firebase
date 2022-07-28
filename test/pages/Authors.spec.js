@@ -20,5 +20,5 @@ test('Authors', async () => {
 
     expect(wrapper.findAll('.grid-item').map(item => item.text())).toEqual(expect.arrayContaining(titles))
     expect(wrapper.find('#authors-sort').exists()).toBe(true)
-    expect(wrapper.find('#authors-select').exists()).toBe(true)
+    expect(wrapper.find('#author-sort-select').exists()).toBe(true)
 })

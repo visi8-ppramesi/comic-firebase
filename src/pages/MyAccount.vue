@@ -32,7 +32,7 @@
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="username" type="text" v-model="email" placeholder="Email">
+                                    id="email" type="text" v-model="email" placeholder="Email">
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="fullname">
@@ -40,11 +40,11 @@
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="username" type="text" v-model="full_name" placeholder="Fullname">
+                                    id="full-name" type="text" v-model="full_name" placeholder="Fullname">
                             </div>
                         </div>
                         <div class="flex justify-end px-5 py-5">
-                            <button class="bg-blue-500 rounded w-14 h-7" @click="saveProfile">{{ $t("save") }}</button>
+                            <button id="save-profile-button" class="bg-blue-500 rounded w-14 h-7" @click="saveProfile">{{ $t("save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="username" type="text" v-model="oldPassword" placeholder="Username">
+                                    id="old-password" type="text" v-model="oldPassword" placeholder="Username">
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="new-password">
@@ -72,7 +72,7 @@
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="username" type="text" v-model="newPassword" placeholder="Password">
+                                    id="new-password" type="text" v-model="newPassword" placeholder="Password">
                             </div>
                             <div class="px-3 mt-5 col-span-6 sm:col-span-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="confirm-password">
@@ -80,11 +80,11 @@
                                 </label>
                                 <input
                                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                    id="username" type="text" placeholder="Confirm password">
+                                    id="confirm-password" type="text" placeholder="Confirm password">
                             </div>
                         </div>
                         <div class="flex justify-end px-5 py-5">
-                            <button class="bg-blue-500 rounded w-14 h-7" @click="savePassword">{{ $t("save") }}</button>
+                            <button id="save-password-button" class="bg-blue-500 rounded w-14 h-7" @click="savePassword">{{ $t("save") }}</button>
                         </div>
                     </div>
                 </div>
@@ -187,7 +187,6 @@ export default {
             this.name = name
             this.email = email
             this.full_name = full_name
-            console.log(this.profileImageUrl)
             this.imageDataUrl = this.profileImageUrl
         }
         if (!isNil(this.profileImageUrl)) {
@@ -223,7 +222,6 @@ export default {
             try {
                 await this.userInstance.linkToGoogle()
             } catch (err) {
-                console.log(err.code)
                 let message
                 if (err.code == "auth/credential-already-in-use") {
                     message = 'Credential already in use'
@@ -251,7 +249,6 @@ export default {
             let loader = this.$loading.show({
                 loader: 'dots'
             });
-            console.log('profile save')
             try {
                 if (this.profilePictureChanged) {
                     await this.userInstance.uploadField('profile_image_url', 'profile_images/' + this.userInstance.id, this.profilePicture)

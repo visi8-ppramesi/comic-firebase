@@ -73,7 +73,6 @@ export const collection = jest.fn((...args) => {
 export const query = jest.fn((...args) => {
     return [...args[0]]
 });
-export const writeBatch = jest.fn();
 export const updateDoc = jest.fn((paths, value) => {
     Object.keys(value).forEach(key => {
         if(value[key] instanceof FieldOperator){
@@ -93,7 +92,8 @@ export const getDoc = jest.fn((ref) => {
             id: ref[ref.length - 1],
             data(){
                 return data
-            }
+            },
+            ref: ref
         })
     }else{
         return Promise.resolve({
@@ -112,7 +112,8 @@ export const getDocs = jest.fn((ref) => {
                 data(){
                     return data[key]
                 },
-                id: key
+                id: key,
+                ref: [...ref, key]
             }
         })
         return Promise.resolve({
@@ -153,5 +154,31 @@ export const runTransaction = jest.fn((db, fn) => {
             setDoc(...args)
         }
     }
-    return fn(trans)
+    store.lock()
+    const runFunc = () => {
+        store.unlock()
+        fn(trans)
+    }
+    return Promise.resolve(runFunc())
 })
+class BatchWriter{
+    constructor(){
+        this.updates = []
+        store.lock()
+    }
+
+    update(paths, value){
+        this.updates.push({func: updateDoc, paths, value})
+    }
+
+    commit(){
+        store.unlock()
+        const results = this.updates.map(caller => {
+            return caller.func(caller.paths, caller.value)
+        })
+        return Promise.resolve(results)
+    }
+}
+export const writeBatch = jest.fn(() => {
+    return new BatchWriter()
+});
