@@ -17,13 +17,13 @@
             </thead>
             <tbody v-for="item in transactions" :key="item.div" role="rowgroup">
                 <tr role="row">
-                    <td id="my-transaction-data-id" role="cell">{{item.id}}</td>
-                    <td id="my-transaction-data-name" v-for="items in item.items" :key="items.id" role="cell">{{items.name}}</td>
-                    <td id="my-transaction-data-description" v-for="items in item.items" :key="items.id" role="cell">{{items.description}}</td>
-                    <td id="my-transaction-data-price" v-for="items in item.items" :key="items.id" role="cell">{{items.price}}</td>
-                    <td id="my-transaction-data-currency" role="cell">{{item.notification_response.currency}}</td>
-                    <td id="my-transaction-data-payment" role="cell">{{item.notification_response.payment_type}}</td>
-                    <td id="my-transaction-data-transaction" role="cell">{{item.created_date.toDate().toLocaleTimeString('id-ID', { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}}</td>
+                    <td class="my-transaction-data-id" role="cell">{{item.id}}</td>
+                    <td class="my-transaction-data-name" v-for="items in item.items" :key="items.id" role="cell">{{items.name}}</td>
+                    <td class="my-transaction-data-description" v-for="items in item.items" :key="items.id" role="cell">{{items.description}}</td>
+                    <td class="my-transaction-data-price" v-for="items in item.items" :key="items.id" role="cell">{{items.price}}</td>
+                    <td class="my-transaction-data-currency" role="cell">{{item.notification_response.currency}}</td>
+                    <td class="my-transaction-data-payment" role="cell">{{item.notification_response.payment_type}}</td>
+                    <td class="my-transaction-data-transaction" role="cell">{{item.created_date.toDate().toLocaleTimeString('id-ID', { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}}</td>
                 </tr>
             </tbody>
         </table>

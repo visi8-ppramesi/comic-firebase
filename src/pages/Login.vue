@@ -12,8 +12,8 @@
                     <router-link to="#">{{ $t("forgot") }}</router-link>
                 </div>
                 <div id="login-wrong" v-if="loginFailed" class="text-red-400 mb-2">{{ $t("wrong") }}</div>
-                <div id="login-button" class="flex items-center justify-between">
-                    <button @click="login" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
+                <div id="login-button-container" class="flex items-center justify-between">
+                    <button id="login-button" @click="login" class="bg-green-400 w-full hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-full" type="button">
                         {{ $t("login") }}
                     </button>
                 </div>

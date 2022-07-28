@@ -1,6 +1,6 @@
 import data from './dataMock.js'
 
-class Store{
+export class Store{
     constructor(initState = null){
         this.state = initState || {}
     }

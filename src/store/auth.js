@@ -80,7 +80,6 @@ export const useAuthStore = defineStore('auth', {
         async register(email, password, data, successFunc = () => {}, errorFunc = () => {}){
             this.status.loggingIn = true
             return User.register(email, password, data).then((user) => {
-                console.log('auth store register')
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
                     this.profile_image_url = imageUrl
@@ -110,7 +109,6 @@ export const useAuthStore = defineStore('auth', {
             return User.loginWithGoogle().then((user) => {
                 this.uid = user.id
                 user.getProfileImage().then((imageUrl) => {
-                    console.log('profile')
                     this.profile_image_url = imageUrl
                 })
                 user.getNotificationUnreadCount().then((count) => {

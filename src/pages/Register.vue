@@ -93,7 +93,6 @@ export default {
             this.authStore.register(this.email, this.password, 
                 { name: this.username, full_name: this.full_name }, 
                 () => {
-                    console.log('route push')
                     this.$router.push({ name: 'Login', query: { registered: 1 } })
                 },
                 () => {
