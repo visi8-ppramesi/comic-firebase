@@ -110,6 +110,12 @@ export default {
                             page_image_url: "gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_4.mp4",
                             page_number: 1
                         },
+                        'page-3': {
+                            is_ar: false,
+                            media_type: "video",
+                            page_image_url: "gs://comics-77200.appspot.com/comics/SSb0da8HXyie7DbcAEve/web_comic_4.mp4",
+                            page_number: 2
+                        },
                     }
                 },
                 'chapter-2': {

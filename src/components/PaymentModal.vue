@@ -19,11 +19,13 @@
                 </card>
                 <div class="flex flex-row w-full justify-between">
                     <button 
+                        id="close-button-top"
                         class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                         @click="closeModal"
                     >Close</button>
                     <div class="footer flex justify-end" v-if="!fatalError">
                         <button
+                            id="next-button-top"
                             variant="success"
                             class="disabled:bg-purple-300 disabled:text-gray-500 text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                             @click="nextStep"
@@ -41,6 +43,7 @@
                 <template #fatal-error="{ errorMsg }">{{ errorMsg }}</template>
                 <template #action-buttons>
                     <button 
+                        id="close-button-gopay"
                         class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                         @click="closeModal"
                     >Close</button>
@@ -50,6 +53,7 @@
                 <template #fatal-error="{ errorMsg }">{{ errorMsg }}</template>
                 <template #action-buttons>
                     <button 
+                        id="close-button-cc"
                         class="text-xs lg:text-lg items-center min-h-8 p-2 rounded-lg text-gray-50 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                         @click="closeModal"
                     >Close</button>

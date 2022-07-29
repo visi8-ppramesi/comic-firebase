@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!loading" class="md:mx-32 xl:mx-72 2xl:mx-xl">
+    <div v-if="!loading" id="chapter-container" class="md:mx-32 xl:mx-72 2xl:mx-xl">
         <div class="w-full">
             <div class="bg-black w-full">
                 <template v-for="(page, idx) in pages" :key="'item-' + idx">

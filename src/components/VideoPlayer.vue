@@ -12,7 +12,7 @@
                 </router-link>
             </div>
             <video
-                class="video"
+                class="video content"
                 ref="videoElement"
                 playsinline
                 :src="source"

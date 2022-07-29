@@ -35,6 +35,11 @@ const injector = {
         vuePropertySetter(app, 'fbAnalytics', fbAnalytics)
         vuePropertySetter(app, 'asyncComponentLoader', asyncComponentLoader)
         vuePropertySetter(app, '$toast', Toaster)
+        vuePropertySetter(app, '$loading', {
+            show: () => ({
+                hide: () => {}
+            }),
+        })
         // app.provide('swal', Swal)
         // app.provide('emitter', emitter)
         // app.config.globalProperties.emitter = emitter
@@ -50,7 +55,7 @@ export default {
         vfmPlugin,
         injector,
         router,
-        VueLoading,
+        // VueLoading,
         VueI18n,
         Vue3Mq,
         pinia: createPinia()

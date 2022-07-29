@@ -11,7 +11,7 @@
             <template v-else>
                 <component v-if="extraComponent" :is="extraComponent"></component>
             </template>
-            <img ref="imageElement" :src="source" class="w-full">
+            <img ref="imageElement" :src="source" class="content w-full">
         </div>
     </div>
 </template>
